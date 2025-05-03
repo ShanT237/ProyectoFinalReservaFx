@@ -4,7 +4,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 
 import java.util.List;
 
-public class RepoReservas {
+public class ReservaRepository {
 
     List<Reserva> reservas;
 }

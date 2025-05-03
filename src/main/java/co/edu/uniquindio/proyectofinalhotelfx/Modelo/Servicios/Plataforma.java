@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.AlojamientoRepository;
+
 public class Plataforma {
     private ServicioAdm servicioAdm;
     private ServicioUsuario servicioUsuario;
@@ -7,10 +9,12 @@ public class Plataforma {
     private ServiviosAlojamiento serviviosAlojamiento;
 
     public Plataforma(){
-        servicioAdm = new ServicioAdm();
-        servicioUsuario = new ServicioUsuario();
-        servicioReserva = new ServicioReserva();
-        serviviosAlojamiento = new ServiviosAlojamiento();
+        this.alojamientoRepository = new AlojamientoRepository();
+        this.usuarioRepository = new UsuarioRepositorio();
+
+        this.administradorServicio = new AdministradorServicio(alojamientoRepository, usuarioRepository);
+        this.clienteServicio = new ClienteServicio(usuarioRepository, alojamientoRepository);
+        this.anfitrionServicio = new AnfitrionServicio(alojamientoRepository, usuarioRepository);
     }
 
 
