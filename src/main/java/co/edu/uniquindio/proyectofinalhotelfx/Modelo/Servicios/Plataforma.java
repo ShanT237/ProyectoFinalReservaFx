@@ -1,24 +1,35 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.AlojamientoRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ClienteRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ReservaRepository;
 
 public class Plataforma {
     private ServicioAdm servicioAdm;
-    private ServicioUsuario servicioUsuario;
+    private ServicioCliente servicioCliente;
     private ServicioReserva servicioReserva;
-    private ServiviosAlojamiento serviviosAlojamiento;
+    private ServicioAlojamiento serviciosAlojamiento;
 
-    public Plataforma(){
-        this.alojamientoRepository = new AlojamientoRepository();
-        this.usuarioRepository = new UsuarioRepositorio();
+    private AlojamientoRepository alojamientoRepository;
+    private ClienteRepository clienteRepository;
+    private ReservaRepository reservaRepository;
 
-        this.administradorServicio = new AdministradorServicio(alojamientoRepository, usuarioRepository);
-        this.clienteServicio = new ClienteServicio(usuarioRepository, alojamientoRepository);
-        this.anfitrionServicio = new AnfitrionServicio(alojamientoRepository, usuarioRepository);
+    public Plataforma(AlojamientoRepository alojamientoRepository, ClienteRepository clienteRepository, ReservaRepository reservaRepository) {
+
+        this.alojamientoRepository = alojamientoRepository;
+        this.clienteRepository = clienteRepository;
+        this.reservaRepository = reservaRepository;
+
+        this.servicioAdm = new ServicioAdm(alojamientoRepository, clienteRepository, reservaRepository);
+        this.servicioCliente = new ServicioCliente(clienteRepository, alojamientoRepository);
+        this.serviciosAlojamiento = new ServicioAlojamiento(alojamientoRepository);
     }
 
 
     public void loginAdm(){
+
+    }
+    private void crearAlojamientosRepos(){
 
     }
 

@@ -2,21 +2,21 @@ package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Servicios;
 
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.AlojamientoRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ReservaRepository;
 
 public class ServicioAdm {
 
     private final AlojamientoRepository alojamientoRepository;
     private final ReservaRepository reservaRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository usuarioRepository;
 
-    public AdministradorServicio(AlojamientoRepository alojamientoRepository,
-                                 ReservaRepository reservaRepository,
-                                 UsuarioRepository usuarioRepository) {
+    public ServicioAdm(AlojamientoRepository alojamientoRepository, ClienteRepository clienteRepository, ReservaRepository reservaRepository) {
         this.alojamientoRepository = alojamientoRepository;
+        this.usuarioRepository = clienteRepository;
         this.reservaRepository = reservaRepository;
-        this.usuarioRepository = usuarioRepository;
     }
+
 
     public void loginAdm(){
         admExiste();
@@ -59,7 +59,6 @@ public class ServicioAdm {
       public void editarInformacionAlojamiento(){
 
       }
-      public void
     /*
     Gestionar Reservas
      */

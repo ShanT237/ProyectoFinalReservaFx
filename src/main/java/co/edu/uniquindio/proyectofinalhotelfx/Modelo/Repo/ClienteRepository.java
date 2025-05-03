@@ -5,7 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import java.util.List;
 
 
-public class RepoUsuarios {
+public class ClienteRepository {
 
     private List<Usuario> usuarios;
 
