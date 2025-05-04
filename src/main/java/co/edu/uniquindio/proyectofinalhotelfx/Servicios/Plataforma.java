@@ -1,8 +1,8 @@
-package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Servicios;
+package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.AlojamientoRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ReservaRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 
 public class Plataforma {
     private ServicioAdm servicioAdm;

@@ -1,9 +1,10 @@
-package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Servicios;
+package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.AlojamientoRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Repo.ReservaRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 
 public class ServicioAdm {
 
@@ -46,19 +47,25 @@ public class ServicioAdm {
     GestionarAlojamientos
      */
 
-      public void buscarAlojamiento(){
+    public void registrarAlojamiento(Alojamiento alojamiento){
 
-      }
-      public void eliminarAlojamiento(){
+    }
+    public void actualizarAlojamiento(String idAlojamiento, Alojamiento nuevoAlojamiento){
 
-      }
-      public void verHistorialdeReservasAlojamiento(){
+    }
+    public void eliminarAlojamiento(String idAlojamiento){
 
-      }
+    }
 
-      public void editarInformacionAlojamiento(){
+    public void agregarOfertaEspecial(String idAlojamiento, Oferta oferta){
 
-      }
+    }
+    public void actualizarOfertaEspecial(String idAlojamiento, Oferta nuevaOferta){
+
+    }
+    public void eliminarOfertaEspecial(String idAlojamiento, String idOferta){
+
+    }
     /*
     Gestionar Reservas
      */

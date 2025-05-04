@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Servicios;
+package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 public interface IPlataforma {
 
