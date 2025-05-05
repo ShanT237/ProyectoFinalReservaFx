@@ -101,4 +101,13 @@ public class ServicioCliente {
     public List<Cliente> listarClientes() {
         return clienteRepository.obtenerTodos();
     }
+
+    public void bloquearUsuario(String id){
+        Cliente cliente = clienteRepository.buscarPorCedula(id);
+        clienteRepository.agregarUsuarioBloqueado(cliente);
+        clienteRepository.eliminar(id);
+
+    }
+
 }
+

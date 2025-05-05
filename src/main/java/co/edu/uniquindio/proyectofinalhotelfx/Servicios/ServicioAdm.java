@@ -15,7 +15,7 @@ public class ServicioAdm {
 
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioReserva servicioReserva;
-    private final ServicioCliente clienteServicio;
+    private final ServicioCliente servicioCliente;
     private final AdmRepository admRepository;
 
 
@@ -31,17 +31,11 @@ public class ServicioAdm {
     Metodos gestionar usuario
      */
 
-    public void bloquearCuentaCliente(String idUsuario){
-        Cliente cliente = clienteServicio.ge   .buscarPorCedula(idUsuario);
-        clienteRepository.agregarUsuarioBloqueado(cliente);
-        clienteRepository.eliminar(idUsuario);
-
+    public void bloquearCuentaCliente(String idUsuario) throws Exception {
+       servicioCliente.bloquearUsuario(idUsuario);
     }
     public void verActividadesDeCliente(String idUsuario){
-        reservaRepository.obten
-
-    }
-    public void buscarUsuario(){
+        servicioReserva.obtenerReservasPorCliente(idUsuario);
 
     }
 
