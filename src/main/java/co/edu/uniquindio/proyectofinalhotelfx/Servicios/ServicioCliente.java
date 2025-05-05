@@ -3,57 +3,101 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.EnvioCorreo;
 
-import java.util.List;
+import java.util.*;
 
 public class ServicioCliente {
+
+    private final ClienteRepository clienteRepository;
+    private final AlojamientoRepository alojamientoRepository;
+
+    private final Map<String, String> codigosRecuperacion = new HashMap<>();
+
     public ServicioCliente(ClienteRepository clienteRepository, AlojamientoRepository alojamientoRepository) {
+        this.clienteRepository = clienteRepository;
+        this.alojamientoRepository = alojamientoRepository;
     }
+
     // REGISTRAR UN NUEVO CLIENTE
     public void registrarCliente(Cliente cliente) throws Exception {
-        // Validar si ya existe por cédula o correo
-        // Guardar en la base o en ClienteRepository
+        if (clienteRepository.buscarPorCedula(cliente.getCedula()) != null) {
+            throw new Exception("Ya existe un cliente con esa cédula");
+        }
+        if (clienteRepository.buscarPorCorreo(cliente.getCorreo()) != null) {
+            throw new Exception("Ya existe un cliente con ese correo");
+        }
+        clienteRepository.guardar(cliente);
     }
 
     // INICIAR SESIÓN
     public Cliente iniciarSesion(String correo, String password) throws Exception {
-        // Buscar por correo, validar contraseña
-        // Retornar cliente si coincide
-        return null;
+        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
+        if (cliente == null || !cliente.getPassword().equals(password)) {
+            throw new Exception("Correo o contraseña incorrectos");
+        }
+        return cliente;
     }
 
     // EDITAR CLIENTE
     public void editarCliente(Cliente clienteActualizado) throws Exception {
-        // Buscar por cédula o ID
-        // Reemplazar información
+        Cliente clienteExistente = clienteRepository.buscarPorCedula(clienteActualizado.getCedula());
+        if (clienteExistente == null) {
+            throw new Exception("Cliente no encontrado");
+        }
+        clienteRepository.actualizar(clienteActualizado);
     }
 
     // ELIMINAR CLIENTE
     public void eliminarCliente(String cedula) throws Exception {
-        // Buscar cliente y eliminar del repositorio
+        Cliente cliente = clienteRepository.buscarPorCedula(cedula);
+        if (cliente == null) {
+            throw new Exception("Cliente no encontrado");
+        }
+        clienteRepository.eliminar(cedula);
     }
+
+    // BUSCAR CLIENTE POR CÉDULA
+    public Cliente buscarCliente(String cedula) throws Exception {
+        Cliente cliente = clienteRepository.buscarPorCedula(cedula);
+        if (cliente == null) {
+            throw new Exception("Cliente no encontrado");
+        }
+        return cliente;
+    }
+
 
     // CAMBIAR CONTRASEÑA
     public void cambiarContrasena(String correo, String nuevaContrasena) throws Exception {
-        // Buscar cliente por correo y actualizar contraseña
+        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
+        if (cliente == null) {
+            throw new Exception("Correo no registrado");
+        }
+        cliente.setPassword(nuevaContrasena);
+        clienteRepository.actualizar(cliente);
     }
 
-    // ENVIAR CÓDIGO DE RECUPERACIÓN (usa EnvioCorreo)
+    // ENVIAR CÓDIGO DE RECUPERACIÓN
     public void enviarCodigoRecuperacion(String correo) throws Exception {
-        // Generar código aleatorio
-        // Guardar temporalmente (mapa o atributo)
-        // Llamar EnvioCorreo.enviarCodigo(...)
+        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
+        if (cliente == null) {
+            throw new Exception("Correo no registrado");
+        }
+
+        String codigo = String.valueOf((int)(Math.random() * 900000) + 100000); // Código de 6 cifras
+        codigosRecuperacion.put(correo, codigo);
+
+        EnvioCorreo.enviarCodigo(correo, codigo);
     }
 
     // VALIDAR CÓDIGO DE RECUPERACIÓN
     public boolean validarCodigoRecuperacion(String correo, String codigoIngresado) {
-        // Comparar código ingresado con el almacenado
-        return false;
+        String codigoCorrecto = codigosRecuperacion.get(correo);
+        return codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado);
     }
 
-    // LISTAR TODOS LOS CLIENTES (opcional si lo usas en GUI)
+    // LISTAR TODOS LOS CLIENTES
     public List<Cliente> listarClientes() {
-        // Retornar lista de clientes del repositorio
-        return null;
+        return clienteRepository.obtenerTodos();
     }
 }

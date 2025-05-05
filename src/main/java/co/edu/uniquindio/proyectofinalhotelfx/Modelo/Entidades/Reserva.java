@@ -19,4 +19,19 @@ public class Reserva {
     private int cantidadPersonas;
     private Factura factura;
     private boolean estado;
+
+    public Object getEstado() {
+    }
+
+    public int getValoracion() {
+    }
+
+    public Object getComentario() {
+    }
+
+    public void setComentario(String comentario) {
+    }
+
+    public void setValoracion(int valoracion) {
+    }
 }

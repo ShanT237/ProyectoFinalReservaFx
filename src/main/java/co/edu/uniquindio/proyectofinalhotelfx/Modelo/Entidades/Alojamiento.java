@@ -21,4 +21,6 @@ public abstract class Alojamiento {
     public List<String> serviciosIncluidos;
     public List<Review> reviews;
 
+    public String getTipo() {
+    }
 }
