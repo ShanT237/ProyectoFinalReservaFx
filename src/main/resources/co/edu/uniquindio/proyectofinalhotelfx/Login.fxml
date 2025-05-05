@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #d6eaf8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.Login">
+
+    <!-- Contenedor principal centrado -->
+    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #d6eaf8;" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
+
+        <!-- Logo o título -->
+        <ImageView fitHeight="100" fitWidth="200" preserveRatio="true">
+            <Image url="@../../../../../../../../../../../../Downloads/expediav2-703354-2927a7-654387.png" />
+        </ImageView>
+
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Iniciar Sesión" />
+
+        <!-- Formulario -->
+        <GridPane hgap="10" vgap="15">
+            <Label style="-fx-font-weight: bold;" text="Correo electrónico:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="txtCorreo" prefWidth="250" promptText="ejemplo@dominio.com" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label style="-fx-font-weight: bold;" text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <PasswordField fx:id="txtPassword" prefWidth="250" promptText="Ingresa tu contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
+        <!-- Botón de acción -->
+        <Button fx:id="btnIngresar" onAction="#iniciarSesion" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 150; -fx-pref-height: 30;" text="Ingresar" />
+
+        <!-- Enlace para recuperación -->
+        <Hyperlink fx:id="linkRecuperar" style="-fx-text-fill: #2980b9;" text="¿Olvidaste tu contraseña?" />
+
+        <!-- Mensaje de error -->
+        <Label fx:id="lblMensajeError" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+    </VBox>
+</AnchorPane>

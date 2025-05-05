@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.EstadisticasAdmin">
+
+    <top>
+        <HBox style="-fx-padding: 10;" alignment="CENTER_LEFT">
+            <Label text="Estadísticas de Alojamientos" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ComboBox fx:id="cbPeriodo" promptText="Seleccionar período"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane>
+            <Tab text="Ocupación">
+                <BarChart fx:id="chartOcupacion">
+                    <xAxis><CategoryAxis label="Alojamientos"/></xAxis>
+                    <yAxis><NumberAxis label="% Ocupación"/></yAxis>
+                </BarChart>
+            </Tab>
+            <Tab text="Ganancias">
+                <LineChart fx:id="chartGanancias">
+                    <xAxis><CategoryAxis label="Meses"/></xAxis>
+                    <yAxis><NumberAxis label="Ingresos ($)"/></yAxis>
+                </LineChart>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

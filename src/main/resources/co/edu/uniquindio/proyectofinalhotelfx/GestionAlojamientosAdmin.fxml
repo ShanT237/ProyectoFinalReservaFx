@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.GestionAlojamientosAdmin"
+            style="-fx-background-color: #f8f9fa;">
+
+    <!-- Barra superior -->
+    <top>
+        <HBox style="-fx-background-color: #eaecef; -fx-padding: 10;" alignment="CENTER_LEFT">
+            <Label text="Gestión de Alojamientos" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnAgregar" text="+ Nuevo Alojamiento" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <!-- Contenido central -->
+    <center>
+        <TableView fx:id="tblAlojamientos" style="-fx-background-color: white;">
+            <columns>
+                <TableColumn text="Nombre" prefWidth="150">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="nombre"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Tipo" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="tipo"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Ciudad" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="ciudad"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Precio/Noche" prefWidth="100">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="precioNoche"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Acciones" prefWidth="150">
+                    <!-- Botones Editar/Eliminar -->
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
