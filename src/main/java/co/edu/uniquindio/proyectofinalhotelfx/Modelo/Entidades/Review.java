@@ -1,22 +1,25 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-
-public class Reserva {
-    private String id;
-    private Cliente cliente;
+public class Review {
+    private UUID codigo;
+    private Cliente cliete;
+    private String comentario;
+    private double puntaje;
     private Alojamiento alojamiento;
-    private LocalDateTime fechaInicio, fechaFin;
-    private int cantidadPersonas;
-    private Factura factura;
-    private boolean estado;
+    private LocalDateTime fecha;
+
 }

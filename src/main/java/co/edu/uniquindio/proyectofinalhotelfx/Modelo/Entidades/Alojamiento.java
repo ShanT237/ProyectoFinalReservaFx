@@ -19,6 +19,6 @@ public abstract class Alojamiento {
     public int capacidadMaxima;
     public Image imagen;
     public List<String> serviciosIncluidos;
-    public List<Resena> resenas;
+    public List<Review> reviews;
 
 }
