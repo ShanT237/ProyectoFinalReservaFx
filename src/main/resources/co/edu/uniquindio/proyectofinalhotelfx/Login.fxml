@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #d6eaf8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.Login">
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #d6eaf8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.Login">
 
     <!-- Contenedor principal centrado -->
     <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #d6eaf8;" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">

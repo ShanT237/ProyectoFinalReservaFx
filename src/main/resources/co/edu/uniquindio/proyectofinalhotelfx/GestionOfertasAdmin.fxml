@@ -5,7 +5,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.GestionOfertasAdmin">
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.GestionOfertasAdmin">
 
     <top>
         <HBox style="-fx-padding: 10;" alignment="CENTER_LEFT">

@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyectofinalhotelfx.Controlador;
+package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;

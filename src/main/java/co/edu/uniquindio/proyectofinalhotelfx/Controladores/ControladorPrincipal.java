@@ -1,7 +1,6 @@
-package co.edu.uniquindio.proyectofinalhotelfx.Controlador;
+package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 
-import co.edu.uniquindio.proyectofinalhotelfx.Servicios.IPlataforma;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;

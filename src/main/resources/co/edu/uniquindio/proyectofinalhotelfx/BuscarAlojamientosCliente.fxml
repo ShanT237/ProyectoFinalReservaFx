@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.BuscarAlojamientosCliente"
+      fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.BuscarAlojamientosCliente"
       spacing="10" style="-fx-padding: 20;">
 
     <Label text="Buscar Alojamientos" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>

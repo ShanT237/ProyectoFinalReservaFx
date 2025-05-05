@@ -7,7 +7,7 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controlador.GestionAlojamientosAdmin"
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.GestionAlojamientosAdmin"
             style="-fx-background-color: #f8f9fa;">
 
     <!-- Barra superior -->

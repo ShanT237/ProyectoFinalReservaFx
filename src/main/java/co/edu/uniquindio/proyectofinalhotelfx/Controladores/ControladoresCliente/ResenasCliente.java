@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyectofinalhotelfx.Controlador;
+package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
