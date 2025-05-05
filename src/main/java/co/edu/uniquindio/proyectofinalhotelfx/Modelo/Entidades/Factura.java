@@ -17,4 +17,8 @@ public class Factura {
     private double subtotal;
     private double total;
     private LocalDate fecha;
+    private String codigoQR;
+
+
+
 }

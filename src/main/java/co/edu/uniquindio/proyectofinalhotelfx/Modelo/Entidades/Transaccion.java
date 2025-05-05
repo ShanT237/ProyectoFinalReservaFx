@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,10 +16,11 @@ import java.time.LocalDateTime;
 
 public class Transaccion {
     private TipoTransaccion tipoTransaccion;
-    private String id;
+    private UUID id;
     private float monto;
     private LocalDateTime fecha;
     private BilleteraVirtual billeteraOrigen, billeteraDestino;
     private float comision;
+    private String descripcion;
 
 }

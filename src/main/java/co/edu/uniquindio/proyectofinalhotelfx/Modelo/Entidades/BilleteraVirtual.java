@@ -20,11 +20,6 @@ public class BilleteraVirtual {
     private float saldo;
     private Usuario usuario;
     private ArrayList<Transaccion> transacciones;
-
-    public BilleteraVirtual() {
-        this.transacciones = new ArrayList<>();
-    }
-
     public BilleteraVirtual(String numero, float saldo, Usuario usuario) {
         this.numero = numero;
         this.saldo = saldo;
