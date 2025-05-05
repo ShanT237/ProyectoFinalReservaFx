@@ -8,6 +8,7 @@ import java.util.List;
 public class ClienteRepository {
 
     private final List<Cliente> clientes = new ArrayList<>();
+    private final List<Cliente> usuariosBloqueados = new ArrayList<>();
 
     public Cliente buscarPorCedula(String cedula) {
         for (Cliente c : clientes) {
@@ -42,9 +43,21 @@ public class ClienteRepository {
 
     public void eliminar(String cedula) {
         clientes.removeIf(c -> c.getCedula().equals(cedula));
+
     }
 
     public List<Cliente> obtenerTodos() {
-        return new ArrayList<>(clientes); // Copia para evitar modificación directa
+        return new ArrayList<>(clientes);
+
+
+    }
+
+     /*
+        / Metodos lista clientesBloqueados
+         */
+    public void agregarUsuarioBloqueado(Cliente clienteBloqueado){
+        usuariosBloqueados.add(clienteBloqueado);
+
+
     }
 }

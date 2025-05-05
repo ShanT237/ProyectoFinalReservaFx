@@ -1,29 +1,59 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
 
 public class Plataforma {
     private ServicioAdm servicioAdm;
     private ServicioCliente servicioCliente;
     private ServicioReserva servicioReserva;
     private ServicioAlojamiento serviciosAlojamiento;
+    private ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     private AlojamientoRepository alojamientoRepository;
     private ClienteRepository clienteRepository;
     private ReservaRepository reservaRepository;
+    private AdmRepository admRepository;
+    private BilleteraVirtualRepository billeteraVirtualRepository;
 
-    public Plataforma(AlojamientoRepository alojamientoRepository, ClienteRepository clienteRepository, ReservaRepository reservaRepository) {
+    private Plataforma() {
 
-        this.alojamientoRepository = alojamientoRepository;
-        this.clienteRepository = clienteRepository;
-        this.reservaRepository = reservaRepository;
+        /*
+        Intancias de Repositorios
+         */
+        this.alojamientoRepository = new AlojamientoRepository() ;
+        this.clienteRepository = new ClienteRepository();
+        this.reservaRepository = new ReservaRepository();
+        this.admRepository = new AdmRepository();
+        this.billeteraVirtualRepository = new BilleteraVirtualRepository();
 
-        this.servicioAdm = new ServicioAdm(alojamientoRepository, clienteRepository, reservaRepository);
-        this.servicioCliente = new ServicioCliente(clienteRepository, alojamientoRepository);
-        this.serviciosAlojamiento = new ServicioAlojamiento(alojamientoRepository);
+        /*
+        Intancias de Servicios
+         */
+        this.servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
+                .billeteraVirtualRepository(billeteraVirtualRepository)
+                .build();
+        this.serviciosAlojamiento = ServicioAlojamiento.builder()
+                .alojamientoRepository(alojamientoRepository)
+                .build();
+        this.servicioReserva = ServicioReserva.builder()
+                .reservaRepository(reservaRepository)
+                .build();
+
+        this.servicioAdm = ServicioAdm.builder()
+                .servicioAlojamiento(serviciosAlojamiento)
+                .servicioReserva(servicioReserva)
+                .clienteServicio(servicioCliente)
+                .admRepository(admRepository)
+                .build();
+
+        this.servicioCliente = ServicioCliente.builder()
+                .clienteRepository(clienteRepository)
+                .servicioAlojamiento(serviciosAlojamiento)
+                .build();
+
+
     }
+
 
 
     public void loginAdm(){

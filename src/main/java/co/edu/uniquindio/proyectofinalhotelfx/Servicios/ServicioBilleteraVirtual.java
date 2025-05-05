@@ -1,9 +1,17 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.BilleteraVirtual;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.BilleteraVirtualRepository;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
+@Builder
 public class ServicioBilleteraVirtual {
+    private BilleteraVirtualRepository billeteraVirtualRepository;
 
     private final Map<String, Double> saldos = new HashMap<>();
 

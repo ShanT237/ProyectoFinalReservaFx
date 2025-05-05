@@ -2,22 +2,21 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.AdmRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
+import lombok.Builder;
 
+@Builder
 public class ServicioAdm {
 
-    private final AlojamientoRepository alojamientoRepository;
-    private final ReservaRepository reservaRepository;
-    private final ClienteRepository usuarioRepository;
-
-    public ServicioAdm(AlojamientoRepository alojamientoRepository, ClienteRepository clienteRepository, ReservaRepository reservaRepository) {
-        this.alojamientoRepository = alojamientoRepository;
-        this.usuarioRepository = clienteRepository;
-        this.reservaRepository = reservaRepository;
-    }
+    private final ServicioAlojamiento servicioAlojamiento;
+    private final ServicioReserva servicioReserva;
+    private final ServicioCliente servicioCliente;
+    private final AdmRepository admRepository;
 
 
     public void loginAdm(){
@@ -31,16 +30,12 @@ public class ServicioAdm {
     /*
     Metodos gestionar usuario
      */
-    public void verListaDeUsuarios(){
 
+    public void bloquearCuentaCliente(String idUsuario) throws Exception {
+       servicioCliente.bloquearUsuario(idUsuario);
     }
-    public void bloquearCuentaUsuario(){
-
-    }
-    public void verActividadesDeUsuario(){
-
-    }
-    public void buscarUsuario(){
+    public void verActividadesDeCliente(String idUsuario){
+        servicioReserva.obtenerReservasPorCliente(idUsuario);
 
     }
 

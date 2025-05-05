@@ -2,17 +2,17 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Getter
+@Builder
 public class ServicioAlojamiento {
 
     private final AlojamientoRepository alojamientoRepository;
 
-    public ServicioAlojamiento(AlojamientoRepository alojamientoRepository) {
-        this.alojamientoRepository = alojamientoRepository;
-    }
 
     // Buscar por nombre (ignora mayúsculas/minúsculas)
     public List<Alojamiento> buscarPorNombre(String nombre) {
