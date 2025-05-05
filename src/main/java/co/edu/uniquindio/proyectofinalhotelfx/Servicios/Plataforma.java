@@ -15,7 +15,7 @@ public class Plataforma {
     private AdmRepository admRepository;
     private BilleteraVirtualRepository billeteraVirtualRepository;
 
-    private Plataforma() {
+    public Plataforma() {
 
         /*
         Intancias de Repositorios
@@ -39,16 +39,17 @@ public class Plataforma {
                 .reservaRepository(reservaRepository)
                 .build();
 
-        this.servicioAdm = ServicioAdm.builder()
-                .servicioAlojamiento(serviciosAlojamiento)
-                .servicioReserva(servicioReserva)
-                .clienteServicio(servicioCliente)
-                .admRepository(admRepository)
-                .build();
 
         this.servicioCliente = ServicioCliente.builder()
                 .clienteRepository(clienteRepository)
                 .servicioAlojamiento(serviciosAlojamiento)
+                .build();
+
+        this.servicioAdm = ServicioAdm.builder()
+                .servicioAlojamiento(serviciosAlojamiento)
+                .servicioReserva(servicioReserva)
+                .servicioCliente(servicioCliente)
+                .admRepository(admRepository)
                 .build();
 
 

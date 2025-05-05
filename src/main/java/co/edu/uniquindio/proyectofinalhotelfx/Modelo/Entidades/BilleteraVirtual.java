@@ -18,12 +18,10 @@ import java.util.ArrayList;
 public class BilleteraVirtual {
     private String numero;
     private float saldo;
-    private Usuario usuario;
     private ArrayList<Transaccion> transacciones;
-    public BilleteraVirtual(String numero, float saldo, Usuario usuario) {
+    public BilleteraVirtual(String numero, float saldo) {
         this.numero = numero;
         this.saldo = saldo;
-        this.usuario = usuario;
         this.transacciones = new ArrayList<>();
     }
 
