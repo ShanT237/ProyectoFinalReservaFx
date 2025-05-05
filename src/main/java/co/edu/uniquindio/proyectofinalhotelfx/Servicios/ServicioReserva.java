@@ -2,17 +2,17 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
+@Builder
 public class ServicioReserva {
 
     private final ReservaRepository reservaRepository;
-
-    public ServicioReserva(ReservaRepository reservaRepository) {
-        this.reservaRepository = reservaRepository;
-    }
 
     // CREAR RESERVA
     public void crearReserva(Reserva reserva) throws Exception {

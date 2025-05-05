@@ -4,20 +4,21 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.EnvioCorreo;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.*;
 
+@Getter
+@Builder
 public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
-    private final AlojamientoRepository alojamientoRepository;
+    private final ServicioAlojamiento servicioAlojamiento;
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
 
-    public ServicioCliente(ClienteRepository clienteRepository, AlojamientoRepository alojamientoRepository) {
-        this.clienteRepository = clienteRepository;
-        this.alojamientoRepository = alojamientoRepository;
-    }
+
 
     // REGISTRAR UN NUEVO CLIENTE
     public void registrarCliente(Cliente cliente) throws Exception {
