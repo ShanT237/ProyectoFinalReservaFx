@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Cliente extends Usuario{
+    BilleteraVirtual billetera;
+
 }
