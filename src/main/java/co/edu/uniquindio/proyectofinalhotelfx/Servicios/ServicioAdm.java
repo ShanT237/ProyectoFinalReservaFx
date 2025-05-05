@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
@@ -8,7 +9,10 @@ import co.edu.uniquindio.proyectofinalhotelfx.Repo.AdmRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
 import lombok.Builder;
+
+import java.util.List;
 
 @Builder
 public class ServicioAdm {
@@ -18,13 +22,33 @@ public class ServicioAdm {
     private final ServicioCliente servicioCliente;
     private final AdmRepository admRepository;
 
+    SesionAdm sesionAdm = SesionAdm.instancia();
 
-    public void loginAdm(){
-        admExiste();
+    public String loginAdm(String correo, String password){
+        List lista = admRepository.obtenerAdms();
+        admExiste(lista, correo, password);
+
+        return admExiste(lista, correo, password);
     }
 
-    public void admExiste(){
+    public String admExiste(List<Administrador> lista, String correo, String password) {
+        for (Administrador admin : lista) {
+            if (admin.getCorreo().equals(correo)) {
+                if (admin.getPassword().equals(password)) {
+                    crearSesion(admin);
+                    return "¡Bienvenido, administrador!";
+                } else {
+                    return "La contraseña es incorrecta.";
+                }
+            }
+        }
 
+        return "No existe un administrador con ese correo.";
+    }
+
+    public void crearSesion(Administrador administrador){
+        sesionAdm.iniciarSesion(administrador);
+        System.out.println("Sesion Iniciada con " + administrador.getNombre());
     }
 
     /*

@@ -9,19 +9,19 @@ import lombok.Setter;
 @Setter
 @Builder
 
-public class SesionUsuario {
-    public static SesionUsuario INSTANCIA;
+public class SesionCliente {
+    public static SesionCliente INSTANCIA;
     private Usuario usuario;
 
 
-    private SesionUsuario() {
+    private SesionCliente() {
 
     }
 
 
-    public static SesionUsuario instancia() {
+    public static SesionCliente instancia() {
         if (INSTANCIA == null) {
-            INSTANCIA = new SesionUsuario();
+            INSTANCIA = new SesionCliente();
         }
         return INSTANCIA;
     }
