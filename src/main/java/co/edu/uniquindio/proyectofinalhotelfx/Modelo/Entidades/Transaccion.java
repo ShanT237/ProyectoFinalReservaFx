@@ -1,6 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Enums.TipoTransaccion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoTransaccion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
