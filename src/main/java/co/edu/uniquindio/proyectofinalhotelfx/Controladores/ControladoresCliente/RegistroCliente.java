@@ -9,26 +9,20 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class RegistroCliente {
 
-    @FXML
-    public  TextField txtNombre;
-    @FXML
-    public  TextField txtCorreo;
-    @FXML
-    public  TextField txtTelefono;
-    @FXML
-    public  TextField txtCedula;
-    @FXML
-    public  PasswordField txtPassword;
-    @FXML
-    public  PasswordField txtConfirmarPassword;
-    @FXML
-    public  Button btnRegistrarse;
-    @FXML
-    public  Button btnVolver;
-    @FXML
-    public  Label lblMensajeError;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtCorreo;
+    @FXML private TextField txtTelefono;
+    @FXML private TextField txtCedula;
+    @FXML private PasswordField txtPassword;
+    @FXML private PasswordField txtConfirmarPassword;
+    @FXML private Button btnRegistrarse;
+    @FXML private Button btnVolver;
+    @FXML private Label lblMensajeError;
+
 
     @FXML
     void initialize() {
