@@ -4,7 +4,12 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Review;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
+import javafx.scene.image.Image;
 import lombok.Builder;
 
 import java.util.List;
@@ -44,7 +49,8 @@ public class ServicioAdm {
     GestionarAlojamientos
      */
 
-    public void registrarAlojamiento(){
+    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+
     }
     public void actualizarAlojamiento(String idAlojamiento, Alojamiento nuevoAlojamiento){
 
