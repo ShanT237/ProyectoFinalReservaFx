@@ -9,10 +9,10 @@
             fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.EstadisticasAdmin">
 
     <top>
-        <HBox style="-fx-padding: 10;" alignment="CENTER_LEFT">
-            <Label text="Estadísticas de Alojamientos" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <HBox style="-fx-background-color: #ecf0f1; -fx-padding: 15;" alignment="CENTER_LEFT">
+            <Label text="Estadísticas" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
             <Region HBox.hgrow="ALWAYS"/>
-            <ComboBox fx:id="cbPeriodo" promptText="Seleccionar período"/>
+            <ComboBox fx:id="cbPeriodo" promptText="Seleccionar período" prefWidth="200"/>
         </HBox>
     </top>
 
@@ -21,7 +21,7 @@
             <Tab text="Ocupación">
                 <BarChart fx:id="chartOcupacion">
                     <xAxis><CategoryAxis label="Alojamientos"/></xAxis>
-                    <yAxis><NumberAxis label="% Ocupación"/></yAxis>
+                    <yAxis><NumberAxis label="Ocupación"/></yAxis>
                 </BarChart>
             </Tab>
             <Tab text="Ganancias">
