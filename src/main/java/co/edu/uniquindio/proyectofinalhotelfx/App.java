@@ -1,10 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Apartamento;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Casa;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Hotel;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -21,7 +17,7 @@ public class App extends Application {
 
     public void iniciarDatos() {
         ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-        Image imagen = new Image(getClass().getResource("/Imagenes/expediav2-703354-2927a7-654387.png").toExternalForm());
+        Image imagen = new Image(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Imagenes/expediav2-703354-2927a7-654387.png").toExternalForm());
 
 
         // Casa 1

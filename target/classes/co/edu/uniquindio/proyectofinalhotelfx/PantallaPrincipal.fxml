@@ -20,7 +20,7 @@
     <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 15; -fx-background-color: #85c1e9;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <ImageView fitHeight="50" fitWidth="122.0">
          <image>
-            <Image url="@../../../../../Downloadxpediav2-703354-2927a7-654387.png" />
+            <Image url="@Imagenes/wyndham-bogota.png" />
          </image></ImageView>
         <Button fx:id="btnLogin" style="-fx-background-color: #d6eaf8;" text="Iniciar Sesión" />
         <Button fx:id="btnRegistro" style="-fx-background-color: #d6eaf8;" text="Registrarse" />

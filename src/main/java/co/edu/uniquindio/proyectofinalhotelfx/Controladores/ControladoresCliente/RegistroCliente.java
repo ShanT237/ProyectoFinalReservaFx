@@ -53,47 +53,7 @@ public class RegistroCliente {
             String password = txtPassword.getText();
             String confirmarPassword = txtConfirmarPassword.getText();
 
-            // Validar campos vacíos
-            if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || password.isEmpty() || confirmarPassword.isEmpty()) {
-                mostrarError("Todos los campos son obligatorios");
-                return;
-            }
-
-            // Validar formato de nombre (solo letras y espacios)
-            if (!nombre.matches("[a-zA-Z\\s]+")) {
-                mostrarError("El nombre solo debe contener letras y espacios");
-                return;
-            }
-
-            // Validar cédula
-            if (!cedula.matches("\\d+") || cedula.length() < 8 || cedula.length() > 10) {
-                mostrarError("La cédula debe contener entre 8 y 10 números");
-                return;
-            }
-
-            // Validar teléfono
-            if (!telefono.matches("\\d{8,10}")) {
-                mostrarError("El número de teléfono debe tener entre 8 y 10 dígitos");
-                return;
-            }
-
-            // Validar correo
-            if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-                mostrarError("El correo debe ser un correo Gmail válido");
-                return;
-            }
-
-            // Validar contraseña (mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número)
-            if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
-                mostrarError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
-                return;
-            }
-
-            // Validar coincidencia de contraseñas
-            if (!password.equals(confirmarPassword)) {
-                mostrarError("Las contraseñas no coinciden");
-                return;
-            }
+            //llamar el método de registro del servicio
 
             // Si todo es válido, mostrar mensaje de éxito y limpiar campos
             mostrarMensaje("¡Registro exitoso!");
@@ -103,7 +63,7 @@ public class RegistroCliente {
             new Thread(() -> {
                 try {
                     Thread.sleep(2000);
-                    irPantallaPrincipal(null);
+                    //abrir la ventana de CodigoVerficacion (pasar el correo)
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

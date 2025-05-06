@@ -20,7 +20,7 @@ public interface IPlataforma {
 
     public void registrarReserva();
     public void registrarOferta();
-    public void registrarCliente(String nombre, String id, String telefono, String  email, String password) throws Exception;
+    public void registrarCliente(String nombre, String id, String telefono, String  email, String password, String confirmarPassword) throws Exception;
 
 
 }

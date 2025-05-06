@@ -20,10 +20,68 @@ public class ServicioCliente {
 
 
 
-    public void registrarCliente(String nombre, String id, String telefono, String  email, String password ) throws Exception {
+    public void registrarCliente(String nombre, String cedula,  String telefono, String  correo, String password, String confirmarPassword ) throws Exception {
+
+        String error = "";
+
+        // Validar campos vacíos
+        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || password.isEmpty() || confirmarPassword.isEmpty()) {
+            error = ("Todos los campos son obligatorios");
+        }
+
+        // Validar formato de nombre (solo letras y espacios)
+        if (!nombre.matches("[a-zA-Z\\s]+")) {
+            error += ("El nombre solo debe contener letras y espacios");
+        }
+
+        // Validar cédula
+        if (!cedula.matches("\\d+") || cedula.length() < 8 || cedula.length() > 10) {
+            error += ("La cédula debe contener entre 8 y 10 números");
+        }
+
+        // Validar teléfono
+        if (!telefono.matches("\\d{8,10}")) {
+            error += ("El número de teléfono debe tener entre 8 y 10 dígitos");
+        }
+
+        // Validar correo
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            error += ("El correo debe ser un correo Gmail válido");
+        }
+
+        // Validar contraseña (mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número)
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
+            error += ("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+        }
+
+        // Validar coincidencia de contraseñas
+        if (!password.equals(confirmarPassword)) {
+            error += ("Las contraseñas no coinciden");
+        }
+
+        if(!error.isEmpty()){
+            throw new Exception(error);
+        }
+
+        Random random = new Random();
+        int codigo = random.nextInt(9000) + 1000;
+
+        Cliente cliente = Cliente.builder()
+                .correo(correo)
+                .password(password)
+                .cedula(cedula)
+                .activo(false)
+                .codigoActivacion(codigo)
+                .telefono(telefono).build();
+        clienteRepository.guardar(cliente);
+
+        EnvioCorreo.enviarCodigo(
+                correo,
+                "Su código de activación es "+codigo,
+                "Código de validación de registro"
+        );
 
     }
-
 
     public Cliente iniciarSesion(String correo, String password) throws Exception {
 
@@ -68,18 +126,6 @@ public class ServicioCliente {
         clienteRepository.actualizar(cliente);
     }
 
-    // ENVIAR CÓDIGO DE RECUPERACIÓN
-    public void enviarCodigoRecuperacion(String correo) throws Exception {
-        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-        if (cliente == null) {
-            throw new Exception("Correo no registrado");
-        }
-
-        String codigo = String.valueOf((int)(Math.random() * 900000) + 100000); // Código de 6 cifras
-        codigosRecuperacion.put(correo, codigo);
-
-        EnvioCorreo.enviarCodigo(correo, codigo);
-    }
 
     // VALIDAR CÓDIGO DE RECUPERACIÓN
     public boolean validarCodigoRecuperacion(String correo, String codigoIngresado) {

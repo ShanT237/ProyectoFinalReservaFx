@@ -101,8 +101,8 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void registrarCliente(String nombre, String id, String telefono, String  email, String password) throws Exception {
-        servicioCliente.registrarCliente(nombre, id, telefono, email, password);
+    public void registrarCliente(String nombre, String id, String telefono, String  email, String password, String confirmarPassword) throws Exception {
+        servicioCliente.registrarCliente(nombre, id, telefono, email, password, confirmarPassword);
 
     }
 
