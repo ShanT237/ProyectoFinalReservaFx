@@ -19,6 +19,7 @@ public class BilleteraVirtual {
     private String numero;
     private float saldo;
     private ArrayList<Transaccion> transacciones;
+
     public BilleteraVirtual(String numero, float saldo) {
         this.numero = numero;
         this.saldo = saldo;
