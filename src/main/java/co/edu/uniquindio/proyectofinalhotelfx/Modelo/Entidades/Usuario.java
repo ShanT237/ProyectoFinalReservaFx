@@ -10,12 +10,10 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @AllArgsConstructor
-public  abstract class Usuario {
-    public String nombre ;
-    public String cedula;
-    public String telefono;
-    public String correo;
-    public String password;
-
-    
+public abstract class Usuario {
+    private String nombre;
+    private String cedula;
+    private String telefono;
+    private String correo;
+    private String password;
 }
