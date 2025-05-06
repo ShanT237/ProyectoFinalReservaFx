@@ -86,12 +86,21 @@ public class ServicioAdm {
             throw new IllegalArgumentException("El tipo de alojamiento no puede ser nulo.");
         }
     }
-    public void actualizarAlojamiento(String idAlojamiento, Alojamiento nuevoAlojamiento){
+    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+       verificarDatosAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase,
+               capacidadMaxima, imagen, serviciosIncluidos,
+               capacidadPersonas, numeroHabitaciones, admiteMascotas,
+               tipoAlojamiento);
 
+       servicioAlojamiento.actualizarAlojamiento( idAlojamiento, nombre,  ciudad,  descripcion,  precioPorNocheBase,  capacidadMaxima,  imagen, serviciosIncluidos,  capacidadPersonas,  numeroHabitaciones, admiteMascotas, tipoAlojamiento);
 
     }
     public void eliminarAlojamiento(String idAlojamiento){
+        if (idAlojamiento == null){
+            throw new IllegalArgumentException("El id del alojamiento no puede ser nulo.");
+        }
 
+        servicioAlojamiento.eliminarAlojamiento(idAlojamiento);
 
     }
 

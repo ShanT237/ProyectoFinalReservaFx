@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Factory.AlojamientoFactory.AlojamientoFactory;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
@@ -30,7 +31,9 @@ public class ServicioAlojamiento {
     }
 
     public Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id){
-
+        AlojamientoFactory alojamientoFactory = new AlojamientoFactory();
+        Alojamiento alojamiento = alojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
+        return alojamiento;
 
     }
 
@@ -45,6 +48,19 @@ public class ServicioAlojamiento {
         }
 
         return id.toString();
+    }
+
+    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+        Alojamiento alojamientoActualizar = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, idAlojamiento);
+        alojamientoRepository.actualizar(alojamientoActualizar);
+    }
+
+    /*
+ Metodos eliminar
+  */
+    public void eliminarAlojamiento(String idAlojamiento){
+        alojamientoRepository.eliminar(idAlojamiento);
+
     }
     // Buscar por nombre (ignora mayúsculas/minúsculas)
     public List<Alojamiento> buscarPorNombre(String nombre) {
@@ -78,12 +94,6 @@ public class ServicioAlojamiento {
                 .collect(Collectors.toList());
     }
 
-    /*
-    Metodos eliminarActualizar
-     */
-    public void eliminarAlojamiento(String idAlojamiento){
 
-    }
-    public void actualizarAlojamiento(String idAlojamiento, Alojamiento nuevoAlojamiento){
-    }
+
 }
