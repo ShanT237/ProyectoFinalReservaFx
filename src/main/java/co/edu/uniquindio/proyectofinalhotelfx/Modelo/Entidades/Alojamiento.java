@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-
 public abstract class Alojamiento {
 
     public String nombre;
@@ -32,5 +31,8 @@ public abstract class Alojamiento {
         this.imagen = imagen;
         this.serviciosIncluidos = new ArrayList<>();
         this.reviews = new ArrayList<>();
+    }
+
+    public String getTipoAlojamiento() {
     }
 }

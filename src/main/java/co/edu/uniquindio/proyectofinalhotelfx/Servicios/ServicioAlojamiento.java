@@ -34,7 +34,7 @@ public class ServicioAlojamiento {
     public List<Alojamiento> buscarPorTipo(String tipo) {
         return alojamientoRepository.obtenerTodos()
                 .stream()
-                .filter(a -> a.getTipo().equalsIgnoreCase(tipo))
+                .filter(a -> a.getTipoAlojamiento().equalsIgnoreCase(tipo))
                 .collect(Collectors.toList());
     }
 

@@ -1,7 +1,5 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.BilleteraVirtual;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.BilleteraVirtualRepository;
 import lombok.Builder;
 import lombok.Getter;
 
