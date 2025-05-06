@@ -5,7 +5,9 @@ import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import lombok.Getter;
 
+@Getter
 public class ControladorPrincipal {
 
     private static ControladorPrincipal instancia;
@@ -39,7 +41,6 @@ public class ControladorPrincipal {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
 
 }
 

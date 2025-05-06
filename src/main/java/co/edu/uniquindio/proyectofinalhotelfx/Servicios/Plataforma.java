@@ -1,7 +1,11 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Plataforma {
     private ServicioAdm servicioAdm;
     private ServicioCliente servicioCliente;
