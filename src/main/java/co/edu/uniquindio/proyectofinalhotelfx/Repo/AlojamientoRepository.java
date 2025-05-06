@@ -10,10 +10,9 @@ public class AlojamientoRepository {
     private final List<Alojamiento> alojamientos = new ArrayList<>();
 
     public List<Alojamiento> obtenerTodos() {
-        return new ArrayList<>(alojamientos); // Retorna una copia para evitar modificación directa
+        return new ArrayList<>(alojamientos);
     }
 
-    // Puedes agregar métodos para guardar alojamientos si necesitas
     public void guardar(Alojamiento alojamiento) {
         alojamientos.add(alojamiento);
     }
@@ -21,6 +20,17 @@ public class AlojamientoRepository {
     public void eliminar(Alojamiento alojamiento) {
         alojamientos.remove(alojamiento);
     }
+    public void actualizar(Alojamiento alojamientoActualizado){
+        alojamientos.set(alojamientos.indexOf(alojamientoActualizado), alojamientoActualizado);
+    }
 
-    // También puedes agregar métodos para buscar por ID si lo necesitas
+    public Alojamiento buscarPorId(String id){
+        for(Alojamiento a: alojamientos){
+            if(a.getId().equals(id)){
+                return a;
+            }
+        }
+        return null;
+    }
+
 }

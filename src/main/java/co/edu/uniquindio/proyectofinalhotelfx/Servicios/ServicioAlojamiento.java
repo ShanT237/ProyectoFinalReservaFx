@@ -45,4 +45,13 @@ public class ServicioAlojamiento {
                 .filter(a -> a.getPrecioPorNoche() >= min && a.getPrecioPorNoche() <= max)
                 .collect(Collectors.toList());
     }
+
+    /*
+    Metodos eliminarActualizar
+     */
+    public void eliminarAlojamiento(String idAlojamiento){
+
+    }
+    public void actualizarAlojamiento(String idAlojamiento, Alojamiento nuevoAlojamiento){
+    }
 }

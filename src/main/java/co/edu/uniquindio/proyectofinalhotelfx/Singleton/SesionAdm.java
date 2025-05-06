@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Singleton;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
+import lombok.Getter;
 
 public class SesionAdm {
     private static SesionAdm INSTANCIA;
@@ -22,6 +23,9 @@ public class SesionAdm {
 
     public void cerrarSesion() {
         this.usuario = null;
+    }
+    public Administrador getUsuario() {
+        return usuario;
     }
 
 

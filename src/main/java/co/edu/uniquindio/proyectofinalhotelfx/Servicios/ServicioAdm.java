@@ -3,12 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.AdmRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
 import lombok.Builder;
 
@@ -20,36 +15,18 @@ public class ServicioAdm {
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioReserva servicioReserva;
     private final ServicioCliente servicioCliente;
-    private final AdmRepository admRepository;
+
 
     SesionAdm sesionAdm = SesionAdm.instancia();
 
-    public String loginAdm(String correo, String password){
-        List lista = admRepository.obtenerAdms();
-        admExiste(lista, correo, password);
-
-        return admExiste(lista, correo, password);
-    }
-
-    public String admExiste(List<Administrador> lista, String correo, String password) {
-        for (Administrador admin : lista) {
-            if (admin.getCorreo().equals(correo)) {
-                if (admin.getPassword().equals(password)) {
-                    crearSesion(admin);
-                    return "¡Bienvenido, administrador!";
-                } else {
-                    return "La contraseña es incorrecta.";
-                }
-            }
+    public boolean loginAdm(String correo, String password){
+        if(sesionAdm.getUsuario().getCorreo().equals(correo) && sesionAdm.getUsuario().getPassword().equals(password)){
+            return true;
         }
-
-        return "No existe un administrador con ese correo.";
+        return false;
     }
 
-    public void crearSesion(Administrador administrador){
-        sesionAdm.iniciarSesion(administrador);
-        System.out.println("Sesion Iniciada con " + administrador.getNombre());
-    }
+
 
     /*
     Metodos gestionar usuario
@@ -67,13 +44,14 @@ public class ServicioAdm {
     GestionarAlojamientos
      */
 
-    public void registrarAlojamiento(Alojamiento alojamiento){
-
+    public void registrarAlojamiento(){
     }
     public void actualizarAlojamiento(String idAlojamiento, Alojamiento nuevoAlojamiento){
 
+
     }
     public void eliminarAlojamiento(String idAlojamiento){
+
 
     }
 
