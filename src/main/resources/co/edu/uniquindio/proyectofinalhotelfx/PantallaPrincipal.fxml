@@ -20,14 +20,14 @@
     <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 15; -fx-background-color: #85c1e9;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <ImageView fitHeight="50" fitWidth="122.0">
          <image>
-            <Image url="@../../../../../../../../../../../../Downloads/expediav2-703354-2927a7-654387.png" />
+            <Image url="@../../../../../Downloadxpediav2-703354-2927a7-654387.png" />
          </image></ImageView>
         <Button fx:id="btnLogin" style="-fx-background-color: #d6eaf8;" text="Iniciar Sesión" />
         <Button fx:id="btnRegistro" style="-fx-background-color: #d6eaf8;" text="Registrarse" />
     </HBox>
 
     <!-- Contenedor principal -->
-    <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="80">
+    <VBox alignment="CENTER" opacity="0.78" spacing="20" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="80">
 
         <Label style="-fx-font-size: 18px; -fx-text-fill: #21618c;" text="¡Encuentra tu alojamiento perfecto!" />
 

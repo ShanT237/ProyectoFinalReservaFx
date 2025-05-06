@@ -106,6 +106,11 @@ public class ServicioAdm {
 
     public void agregarOfertaEspecial(String idAlojamiento, Oferta oferta){
 
+
+    }
+    public void agregarOfertaEspecialGlobal(Ciudad ciudad, Oferta oferta){
+
+
     }
     public void actualizarOfertaEspecial(String idAlojamiento, Oferta nuevaOferta){
 

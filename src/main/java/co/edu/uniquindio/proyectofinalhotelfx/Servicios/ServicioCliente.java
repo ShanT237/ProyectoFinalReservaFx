@@ -20,24 +20,14 @@ public class ServicioCliente {
 
 
 
-    // REGISTRAR UN NUEVO CLIENTE
-    public void registrarCliente(Cliente cliente) throws Exception {
-        if (clienteRepository.buscarPorCedula(cliente.getCedula()) != null) {
-            throw new Exception("Ya existe un cliente con esa cédula");
-        }
-        if (clienteRepository.buscarPorCorreo(cliente.getCorreo()) != null) {
-            throw new Exception("Ya existe un cliente con ese correo");
-        }
-        clienteRepository.guardar(cliente);
+    public void registrarCliente(String nombre, String id, String telefono, String  email, String password ) throws Exception {
+
     }
 
-    // INICIAR SESIÓN
+
     public Cliente iniciarSesion(String correo, String password) throws Exception {
-        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-        if (cliente == null || !cliente.getPassword().equals(password)) {
-            throw new Exception("Correo o contraseña incorrectos");
-        }
-        return cliente;
+
+        return  null;
     }
 
     // EDITAR CLIENTE
