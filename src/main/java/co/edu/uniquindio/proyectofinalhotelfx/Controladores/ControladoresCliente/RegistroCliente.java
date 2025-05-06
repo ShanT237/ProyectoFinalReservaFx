@@ -8,23 +8,36 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 public class RegistroCliente {
 
-    @FXML private TextField txtNombre, txtCorreo, txtTelefono, txtCedula;
-    @FXML private PasswordField txtPassword, txtConfirmarPassword;
-    @FXML private Button btnRegistrarse, btnVolver;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtCorreo;
+    @FXML private TextField txtTelefono;
+    @FXML private TextField txtCedula;
+    @FXML private PasswordField txtPassword;
+    @FXML private PasswordField txtConfirmarPassword;
+    @FXML private Button btnRegistrarse;
+    @FXML private Button btnVolver;
     @FXML private Label lblMensajeError;
 
     @FXML
-    private void initialize() {
-        btnRegistrarse.setOnAction(e -> registrarUsuario());
-        btnVolver.setOnAction(e -> volverPantallaPrincipal());
+    void initialize() {
+        // Configuración de eventos
+        btnRegistrarse.setOnAction(this::registrarUsuario);
+        btnVolver.setOnAction(this::irPantallaPrincipal);
+    }
+
+    private void irPantallaPrincipal(javafx.event.ActionEvent actionEvent) {
+    }
+
+    private void registrarUsuario(javafx.event.ActionEvent actionEvent) {
     }
 
     @FXML
-    private void registrarUsuario() {
+    private void registrarUsuario(ActionEvent event) {
         String nombre = txtNombre.getText().trim();
         String correo = txtCorreo.getText().trim();
         String telefono = txtTelefono.getText().trim();
@@ -57,7 +70,6 @@ public class RegistroCliente {
             return;
         }
 
-        System.out.println("Registro exitoso para: " + nombre);
         mostrarMensaje("¡Registro exitoso!");
         limpiarCampos();
     }
@@ -81,15 +93,32 @@ public class RegistroCliente {
         txtConfirmarPassword.clear();
     }
 
-    @FXML
-    private void volverPantallaPrincipal() {
+    public void irPantallaPrincipal(ActionEvent actionEvent) {
+        navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml", "BookYourStay - Inicio");
+    }
+
+    private void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Vistas/pantallaPrincipal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
             Parent root = loader.load();
-            Stage stage = (Stage) btnVolver.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(tituloVentana);
+            stage.setResizable(false);
+            stage.show();
+
+            cerrarVentana();
+
+        } catch (Exception e) {
+            mostrarError("Error al cargar la ventana: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void cerrarVentana() {
+        Stage stage = (Stage) btnVolver.getScene().getWindow();
+        stage.close();
     }
 }

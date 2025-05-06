@@ -15,27 +15,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import java.util.Objects;
 
 public class PantallaPrincipal {
 
-    @FXML
-    private ComboBox<Ciudad> cbCiudad;
-    @FXML
-    private ComboBox<TipoAlojamiento> cbTipoAlojamiento;
-    @FXML
-    private TextField txtPrecioMax;
-    @FXML
-    private Button btnBuscar;
-    @FXML
-    private FlowPane flowAlojamientos;
-    @FXML
-    private Button btnLogin;
-    @FXML
-    private Button btnRegistro;
+    @FXML private ComboBox<Ciudad> cbCiudad;
+    @FXML private ComboBox<TipoAlojamiento> cbTipoAlojamiento;
+    @FXML private TextField txtPrecioMax;
+    @FXML private Button btnBuscar;
+    @FXML private FlowPane flowAlojamientos;
+    @FXML private Button btnLogin;
+    @FXML private Button btnRegistro;
 
-    public void initialize() {
+    @FXML
+    void initialize() {
+        // Inicialización de comboboxes
         ObservableList<Ciudad> ciudades = FXCollections.observableArrayList(Ciudad.values());
         FXCollections.sort(ciudades, (c1, c2) -> c1.name().compareTo(c2.name()));
         cbCiudad.setItems(ciudades);
@@ -43,19 +37,11 @@ public class PantallaPrincipal {
         ObservableList<TipoAlojamiento> tipos = FXCollections.observableArrayList(TipoAlojamiento.values());
         cbTipoAlojamiento.setItems(tipos);
 
+        // Configuración de eventos
         btnBuscar.setOnAction(this::onBuscarClick);
-        btnLogin.setOnAction(this::onLoginClick);
-        btnRegistro.setOnAction(this::onRegistroClick);
+        btnLogin.setOnAction(this::irLogin);
+        btnRegistro.setOnAction(this::irRegistroCliente);
     }
-
-    private void onLoginClick(ActionEvent event) {
-        System.out.println("Iniciar sesión...");
-    }
-
-    private void onRegistroClick(ActionEvent event) {
-        cambiarEscena("/co/edu/uniquindio/proyectofinalhotelfx/RegistroCliente.fxml");
-    }
-
 
     private void onBuscarClick(ActionEvent event) {
         Ciudad ciudadSeleccionada = cbCiudad.getValue();
@@ -78,15 +64,44 @@ public class PantallaPrincipal {
         }
     }
 
-    private void cambiarEscena(String rutaFXML) {
+    public void irLogin(ActionEvent actionEvent) {
+        navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/Login.fxml", "BookYourStay - Iniciar Sesión");
+    }
+
+    public void irRegistroCliente(ActionEvent actionEvent) {
+        navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/RegistroCliente.fxml", "BookYourStay - Registro");
+    }
+
+    private void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
             Parent root = loader.load();
-            Stage stage = (Stage) btnRegistro.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.setTitle(tituloVentana);
+            stage.show();
+
+            cerrarVentana();
+
+        } catch (Exception e) {
+            crearAlerta("No se pudo cargar la ventana: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
-}
 
+    private void cerrarVentana() {
+        Stage stage = (Stage) btnRegistro.getScene().getWindow();
+        stage.close();
+    }
+
+    private void crearAlerta(String mensaje, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle("Alerta");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+}
