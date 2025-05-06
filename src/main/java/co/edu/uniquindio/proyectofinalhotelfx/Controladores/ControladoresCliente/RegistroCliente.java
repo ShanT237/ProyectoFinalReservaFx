@@ -1,6 +1,5 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,47 +8,42 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.application.Platform;
 
 public class RegistroCliente {
 
-    // Elementos inyectados desde el archivo FXML
-    @FXML private TextField txtNombre;
-    @FXML private TextField txtCorreo;
-    @FXML private TextField txtTelefono;
-    @FXML private TextField txtCedula;
-    @FXML private PasswordField txtPassword;
-    @FXML private PasswordField txtConfirmarPassword;
-    @FXML private Button btnRegistrarse;
-    @FXML private Button btnVolver;
-    @FXML private Label lblMensajeError;
+    @FXML
+    public  TextField txtNombre;
+    @FXML
+    public  TextField txtCorreo;
+    @FXML
+    public  TextField txtTelefono;
+    @FXML
+    public  TextField txtCedula;
+    @FXML
+    public  PasswordField txtPassword;
+    @FXML
+    public  PasswordField txtConfirmarPassword;
+    @FXML
+    public  Button btnRegistrarse;
+    @FXML
+    public  Button btnVolver;
+    @FXML
+    public  Label lblMensajeError;
 
     @FXML
     void initialize() {
-        assert txtNombre != null : "fx:id=\"txtNombre\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert btnVolver != null : "fx:id=\"btnVolver\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert lblMensajeError != null : "fx:id=\"lblMensajeError\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert txtCedula != null : "fx:id=\"txtCedula\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert txtCorreo != null : "fx:id=\"txtCorreo\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert txtConfirmarPassword != null : "fx:id=\"txtConfirmarPassword\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert btnRegistrarse != null : "fx:id=\"btnRegistrarse\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert txtTelefono != null : "fx:id=\"txtTelefono\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-        assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'RegistroCliente.fxml'.";
-
         // Configuración de eventos
         btnRegistrarse.setOnAction(this::registrarUsuario);
         btnVolver.setOnAction(this::irPantallaPrincipal);
     }
 
-    private void irPantallaPrincipal(ActionEvent actionEvent) {
-        Platform.runLater(() -> 
-            navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml", "BookYourStay - Inicio")
-        );
+    private void irPantallaPrincipal(javafx.event.ActionEvent actionEvent) {
+        // Regresar a la pantalla principal
+        navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml", "BookYourStay - Inicio");
     }
 
     @FXML
-    private void registrarUsuario(ActionEvent event) {
+    private void registrarUsuario(javafx.event.ActionEvent event) {
         try {
             // Obtener los valores de los campos
             String nombre = txtNombre.getText().trim();
@@ -60,13 +54,12 @@ public class RegistroCliente {
             String confirmarPassword = txtConfirmarPassword.getText();
 
             // Validar campos vacíos
-            if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || 
-                password.isEmpty() || confirmarPassword.isEmpty()) {
+            if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || password.isEmpty() || confirmarPassword.isEmpty()) {
                 mostrarError("Todos los campos son obligatorios");
                 return;
             }
 
-            // Validar formato de nombre
+            // Validar formato de nombre (solo letras y espacios)
             if (!nombre.matches("[a-zA-Z\\s]+")) {
                 mostrarError("El nombre solo debe contener letras y espacios");
                 return;
@@ -90,7 +83,7 @@ public class RegistroCliente {
                 return;
             }
 
-            // Validar contraseña
+            // Validar contraseña (mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número)
             if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
                 mostrarError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
                 return;
@@ -106,10 +99,15 @@ public class RegistroCliente {
             mostrarMensaje("¡Registro exitoso!");
             limpiarCampos();
 
-            // Usar PauseTransition para la navegación retardada
-            PauseTransition delay = new PauseTransition(Duration.seconds(2));
-            delay.setOnFinished(e -> irPantallaPrincipal(null));
-            delay.play();
+            // Opcional: navegar a la pantalla de inicio de sesión después de unos segundos
+            new Thread(() -> {
+                try {
+                    Thread.sleep(2000);
+                    irPantallaPrincipal(null);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
         } catch (Exception e) {
             mostrarError("Error en el registro: " + e.getMessage());
@@ -118,29 +116,24 @@ public class RegistroCliente {
     }
 
     private void mostrarError(String mensaje) {
-        Platform.runLater(() -> {
-            lblMensajeError.setTextFill(Color.RED);
-            lblMensajeError.setText(mensaje);
-        });
+        lblMensajeError.setTextFill(Color.RED);
+        lblMensajeError.setText(mensaje);
     }
 
     private void mostrarMensaje(String mensaje) {
-        Platform.runLater(() -> {
-            lblMensajeError.setTextFill(Color.GREEN);
-            lblMensajeError.setText(mensaje);
-        });
+        lblMensajeError.setTextFill(Color.GREEN);
+        lblMensajeError.setText(mensaje);
     }
 
     private void limpiarCampos() {
-        Platform.runLater(() -> {
-            txtNombre.clear();
-            txtCorreo.clear();
-            txtTelefono.clear();
-            txtCedula.clear();
-            txtPassword.clear();
-            txtConfirmarPassword.clear();
-            lblMensajeError.setText("");
-        });
+        // Limpiar los campos del formulario
+        txtNombre.clear();
+        txtCorreo.clear();
+        txtTelefono.clear();
+        txtCedula.clear();
+        txtPassword.clear();
+        txtConfirmarPassword.clear();
+        lblMensajeError.setText("");
     }
 
     private void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
@@ -148,22 +141,15 @@ public class RegistroCliente {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
             Parent root = loader.load();
 
-            Platform.runLater(() -> {
-                try {
-                    Scene scene = new Scene(root);
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setTitle(tituloVentana);
-                    stage.setResizable(false);
-                    stage.show();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(tituloVentana);
+            stage.setResizable(false);
+            stage.show();
 
-                    // Cerrar la ventana actual
-                    cerrarVentana();
-                } catch (Exception e) {
-                    mostrarError("Error al mostrar la ventana: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            });
+            // Cerrar ventana actual
+            cerrarVentana();
 
         } catch (Exception e) {
             mostrarError("Error al cargar la ventana: " + e.getMessage());
@@ -172,6 +158,7 @@ public class RegistroCliente {
     }
 
     private void cerrarVentana() {
+        // Cerrar la ventana actual
         Stage stage = (Stage) btnVolver.getScene().getWindow();
         stage.close();
     }
