@@ -29,8 +29,8 @@ public abstract class Alojamiento {
     private boolean admiteMascotas;
     private TipoAlojamiento tipoAlojamiento;
 
-    public Alojamiento(Boolean estadoActivo, boolean admiteMascotas, int numeroHabitaciones, int capacidadPersonas, List<ServiciosIncluidos> serviciosIncluidos, Image imagen, int capacidadMaxima, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
-        this.estadoActivo = estadoActivo;
+    public Alojamiento(boolean admiteMascotas, int numeroHabitaciones, int capacidadPersonas, List<ServiciosIncluidos> serviciosIncluidos, Image imagen, int capacidadMaxima, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
+        this.estadoActivo = true;
         this.admiteMascotas = admiteMascotas;
         this.numeroHabitaciones = numeroHabitaciones;
         this.capacidadPersonas = capacidadPersonas;
