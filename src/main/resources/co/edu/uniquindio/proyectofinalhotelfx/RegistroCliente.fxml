@@ -18,7 +18,7 @@
 
         <!-- Logo -->
         <ImageView fitHeight="100" fitWidth="200" preserveRatio="true">
-            <Image url="@../../../../../../../../../../../../Downloads/expediav2-703354-2927a7-654387.png" />
+            <Image url="@../../../../Imagenes/expediav2-703354-2927a7-654387.png" />
         </ImageView>
 
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Registrarse" />
