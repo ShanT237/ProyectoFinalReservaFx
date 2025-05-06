@@ -1,4 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Factory.OfertaFactory;
 
-public class OfertaFactory {
+public abstract class OfertaFactory {
+
+    public abstract void crearOferta();
 }
