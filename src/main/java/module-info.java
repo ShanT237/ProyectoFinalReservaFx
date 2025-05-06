@@ -3,6 +3,8 @@ module co.edu.uniquindio.proyectofinalhotelfx {
     requires javafx.fxml;
     requires static lombok;
     requires java.desktop;
+    requires org.simplejavamail.core;
+    requires org.simplejavamail;
 
     // Abre paquetes a javafx.fxml
     opens co.edu.uniquindio.proyectofinalhotelfx.Controladores to javafx.fxml;
