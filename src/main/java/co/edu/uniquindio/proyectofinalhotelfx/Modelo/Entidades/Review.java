@@ -18,7 +18,7 @@ public class Review {
     private UUID codigo;
     private Cliente cliete;
     private String comentario;
-    private double puntaje;
+    private int valoracion;
     private Alojamiento alojamiento;
     private LocalDateTime fecha;
 

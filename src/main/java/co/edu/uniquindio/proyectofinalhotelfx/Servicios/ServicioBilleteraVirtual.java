@@ -9,7 +9,7 @@ import java.util.Map;
 @Getter
 @Builder
 public class ServicioBilleteraVirtual {
-    private BilleteraVirtualRepository billeteraVirtualRepository;
+    private ServicioCliente servicioCliente;
 
     private final Map<String, Double> saldos = new HashMap<>();
 

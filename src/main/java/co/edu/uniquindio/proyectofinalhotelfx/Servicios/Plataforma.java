@@ -12,8 +12,6 @@ public class Plataforma {
     private AlojamientoRepository alojamientoRepository;
     private ClienteRepository clienteRepository;
     private ReservaRepository reservaRepository;
-    private AdmRepository admRepository;
-    private BilleteraVirtualRepository billeteraVirtualRepository;
 
     public Plataforma() {
 
@@ -23,15 +21,20 @@ public class Plataforma {
         this.alojamientoRepository = new AlojamientoRepository() ;
         this.clienteRepository = new ClienteRepository();
         this.reservaRepository = new ReservaRepository();
-        this.admRepository = new AdmRepository();
-        this.billeteraVirtualRepository = new BilleteraVirtualRepository();
 
         /*
         Intancias de Servicios
          */
-        this.servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
-                .billeteraVirtualRepository(billeteraVirtualRepository)
+
+
+        this.servicioCliente = ServicioCliente.builder()
+                .clienteRepository(clienteRepository)
+                .servicioAlojamiento(serviciosAlojamiento)
                 .build();
+
+        this.servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
+                .servicioCliente(servicioCliente).build();
+
         this.serviciosAlojamiento = ServicioAlojamiento.builder()
                 .alojamientoRepository(alojamientoRepository)
                 .build();
@@ -40,16 +43,10 @@ public class Plataforma {
                 .build();
 
 
-        this.servicioCliente = ServicioCliente.builder()
-                .clienteRepository(clienteRepository)
-                .servicioAlojamiento(serviciosAlojamiento)
-                .build();
-
         this.servicioAdm = ServicioAdm.builder()
                 .servicioAlojamiento(serviciosAlojamiento)
                 .servicioReserva(servicioReserva)
                 .servicioCliente(servicioCliente)
-                .admRepository(admRepository)
                 .build();
 
 

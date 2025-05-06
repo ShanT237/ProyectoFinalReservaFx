@@ -4,14 +4,15 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ReservaRepository {
 
     private final List<Reserva> reservas = new ArrayList<>();
 
-    public Reserva buscarPorId(String id) {
+    public Reserva buscarPorId(UUID id) {
         for (Reserva r : reservas) {
-            if (r.getId().equals(id)) {
+            if (r.getCodigo().equals(id)) {
                 return r;
             }
         }
@@ -24,7 +25,7 @@ public class ReservaRepository {
 
     public void actualizar(Reserva reserva) {
         for (int i = 0; i < reservas.size(); i++) {
-            if (reservas.get(i).getId().equals(reserva.getId())) {
+            if (reservas.get(i).getCodigo().equals(reserva.getCodigo())) {
                 reservas.set(i, reserva);
                 return;
             }
