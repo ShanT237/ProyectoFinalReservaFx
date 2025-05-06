@@ -7,7 +7,6 @@ public class Plataforma {
     private ServicioCliente servicioCliente;
     private ServicioReserva servicioReserva;
     private ServicioAlojamiento serviciosAlojamiento;
-    private ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     private AlojamientoRepository alojamientoRepository;
     private ClienteRepository clienteRepository;
@@ -32,7 +31,7 @@ public class Plataforma {
                 .servicioAlojamiento(serviciosAlojamiento)
                 .build();
 
-        this.servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
+        ServicioBilleteraVirtual servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
                 .servicioCliente(servicioCliente).build();
 
         this.serviciosAlojamiento = ServicioAlojamiento.builder()

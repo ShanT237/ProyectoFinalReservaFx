@@ -13,9 +13,7 @@ public class HomeCliente{
 
     @FXML
     public void initialize() {
-        // Configuración inicial
-        lblNombreUsuario.setText(SesionManager.getUsuarioActual().getNombre());
-        lblSaldo.setText("Saldo: $" + SesionManager.getClienteActual().getBilletera());
+        // Configuración
     }
 
     @FXML
@@ -40,8 +38,7 @@ public class HomeCliente{
 
     @FXML
     private void cerrarSesion() {
-        SesionManager.cerrarSesion();
-        // Redirigir a login
+
     }
 
     private void cargarContenido(String fxmlPath) {

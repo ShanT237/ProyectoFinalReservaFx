@@ -1,6 +1,8 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,18 +25,18 @@ public class ServicioAlojamiento {
     }
 
     // Buscar por ciudad
-    public List<Alojamiento> buscarPorCiudad(String ciudad) {
+    public List<Alojamiento> buscarPorCiudad(Ciudad ciudad) {
         return alojamientoRepository.obtenerTodos()
                 .stream()
-                .filter(a -> a.getCiudad().equalsIgnoreCase(ciudad))
+                .filter(a -> a.getCiudad() == ciudad)
                 .collect(Collectors.toList());
     }
 
     // Buscar por tipo (ej: casa, hotel, apartamento)
-    public List<Alojamiento> buscarPorTipo(String tipo) {
+    public List<Alojamiento> buscarPorTipo(TipoAlojamiento tipo) {
         return alojamientoRepository.obtenerTodos()
                 .stream()
-                .filter(a -> a.getTipoAlojamiento().equalsIgnoreCase(tipo))
+                .filter(a -> a.getTipoAlojamiento().equals(tipo))
                 .collect(Collectors.toList());
     }
 
@@ -42,7 +44,7 @@ public class ServicioAlojamiento {
     public List<Alojamiento> buscarPorRangoPrecio(double min, double max) {
         return alojamientoRepository.obtenerTodos()
                 .stream()
-                .filter(a -> a.getPrecioPorNoche() >= min && a.getPrecioPorNoche() <= max)
+                .filter(a -> a.getPrecioPorNocheBase() >= min && a.getPrecioPorNocheBase() <= max)
                 .collect(Collectors.toList());
     }
 
