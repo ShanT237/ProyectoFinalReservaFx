@@ -19,22 +19,18 @@ public class RegistroCliente {
     @FXML private TextField txtCedula;
     @FXML private PasswordField txtPassword;
     @FXML private PasswordField txtConfirmarPassword;
-    @FXML private Button btnRegistrarse;
     @FXML private Button btnVolver;
     @FXML private Label lblMensajeError;
 
     @FXML
     void initialize() {
         // Configuración de eventos
-        btnRegistrarse.setOnAction(this::registrarUsuario);
         btnVolver.setOnAction(this::irPantallaPrincipal);
     }
 
     private void irPantallaPrincipal(javafx.event.ActionEvent actionEvent) {
     }
 
-    private void registrarUsuario(javafx.event.ActionEvent actionEvent) {
-    }
 
     @FXML
     private void registrarUsuario(ActionEvent event) {
@@ -120,5 +116,11 @@ public class RegistroCliente {
     private void cerrarVentana() {
         Stage stage = (Stage) btnVolver.getScene().getWindow();
         stage.close();
+    }
+
+    public void volverPantallaPrincipal(javafx.event.ActionEvent actionEvent) {
+    }
+
+    public void registrarUsuario(javafx.event.ActionEvent actionEvent) {
     }
 }

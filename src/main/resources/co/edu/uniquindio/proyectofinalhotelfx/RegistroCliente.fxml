@@ -54,7 +54,7 @@
         </GridPane>
 
         <!-- Botón de acción -->
-        <Button fx:id="btnRegistrarse" onAction="#registrarUsuario" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 150; -fx-pref-height: 30;" text="Registrarse" />
+        <Button onAction="#registrarUsuario" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 150; -fx-pref-height: 30;" text="Registrarse" />
 
         <!-- Mensaje de error -->
         <Label fx:id="lblMensajeError" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />

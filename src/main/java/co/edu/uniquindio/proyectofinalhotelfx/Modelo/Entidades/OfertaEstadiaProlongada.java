@@ -1,6 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades;
 
-public class OfertaEstadiaProlongada implements Oferta {
+public class OfertaEstadiaProlongada extends Oferta {
     @Override
     public boolean esValida() {
         return false;
