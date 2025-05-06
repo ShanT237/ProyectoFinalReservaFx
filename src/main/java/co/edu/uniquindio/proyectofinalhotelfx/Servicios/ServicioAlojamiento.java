@@ -2,12 +2,15 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
+import javafx.scene.image.Image;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 @Getter
 @Builder
@@ -15,7 +18,34 @@ public class ServicioAlojamiento {
 
     private final AlojamientoRepository alojamientoRepository;
 
+    /*/
+    Metodos Principales
+     */
 
+    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+        String id = generarIdAlojamiento();
+
+        Alojamiento alojamiento = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
+        alojamientoRepository.guardar(alojamiento);
+    }
+
+    public Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id){
+
+
+    }
+
+    private String generarIdAlojamiento() {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder id = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 8; i++) {
+            int index = random.nextInt(caracteres.length());
+            id.append(caracteres.charAt(index));
+        }
+
+        return id.toString();
+    }
     // Buscar por nombre (ignora mayúsculas/minúsculas)
     public List<Alojamiento> buscarPorNombre(String nombre) {
         return alojamientoRepository.obtenerTodos()

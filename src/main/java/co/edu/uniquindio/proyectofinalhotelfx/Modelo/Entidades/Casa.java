@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 
 public class Casa extends Alojamiento{
-    public Casa(Boolean estadoActivo, boolean admiteMascotas, int numeroHabitaciones, int capacidadPersonas, List<ServiciosIncluidos> serviciosIncluidos, Image imagen, int capacidadMaxima, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
-        super(estadoActivo, admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, capacidadMaxima, precioPorNoche, id, descripcion, ciudad, nombre, tipoAlojamiento);
+    public Casa(boolean admiteMascotas, int numeroHabitaciones, int capacidadPersonas, List<ServiciosIncluidos> serviciosIncluidos, Image imagen, int capacidadMaxima, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
+        super(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, capacidadMaxima, precioPorNoche, id, descripcion, ciudad, nombre, tipoAlojamiento);
     }
 }
