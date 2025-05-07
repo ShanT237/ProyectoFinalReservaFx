@@ -7,11 +7,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="your.package.VerificarCodigoController">
+<VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion">
    <children>
       <ImageView fitHeight="100" fitWidth="200" preserveRatio="true">
          <image>
-            <Image url="@../../../../Imagenes/expediav2-703354-2927a7-654387.png" />
+            <Image url="@Imagenes/expediav2-703354-2927a7-654387.png" />
          </image>
       </ImageView>
       <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);" text="Validar codigo" />
