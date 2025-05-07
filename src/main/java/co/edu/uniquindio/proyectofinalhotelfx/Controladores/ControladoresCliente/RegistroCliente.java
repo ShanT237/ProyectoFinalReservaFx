@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,6 +55,7 @@ public class RegistroCliente {
             String confirmarPassword = txtConfirmarPassword.getText();
 
             //llamar el método de registro del servicio
+            ControladorPrincipal controladorPrincipal= ControladorPrincipal.getInstancia().getPlataforma().registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
 
             // Si todo es válido, mostrar mensaje de éxito y limpiar campos
             mostrarMensaje("¡Registro exitoso!");
