@@ -80,7 +80,8 @@ public class ServicioCliente {
         }
 
         if (!telefono.matches("\\d{8,10}")) {
-            throw new Exception("El número de teléfono debe tener entre 8 y 10 dígitos");
+            throw new Exception("El número de teléfono debe tener entre 8" +
+                    " y 10 dígitos");
         }
 
         if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
@@ -88,7 +89,8 @@ public class ServicioCliente {
         }
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
-            throw new Exception("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+            throw new Exception("La contraseña debe tener al menos 8 caracteres," +
+                    " una mayúscula, una minúscula y un número");
         }
 
         if (!password.equals(confirmarPassword)) {
