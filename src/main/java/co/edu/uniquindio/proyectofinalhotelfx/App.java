@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -17,18 +18,20 @@ import java.util.List;
 
 public class App extends Application {
 
-    public void iniciarDatos() {
+    public void iniciarDatos() throws Exception {
         ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
         Image imagen = new Image(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Imagenes/expediav2-703354-2927a7-654387.png").toExternalForm());
         Administrador adm = Administrador.builder()
                 .nombre("Santiago")
                 .cedula("12323")
                 .telefono("3216549870")
-                .correo("santiago.rodirguez.com")
+                .correo("santiago.rodriguezt@uqvirtual.edu.co")
                 .password("1234password")
                 .build();
         SesionAdm sesionAdm = SesionAdm.instancia();
         sesionAdm.iniciarSesion(adm);
+
+        controladorPrincipal.getPlataforma().registrarCliente("Juan", "1234567890", "3216549870", "yesuaesteban@gmail.com", "1234Password23", "1234Password23" );
 
 
         // Casa 1
@@ -92,7 +95,7 @@ public class App extends Application {
 
     }
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
         iniciarDatos();
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("PantallaPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
