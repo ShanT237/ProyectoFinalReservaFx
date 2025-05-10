@@ -107,7 +107,11 @@ import java.util.Objects;
             String precioMaxText = txtPrecioMax.getText();
             double precioMax = Double.MAX_VALUE;
 
-            if(verificarDatos(ciudadSeleccionada, tipoSeleccionado, precioMaxText, precioMax)) {
+            if (verificarDatos(precioMaxText)) {
+                if (!precioMaxText.isEmpty()) {
+                    precioMax = Double.parseDouble(precioMaxText);
+                }
+
                 limpiarResultados();
                 mostrarAlojamientos(ciudadSeleccionada, tipoSeleccionado, precioMax);
             }
@@ -237,20 +241,21 @@ import java.util.Objects;
          * Verifica que los datos de búsqueda sean válidos.
          * @return true si los datos son válidos, false en caso contrario
          */
-        public boolean verificarDatos(Ciudad ciudad, TipoAlojamiento tipo, String precioTexto, double precioMax) {
-            if (ciudad == null || tipo == null) {
-                mostrarAdvertencia("Seleccione ciudad y tipo de alojamiento");
-                return false;
-            }
-
+        public boolean verificarDatos(String precioTexto) {
             if (!precioTexto.isEmpty()) {
                 try {
-                    precioMax = Double.parseDouble(precioTexto);
+                    Double.parseDouble(precioTexto);
                 } catch (NumberFormatException e) {
                     mostrarAdvertencia("Precio máximo debe ser numérico");
                     return false;
                 }
             }
+
+            if (cbCiudad.getValue() == null && cbTipoAlojamiento.getValue() == null && precioTexto.isEmpty()) {
+                mostrarAdvertencia("Debe seleccionar al menos un criterio de búsqueda.");
+                return false;
+            }
+
             return true;
         }
 
