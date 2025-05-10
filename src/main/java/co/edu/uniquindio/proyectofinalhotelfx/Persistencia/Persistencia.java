@@ -2,6 +2,8 @@ package co.edu.uniquindio.proyectofinalhotelfx.Persistencia;
 
 import java.io.*;
 
+import java.io.*;
+
 public class Persistencia {
 
     public static void serializarObjeto(String ruta, Object objeto) throws IOException {
