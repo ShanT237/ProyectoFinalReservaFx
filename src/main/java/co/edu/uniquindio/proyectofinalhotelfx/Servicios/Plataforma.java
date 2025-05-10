@@ -70,6 +70,11 @@ public class Plataforma implements IPlataforma {
 
     }
 
+    public void loginCliente(String correo, String contrasena){
+        servicioAdm.loginAdm(correo,contrasena);
+
+    }
+
     @Override
     public void bloquearCliente(String idUsuario) throws Exception {
         servicioAdm.bloquearCuentaCliente(idUsuario);

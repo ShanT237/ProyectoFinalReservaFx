@@ -49,18 +49,47 @@ public class Login {
             String correo = txtCorreo.getText().trim();
             String password = txtPassword.getText().trim();
 
-            controladorPrincipal.getPlataforma().loginAdm( correo, password );
-            mostrarMensaje("¡Inicio de sesión exitoso!");
+            // Validar si el usuario es un administrador o cliente
+            if (esAdministrador(correo, password)) {
+                controladorPrincipal.getPlataforma().loginAdm(correo, password);
+                mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
+                redirigirAAdmin();
+            } else if (esCliente(correo, password)) {
+                controladorPrincipal.getPlataforma().loginCliente(correo, password);
+                mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
+                redirigirAHome();
+            } else {
+                mostrarError("Credenciales inválidas.");
+            }
+
             limpiarCampos();
-            redirigirAHome();
 
         } catch (Exception e) {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
         }
     }
 
+
+    private boolean esAdministrador(String correo, String password) {
+        // Lógica para validar si el usuario es administrador (puede ser con consulta a base de datos)
+        return correo.equals("admin@example.com") && password.equals("admin123");
+    }
+
+    private boolean esCliente(String correo, String password) {
+        // Lógica para validar si el usuario es cliente (puede ser con consulta a base de datos)
+        return correo.equals("cliente@example.com") && password.equals("cliente123");
+    }
     private void redirigirAHome() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("//co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) txtCorreo.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void redirigirAAdmin() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("//co/edu/uniquindio/proyectofinalhotelfx/HomeAdmi.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
