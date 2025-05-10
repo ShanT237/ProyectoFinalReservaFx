@@ -1,14 +1,21 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,8 +42,9 @@ public class Login {
     private PasswordField txtPassword;
 
     @FXML
-    void iniciarSesion(javafx.event.ActionEvent event) {
+    Cliente iniciarSesion(ActionEvent event) {
         iniciarSesionCliente(event);
+        return null;
     }
 
     @FXML
@@ -63,12 +71,39 @@ public class Login {
                 mostrarError("El correo debe ser un correo Gmail válido");
                 return;
             }
+            Cliente cliente = iniciarSesion(correo ,password);
+
+            if (cliente == null) {
+                mostrarMensaje("");
+
+                limpiarCampos();
+
+
+                SesionCliente.instancia().setUsuario(cliente);
+
+                redirigirAHome();
+            }else {
+                mostrarMensaje("Usuario no registrado");
+            }
 
             mostrarMensaje("¡Inicio de sesión exitoso!");
             limpiarCampos();
         } catch (Exception e) {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
         }
+    }
+
+
+    private void redirigirAHome() throws IOException {
+        // Cargar la vista de la página principal
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("//co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml"));
+        Parent root = loader.load();
+
+        // Obtener la escena actual y cambiar a la nueva vista
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) txtCorreo.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void mostrarError(String mensaje) {
@@ -85,5 +120,9 @@ public class Login {
         txtCorreo.clear();
         txtPassword.clear();
         lblMensajeError.setText("");
+    }
+
+    public void irARegistro(ActionEvent actionEvent) {
+
     }
 }

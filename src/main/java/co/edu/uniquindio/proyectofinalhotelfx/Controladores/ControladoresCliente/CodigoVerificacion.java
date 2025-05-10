@@ -72,19 +72,26 @@ public class CodigoVerificacion {
         }
     }
 
-    private void irPantallaPrincipal(ActionEvent event) {
+    public void irPantallaPrincipal(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("//co/edu/uniquindio/proyectofinalhotelfx/Login.fxml")); // Cambia esta ruta
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml"));
             Parent root = loader.load();
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Pantalla Principal");
             stage.show();
+
+            // Cerrar la ventana actual
+            Stage ventanaActual = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            ventanaActual.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     public void setCorreo(String correo) {
         this.correoUsuario = correo;

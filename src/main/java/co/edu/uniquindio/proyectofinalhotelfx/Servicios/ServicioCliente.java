@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.EnvioCorreo;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -91,8 +92,20 @@ public class ServicioCliente {
     }
 
     public Cliente iniciarSesion(String correo, String password) throws Exception {
+        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
 
-        return  null;
+        // Verificar si el cliente existe y si la contraseña es correcta
+        if (cliente == null) {
+            throw new Exception("Correo no registrado");
+        }
+
+        if (!cliente.getPassword().equals(password)) {
+            throw new Exception("Contraseña incorrecta");
+        }
+
+        // Si todo es correcto, guardar el cliente en la sesión
+        SesionCliente.instancia().setUsuario(cliente);
+        return cliente;
     }
 
     // EDITAR CLIENTE

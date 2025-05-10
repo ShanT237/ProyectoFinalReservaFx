@@ -114,4 +114,6 @@ public class Plataforma implements IPlataforma {
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
         return servicioCliente.validarCodigoVerificacion(correo, codigoIngresado);
     }
+
+
 }
