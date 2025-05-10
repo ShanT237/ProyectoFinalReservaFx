@@ -21,6 +21,10 @@ public class ServicioCliente {
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
 
+    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
+        this.clienteRepository = clienteRepository;
+        this.servicioAlojamiento = servicioAlojamiento;
+    }
 
 
     public void registrarCliente(String nombre, String cedula, String telefono, String  correo, String password, String confirmarPassword ) throws Exception {
@@ -92,9 +96,9 @@ public class ServicioCliente {
     }
 
     public Cliente iniciarSesion(String correo, String password) throws Exception {
+        verificarDatosSesion(correo, password);
         Cliente cliente = clienteRepository.buscarPorCorreo(correo);
 
-        // Verificar si el cliente existe y si la contraseña es correcta
         if (cliente == null) {
             throw new Exception("Correo no registrado");
         }
@@ -103,10 +107,21 @@ public class ServicioCliente {
             throw new Exception("Contraseña incorrecta");
         }
 
-        // Si todo es correcto, guardar el cliente en la sesión
         SesionCliente.instancia().setUsuario(cliente);
         return cliente;
     }
+
+    public void verificarDatosSesion(String correo, String password) throws Exception {
+        if (correo.isEmpty() || password.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios");
+        }
+
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            throw new Exception("El correo debe ser un correo Gmail válido");
+        }
+
+    }
+
 
     // EDITAR CLIENTE
     public void editarCliente(Cliente clienteActualizado) throws Exception {
