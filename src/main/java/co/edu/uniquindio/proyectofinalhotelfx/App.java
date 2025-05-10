@@ -1,9 +1,11 @@
 package co.edu.uniquindio.proyectofinalhotelfx;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +20,15 @@ public class App extends Application {
     public void iniciarDatos() {
         ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
         Image imagen = new Image(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Imagenes/expediav2-703354-2927a7-654387.png").toExternalForm());
+        Administrador adm = Administrador.builder()
+                .nombre("Santiago")
+                .cedula("12323")
+                .telefono("3216549870")
+                .correo("santiago.rodirguez.com")
+                .password("1234password")
+                .build();
+        SesionAdm sesionAdm = SesionAdm.instancia();
+        sesionAdm.iniciarSesion(adm);
 
 
         // Casa 1
