@@ -2,10 +2,15 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class InformacionImagenCliente {
 
@@ -43,8 +48,33 @@ public class InformacionImagenCliente {
     }
 
     private void agendarAlojamiento() {
-        // Lógica para agendar el alojamiento
-        System.out.println("Alojamiento agendado: " + alojamiento.getNombre());
-        // Aquí puedes implementar la lógica para guardar la reserva
+        // 1. Mostrar mensaje de confirmación
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Acción requerida");
+        alert.setHeaderText(null);
+        alert.setContentText("Por favor inicia sesión para agendar este alojamiento");
+
+        // 2. Esperar a que el usuario cierre el mensaje
+        alert.showAndWait();
+
+        // 3. Redirigir al login después de cerrar el mensaje
+        try {
+            // Cerrar la ventana actual de detalles
+            Stage stageActual = (Stage) btnAgendar.getScene().getWindow();
+            stageActual.close();
+
+            // Abrir la ventana de Login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Login.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Iniciar Sesión");
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error al abrir la ventana de Login: " + e.getMessage());
+        }
     }
 }

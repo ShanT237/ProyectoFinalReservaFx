@@ -5,30 +5,61 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<AnchorPane prefHeight="600.0" prefWidth="900.0"
+            style="-fx-background-color: #fffaf0;"
+            xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente"
-            prefHeight="500.0" prefWidth="700.0"
-            style="-fx-background-color: #eaf2f8; -fx-padding: 20;">
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente">
 
-    <VBox fx:id="contenedorPrincipal" spacing="20" AnchorPane.topAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20">
-        <HBox spacing="20" alignment="CENTER_LEFT">
-            <ImageView fx:id="imagenAlojamiento" fitWidth="300" fitHeight="200" preserveRatio="true">
+    <!-- Contenedor principal (mismo estilo que PantallaPrincipal pero sin barra superior) -->
+    <VBox spacing="25" alignment="TOP_CENTER"
+          style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;"
+          AnchorPane.topAnchor="30" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.bottomAnchor="30">
+
+        <!-- Título -->
+        <Label text="Detalles del alojamiento"
+               style="-fx-font-size: 20px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;"/>
+
+        <!-- Contenido: Imagen + Detalles -->
+        <HBox spacing="30" alignment="TOP_LEFT">
+            <!-- Imagen grande -->
+            <ImageView fx:id="imagenAlojamiento"
+                       fitWidth="400" fitHeight="250"
+                       preserveRatio="true"
+                       style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);">
                 <image>
-                    <Image url="@Imagenes/expediav2-703354-2927a7-654387.png" />
+                    <Image url="@Imagenes/expediav2-703354-2927a7-654387.png"/>
                 </image>
             </ImageView>
 
-            <VBox spacing="10">
-                <Label fx:id="lblNombre" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-                <Label fx:id="lblCiudad" style="-fx-font-size: 16px;"/>
-                <Label fx:id="lblTipo" style="-fx-font-size: 16px;"/>
-                <Label fx:id="lblPrecio" style="-fx-font-size: 16px;"/>
+            <!-- Detalles del alojamiento -->
+            <VBox spacing="15" prefWidth="350">
+                <Label fx:id="lblNombre"
+                       style="-fx-font-size: 24px; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+
+                <VBox spacing="5">
+                    <Label fx:id="lblCiudad"
+                           style="-fx-font-size: 16px; -fx-text-fill: #4a7c91;"/>
+                    <Label fx:id="lblTipo"
+                           style="-fx-font-size: 16px; -fx-text-fill: #4a7c91;"/>
+                    <Label fx:id="lblPrecio"
+                           style="-fx-font-size: 16px; -fx-text-fill: #4a7c91;"/>
+                </VBox>
+
+                <!-- Descripción -->
+                <VBox spacing="5">
+                    <Label text="Descripción:"
+                           style="-fx-font-size: 14px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblDescripcion"
+                           wrapText="true"
+                           style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;"/>
+                </VBox>
             </VBox>
         </HBox>
 
-        <Label fx:id="lblDescripcion" wrapText="true" style="-fx-font-size: 14px;"/>
-
-        <Button fx:id="btnAgendar" text="Agendar Alojamiento" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 200; -fx-pref-height: 40;"/>
+        <!-- Botón de agendar -->
+        <Button fx:id="btnAgendar"
+                text="Agendar Alojamiento"
+                style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 5; -fx-padding: 10 20;"/>
     </VBox>
 </AnchorPane>
