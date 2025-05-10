@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 @Setter
 @Builder
 @AllArgsConstructor
-public class BilleteraVirtual {
+public class BilleteraVirtual implements Serializable {
     private String numero;
     private float saldo;
     private ArrayList<Transaccion> transacciones;

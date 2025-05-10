@@ -5,6 +5,8 @@ module co.edu.uniquindio.proyectofinalhotelfx {
     requires java.desktop;
     requires org.simplejavamail.core;
     requires org.simplejavamail;
+    requires jakarta.xml.bind;
+    requires java.xml;
 
     // Abre paquetes a javafx.fxml
     opens co.edu.uniquindio.proyectofinalhotelfx.Controladores to javafx.fxml;

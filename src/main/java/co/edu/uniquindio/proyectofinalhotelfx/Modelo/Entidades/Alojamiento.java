@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-public abstract class Alojamiento {
+public abstract class Alojamiento implements Serializable {
 
     private String nombre;
     private Ciudad ciudad;

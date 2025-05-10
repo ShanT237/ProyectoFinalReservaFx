@@ -1,6 +1,8 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums;
 
-public enum TipoTransaccion {
+import java.io.Serializable;
+
+public enum TipoTransaccion implements Serializable {
     RETIRO, DEPOSITO
 
 }
