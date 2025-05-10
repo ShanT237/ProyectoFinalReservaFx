@@ -21,6 +21,10 @@ public class ServicioCliente {
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
 
+    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
+        this.clienteRepository = clienteRepository;
+        this.servicioAlojamiento = servicioAlojamiento;
+    }
 
 
     public void registrarCliente(String nombre, String cedula, String telefono, String  correo, String password, String confirmarPassword ) throws Exception {

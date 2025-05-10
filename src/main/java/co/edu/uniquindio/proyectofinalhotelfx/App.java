@@ -83,7 +83,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         iniciarDatos();
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("PantallaPrincipal.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("HomeAdmin.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Hello!");
         stage.setScene(scene);

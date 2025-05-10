@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -52,5 +53,9 @@ public class HomeAdmin{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void cargarGestionUsuarios(ActionEvent actionEvent) {
+
     }
 }
