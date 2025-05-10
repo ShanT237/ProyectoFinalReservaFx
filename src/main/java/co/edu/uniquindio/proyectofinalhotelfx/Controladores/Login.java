@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioCliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +35,7 @@ public class Login {
 
     ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
     SesionCliente sesionCliente = SesionCliente.instancia();
+    SesionAdm sesionAdm = SesionAdm.instancia();
 
     @FXML
     void initialize() {
@@ -66,7 +68,7 @@ public class Login {
     }
 
     private void redirigirAHome() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("//co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();

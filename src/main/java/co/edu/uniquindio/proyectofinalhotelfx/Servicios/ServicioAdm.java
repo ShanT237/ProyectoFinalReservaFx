@@ -20,9 +20,8 @@ public class ServicioAdm {
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioReserva servicioReserva;
     private final ServicioCliente servicioCliente;
+    public final SesionAdm sesionAdm = SesionAdm.instancia();
 
-
-    SesionAdm sesionAdm = SesionAdm.instancia();
 
     public boolean loginAdm(String correo, String password){
         if(sesionAdm.getUsuario().getCorreo().equals(correo) && sesionAdm.getUsuario().getPassword().equals(password)){

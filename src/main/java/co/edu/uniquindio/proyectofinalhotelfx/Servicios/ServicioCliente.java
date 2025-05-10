@@ -16,6 +16,7 @@ public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
+    public final SesionCliente sesionCliente = SesionCliente.instancia();
 
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
@@ -107,7 +108,7 @@ public class ServicioCliente {
             throw new Exception("Contraseña incorrecta");
         }
 
-        SesionCliente.instancia().setUsuario(cliente);
+        sesionCliente.setUsuario(cliente);
         return true;
     }
 

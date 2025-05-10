@@ -66,9 +66,8 @@ public class Plataforma implements IPlataforma {
 
 
     public boolean loginAdm(String correo, String contrasena){
-
-
         return servicioAdm.loginAdm(correo,contrasena);
+
     }
 
 

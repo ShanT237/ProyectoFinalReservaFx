@@ -31,6 +31,7 @@ public class App extends Application {
         SesionAdm sesionAdm = SesionAdm.instancia();
         sesionAdm.iniciarSesion(adm);
 
+
         controladorPrincipal.getPlataforma().registrarCliente("Juan", "1234567890", "3216549870", "yesuaesteban@gmail.com", "1234Password23", "1234Password23" );
 
 
