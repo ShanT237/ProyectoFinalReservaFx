@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -85,5 +86,8 @@ public class Login {
         txtCorreo.clear();
         txtPassword.clear();
         lblMensajeError.setText("");
+    }
+
+    public void irARegistro(ActionEvent actionEvent) {
     }
 }
