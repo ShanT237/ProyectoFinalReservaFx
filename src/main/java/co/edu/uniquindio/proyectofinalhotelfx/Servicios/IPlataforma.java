@@ -22,8 +22,10 @@ public interface IPlataforma {
 
     public void registrarReserva();
     public void registrarOferta();
-    public ControladorPrincipal registrarCliente(String nombre, String id, String telefono, String  email, String password, String confirmarPassword) throws Exception;
+    public void registrarCliente(String nombre, String id, String telefono, String  email, String password, String confirmarPassword) throws Exception;
 
-    boolean validarCodigoVerificacion(String correo, String codigoIngresado);
+    public boolean validarCodigoVerificacion(String correo, String codigoIngresado);
+
+
 }
 

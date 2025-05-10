@@ -103,11 +103,12 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public ControladorPrincipal registrarCliente(String nombre, String cedula, String telefono, String  correo, String password, String confirmarPassword) throws Exception {
+    public void registrarCliente(String nombre, String cedula, String telefono, String  correo, String password, String confirmarPassword) throws Exception {
         servicioCliente.registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
 
-        return null;
     }
+
+
 
     @Override
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {

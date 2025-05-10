@@ -58,14 +58,12 @@ public class RegistroCliente {
             String password = txtPassword.getText();
             String confirmarPassword = txtConfirmarPassword.getText();
 
-            //llamar el método de registro del servicio
-            ControladorPrincipal controladorPrincipal= ControladorPrincipal.getInstancia().getPlataforma().registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
+            ControladorPrincipal controladorPrincipal= ControladorPrincipal.getInstancia();
 
-            // Si todo es válido, mostrar mensaje de éxito y limpiar campos
+            controladorPrincipal.getPlataforma().registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
             mostrarMensaje("¡Registro exitoso!");
             limpiarCampos();
 
-            // Opcional: navegar a la pantalla de inicio de sesión después de unos segundos
             new Thread(() -> {
                 try {
                     Thread.sleep(2000); // Esperar 2 segundos

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.EnvioCorreo;
@@ -8,66 +9,43 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.*;
-
-@Getter
 @Builder
+@Getter
 public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
+
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
 
 
 
-    public void registrarCliente(String nombre, String cedula,  String telefono, String  correo, String password, String confirmarPassword ) throws Exception {
+    public void registrarCliente(String nombre, String cedula, String telefono, String  correo, String password, String confirmarPassword ) throws Exception {
 
-        String error = "";
+        validarDatos(nombre, cedula,  telefono, correo, password, confirmarPassword);
 
-        // Validar campos vacíos
-        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || password.isEmpty() || confirmarPassword.isEmpty()) {
-            error = ("Todos los campos son obligatorios");
-        }
-
-        // Validar formato de nombre (solo letras y espacios)
-        if (!nombre.matches("[a-zA-Z\\s]+")) {
-            error += ("El nombre solo debe contener letras y espacios");
-        }
-
-        // Validar cédula
-        if (!cedula.matches("\\d+") || cedula.length() < 8 || cedula.length() > 10) {
-            error += ("La cédula debe contener entre 8 y 10 números");
-        }
-
-        // Validar teléfono
-        if (!telefono.matches("\\d{8,10}")) {
-            error += ("El número de teléfono debe tener entre 8 y 10 dígitos");
-        }
-
-        // Validar correo
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            error += ("El correo debe ser un correo Gmail válido");
-        }
-
-        // Validar contraseña (mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número)
-        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
-            error += ("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
-        }
-
-        // Validar coincidencia de contraseñas
-        if (!password.equals(confirmarPassword)) {
-            error += ("Las contraseñas no coinciden");
-        }
-
-        if(!error.isEmpty()){
-            throw new Exception(error);
-        }
-
-        Random random = new Random();
-        int codigo = random.nextInt(9000) + 1000;
+        int codigo = crearCodigo();
 
         codigosVerificacion.put(correo, String.valueOf(codigo));
+        Cliente cliente = crearCliente(nombre, cedula,  telefono, codigo, correo, password, confirmarPassword);
+        clienteRepository.guardar(cliente);
+
+        Notificacion.enviarNotificacion(correo,
+                "Su código de activación es "+ codigo,
+                "Código de validación de registro");
+
+
+    }
+
+    public int crearCodigo(){
+        Random random = new Random();
+        int codigo = random.nextInt(9000) + 1000;
+        return codigo;
+    }
+
+    public Cliente crearCliente(String nombre, String cedula,  String telefono, int codigo, String  correo, String password, String confirmarPassword ) throws Exception {
 
         Cliente cliente = Cliente.builder()
                 .correo(correo)
@@ -76,14 +54,40 @@ public class ServicioCliente {
                 .activo(false)
                 .codigoActivacion(codigo)
                 .telefono(telefono).build();
-        clienteRepository.guardar(cliente);
+        return cliente;
+    }
 
-        EnvioCorreo.enviarCodigo(
-                correo,
-                "Su código de activación es "+codigo,
-                "Código de validación de registro"
-        );
+    public void validarDatos(String nombre, String cedula,  String telefono, String  correo, String password, String confirmarPassword ) throws Exception {
+        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || password.isEmpty() || confirmarPassword.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios");
+        }
 
+        if (!nombre.matches("[a-zA-Z\\s]+")) {
+            throw new Exception("El nombre solo debe contener letras y espacios");
+        }
+
+        if (!cedula.matches("\\d+")) {
+            throw new Exception("La cédula debe contener solo números");
+        }
+        if (cedula.length() < 8 || cedula.length() > 10) {
+            throw new Exception("La cédula debe tener entre 8 y 10 dígitos");
+        }
+
+        if (!telefono.matches("\\d{8,10}")) {
+            throw new Exception("El número de teléfono debe tener entre 8 y 10 dígitos");
+        }
+
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            throw new Exception("El correo debe ser un correo Gmail válido");
+        }
+
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
+            throw new Exception("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+        }
+
+        if (!password.equals(confirmarPassword)) {
+            throw new Exception("Las contraseñas no coinciden");
+        }
     }
 
     public Cliente iniciarSesion(String correo, String password) throws Exception {
@@ -151,9 +155,9 @@ public class ServicioCliente {
         if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {
             try {
                 Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-                cliente.setActivo(true); // activar
-                clienteRepository.actualizar(cliente); // guardar el cambio
-                codigosVerificacion.remove(correo); // opcional: eliminar código
+                cliente.setActivo(true);
+                clienteRepository.actualizar(cliente);
+                codigosVerificacion.remove(correo);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();

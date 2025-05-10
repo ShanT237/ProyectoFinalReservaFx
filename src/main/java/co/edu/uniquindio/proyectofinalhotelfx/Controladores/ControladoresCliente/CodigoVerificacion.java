@@ -61,8 +61,7 @@ public class CodigoVerificacion {
 
                 // Esperar 1.5 segundos antes de cambiar de pantalla
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                pause.setOnFinished(e -> irPantallaPrincipal(event));
-                pause.play();
+                irPantallaPrincipal(event);
 
             } else {
                 lblMensajeError.setText("Código incorrecto, por favor inténtalo nuevamente.");
