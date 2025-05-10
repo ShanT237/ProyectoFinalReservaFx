@@ -1,12 +1,14 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Constantes;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteRepository {
+public class ClienteRepository   {
 
     // Lista principal de clientes registrados
     private final List<Cliente> clientes;
@@ -84,4 +86,6 @@ public class ClienteRepository {
         }
         return new ArrayList<>();
     }
+
+
 }

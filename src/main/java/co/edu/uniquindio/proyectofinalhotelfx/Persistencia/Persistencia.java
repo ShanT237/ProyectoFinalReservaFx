@@ -3,7 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Persistencia;
 import java.io.*;
 
 public class Persistencia {
-    private static void serializarObjeto(String ruta, Object objeto) throws IOException {
+    public static void serializarObjeto(String ruta, Object objeto) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta));
         oos.writeObject(objeto);
         oos.close();
@@ -15,7 +15,7 @@ public class Persistencia {
      * @return Objeto deserializado
      * @throws Exception
      */
-    private static Object deserializarObjeto(String ruta) throws Exception{
+    public static Object deserializarObjeto(String ruta) throws Exception{
 
 
         if(!new File(ruta).exists()){
