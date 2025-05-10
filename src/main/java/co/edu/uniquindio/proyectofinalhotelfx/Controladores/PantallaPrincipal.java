@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -177,6 +178,27 @@ import java.util.Objects;
             imagen.setFitHeight(100);
             imagen.setPreserveRatio(true);
 
+            // Agregar el evento de clic a la imagen
+            imagen.setOnMouseClicked(event -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/InformacionImagenCliente.fxml"));
+                    Parent root = loader.load();
+
+                    // Obtener el controlador y pasar los datos del alojamiento
+                    InformacionImagenCliente controller = loader.getController();
+                    controller.setAlojamiento(alojamiento);
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Detalles del alojamiento");
+                    stage.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mostrarError("No se pudo cargar la ventana de detalles");
+                }
+            });
+
             VBox detalles = new VBox(5);
             detalles.getChildren().addAll(
                     new Label(alojamiento.getNombre()) {{
@@ -191,7 +213,6 @@ import java.util.Objects;
 
             return tarjeta;
         }
-
         // ---------------------------
         // Métodos de navegación
         // ---------------------------
