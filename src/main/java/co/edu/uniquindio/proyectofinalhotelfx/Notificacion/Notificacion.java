@@ -17,7 +17,7 @@ public class Notificacion {
 
 
         Email email = EmailBuilder.startingBlank()
-                .from("SU_EMAIL")
+                .from("proyectofinalprogramacion053@gmail.com")
                 .to(destinatario)
                 .withSubject(asunto)
                 .withPlainText(mensaje)
@@ -25,7 +25,7 @@ public class Notificacion {
 
 
         try (Mailer mailer = MailerBuilder
-                .withSMTPServer("smtp.gmail.com", 587, "SU_EMAIL", "SU_CLAVE")
+                .withSMTPServer("smtp.gmail.com", 587, "proyectofinalprogramacion053@gmail.com", "gohp ilel gmil kfpb")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
                 .withDebugLogging(true)
                 .buildMailer()) {

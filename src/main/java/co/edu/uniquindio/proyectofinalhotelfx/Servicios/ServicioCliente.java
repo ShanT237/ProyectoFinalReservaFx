@@ -17,6 +17,7 @@ public class ServicioCliente {
     private final ServicioAlojamiento servicioAlojamiento;
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
+    private final Map<String, String> codigosVerificacion = new HashMap<>();
 
 
 
@@ -65,6 +66,8 @@ public class ServicioCliente {
 
         Random random = new Random();
         int codigo = random.nextInt(9000) + 1000;
+
+        codigosVerificacion.put(correo, String.valueOf(codigo));
 
         Cliente cliente = Cliente.builder()
                 .correo(correo)
@@ -128,10 +131,7 @@ public class ServicioCliente {
 
 
     // VALIDAR CÓDIGO DE RECUPERACIÓN
-    public boolean validarCodigoRecuperacion(String correo, String codigoIngresado) {
-        String codigoCorrecto = codigosRecuperacion.get(correo);
-        return codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado);
-    }
+
 
     // LISTAR TODOS LOS CLIENTES
     public List<Cliente> listarClientes() {
@@ -145,5 +145,21 @@ public class ServicioCliente {
 
     }
 
+    // VALIDAR CÓDIGO DE RECUPERACIÓN
+    public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
+        String codigoCorrecto = codigosVerificacion.get(correo);
+        if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {
+            try {
+                Cliente cliente = clienteRepository.buscarPorCorreo(correo);
+                cliente.setActivo(true); // activar
+                clienteRepository.actualizar(cliente); // guardar el cambio
+                codigosVerificacion.remove(correo); // opcional: eliminar código
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }
 

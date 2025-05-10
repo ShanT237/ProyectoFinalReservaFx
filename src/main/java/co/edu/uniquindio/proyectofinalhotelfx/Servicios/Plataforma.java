@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -108,5 +109,8 @@ public class Plataforma implements IPlataforma {
         return null;
     }
 
-
+    @Override
+    public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
+        return servicioCliente.validarCodigoVerificacion(correo, codigoIngresado);
+    }
 }

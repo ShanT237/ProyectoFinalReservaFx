@@ -1,14 +1,18 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class RegistroCliente {
 
@@ -64,8 +68,32 @@ public class RegistroCliente {
             // Opcional: navegar a la pantalla de inicio de sesión después de unos segundos
             new Thread(() -> {
                 try {
-                    Thread.sleep(2000);
-                    //abrir la ventana de CodigoVerficacion (pasar el correo)
+                    Thread.sleep(2000); // Esperar 2 segundos
+
+                    // Luego abrir la ventana en el hilo de JavaFX
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/CodigoVerificacion.fxml"));
+                            Parent root = loader.load();
+
+                            CodigoVerificacion codigoVerificacion = loader.getController();
+                            codigoVerificacion.setCorreo(correo); // Asegúrate de tener este método
+
+                            Stage stage = new Stage();
+                            stage.setTitle("Verificación de Código");
+                            stage.setScene(new Scene(root));
+                            stage.setResizable(false);
+                            stage.show();
+
+                            // Cerrar la ventana actual
+                            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            mostrarError("No se pudo abrir la ventana de verificación.");
+                        }
+                    });
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

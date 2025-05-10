@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -23,6 +24,6 @@ public interface IPlataforma {
     public void registrarOferta();
     public ControladorPrincipal registrarCliente(String nombre, String id, String telefono, String  email, String password, String confirmarPassword) throws Exception;
 
-
+    boolean validarCodigoVerificacion(String correo, String codigoIngresado);
 }
 
