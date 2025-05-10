@@ -65,14 +65,17 @@ public class Plataforma implements IPlataforma {
 
 
 
-    public void loginAdm(String correo, String contrasena){
-        servicioAdm.loginAdm(correo,contrasena);
+    public boolean loginAdm(String correo, String contrasena){
 
+
+        return servicioAdm.loginAdm(correo,contrasena);
     }
 
-    public void loginCliente(String correo, String contrasena){
-        servicioAdm.loginAdm(correo,contrasena);
 
+
+    @Override
+    public boolean loginCliente(String correo, String password) throws Exception {
+        return servicioCliente.iniciarSesion(correo, password);
     }
 
     @Override

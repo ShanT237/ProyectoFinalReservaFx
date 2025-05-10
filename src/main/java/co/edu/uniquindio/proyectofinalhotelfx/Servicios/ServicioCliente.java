@@ -95,7 +95,7 @@ public class ServicioCliente {
         }
     }
 
-    public Cliente iniciarSesion(String correo, String password) throws Exception {
+    public boolean iniciarSesion(String correo, String password) throws Exception {
         verificarDatosSesion(correo, password);
         Cliente cliente = clienteRepository.buscarPorCorreo(correo);
 
@@ -108,7 +108,7 @@ public class ServicioCliente {
         }
 
         SesionCliente.instancia().setUsuario(cliente);
-        return cliente;
+        return true;
     }
 
     public void verificarDatosSesion(String correo, String password) throws Exception {

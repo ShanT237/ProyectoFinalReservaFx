@@ -14,7 +14,8 @@ public interface IPlataforma {
     /*
     /Metodos ADM
      */
-    public void loginAdm(String correo, String password);
+    public boolean loginAdm(String correo, String password);
+    public boolean loginCliente(String correo, String password) throws Exception;
     public void bloquearCliente(String idUsuario) throws Exception;
     public void verActividadesCliente(String idUsuario);
     public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento);
