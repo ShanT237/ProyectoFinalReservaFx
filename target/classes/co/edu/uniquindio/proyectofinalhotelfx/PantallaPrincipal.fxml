@@ -18,7 +18,7 @@
           AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
         <ImageView fitHeight="50" fitWidth="120">
             <image>
-                <Image url="@Imagenes/wyndham-bogota.png"/>
+                <Image url="@Imagenes/hotel.png"/>
             </image>
         </ImageView>
         <Button fx:id="btnLogin"
