@@ -1,6 +1,5 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,17 +27,17 @@ public class HomeAdmin {
 
     @FXML
     private void cargarGestionAlojamientos() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/GestionAlojamientosAdmin.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/GestionAlojamientosAdmin.fxml");
     }
 
     @FXML
     private void cargarGestionOfertas() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/GestionOfertasAdmin.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/GestionOfertasAdmin.fxml");
     }
 
     @FXML
     private void cargarEstadisticas() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/EstadisticasAdmin.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/EstadisticasAdmin.fxml");
     }
 
     @FXML
@@ -47,7 +46,7 @@ public class HomeAdmin {
     }
     @FXML
     public void cargarGestionUsuarios() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/GestionUsuariosAdmin.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/GestionUsuariosAdmin.fxml");
 
 
     }

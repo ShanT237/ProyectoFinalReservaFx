@@ -25,7 +25,6 @@ public class ServicioAlojamiento {
 
     public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
         String id = generarIdAlojamiento();
-
         Alojamiento alojamiento = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
         alojamientoRepository.guardar(alojamiento);
     }
@@ -36,6 +35,11 @@ public class ServicioAlojamiento {
         return alojamiento;
 
     }
+
+    public List<Alojamiento> obtenerTodosAlojamientos(){
+        return alojamientoRepository.obtenerTodos();
+    }
+
 
     private String generarIdAlojamiento() {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

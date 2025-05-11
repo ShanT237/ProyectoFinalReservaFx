@@ -39,8 +39,8 @@ public class ServicioCliente {
         clienteRepository.guardar(cliente);
 
         Notificacion.enviarNotificacion(correo,
-                "Su código de activación es "+ codigo,
-                "Código de validación de registro");
+                "Amoo a pachoo",
+                "Mi amor es pachooo");
 
 
     }
