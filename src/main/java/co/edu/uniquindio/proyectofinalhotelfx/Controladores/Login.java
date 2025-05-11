@@ -53,10 +53,11 @@ public class Login {
 
             if (controladorPrincipal.getPlataforma().loginAdm(correo, password)) {
                 mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
+                redirigirAHomeAdm();
 
             } else if (controladorPrincipal.getPlataforma().loginCliente(correo, password)) {
                 mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
-                redirigirAHome(); // Redirigir al home para cliente
+                redirigirAHomeCliente(); // Redirigir al home para cliente
             } else {
                 mostrarError("Credenciales inválidas.");
             }
@@ -66,12 +67,22 @@ public class Login {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
         }
     }
+    public void redirigirAHomeAdm() throws IOException {
+        mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/HomeAdmin.fxml", "BookYourStay - Home Admin");
+    }
 
-    private void redirigirAHome() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml"));
+    public void redirigirAHomeCliente() throws IOException {
+        mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml", "BookYourStay - Home Cliente");
+    }
+
+
+    private void mostrarVentana(String ruta, String tituloVentana) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
+        stage.setTitle(tituloVentana);
+        stage.setResizable(true);
         stage.setScene(scene);
         stage.show();
     }
