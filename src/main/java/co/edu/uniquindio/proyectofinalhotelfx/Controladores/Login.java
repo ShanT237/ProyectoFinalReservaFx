@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
+import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
@@ -17,11 +18,13 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Login {
@@ -81,6 +84,7 @@ public class Login {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
+        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
         stage.setTitle(tituloVentana);
         stage.setResizable(true);
         stage.setScene(scene);

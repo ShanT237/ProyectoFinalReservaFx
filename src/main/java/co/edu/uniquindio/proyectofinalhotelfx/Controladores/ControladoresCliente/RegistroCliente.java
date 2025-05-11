@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
+import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -9,10 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class RegistroCliente {
 
@@ -78,6 +81,7 @@ public class RegistroCliente {
                             codigoVerificacion.setCorreo(correo); // Asegúrate de tener este método
 
                             Stage stage = new Stage();
+                            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
                             stage.setTitle("Verificación de Código");
                             stage.setScene(new Scene(root));
                             stage.setResizable(false);
@@ -131,6 +135,7 @@ public class RegistroCliente {
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
             stage.setScene(scene);
             stage.setTitle(tituloVentana);
             stage.setResizable(false);
