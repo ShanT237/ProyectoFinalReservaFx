@@ -62,7 +62,7 @@ public class App extends Application {
         // Hoteles $350k-$550k
         controlador.getPlataforma().getServiciosAlojamiento().registrarAlojamiento(
                 "Hotel " + ciudad.name(), ciudad, "Hotel confortable en " + ciudad.name(),
-                350000 + (int) (Math.random() * 200000), 20,
+                350000 + (int) (Math.random() * 200000),
                 imgHotel,
                 List.of(ServiciosIncluidos.WIFI, ServiciosIncluidos.DESAYUNO, ServiciosIncluidos.PISCINA),
                 20, 10, true, TipoAlojamiento.HOTEL);
@@ -70,7 +70,7 @@ public class App extends Application {
         // Casas $200k-$300k
         controlador.getPlataforma().getServiciosAlojamiento().registrarAlojamiento(
                 "Casa " + ciudad.name(), ciudad, "Casa acogedora en " + ciudad.name(),
-                200000 + (int) (Math.random() * 100000), 6,
+                200000 + (int) (Math.random() * 100000),
                 imgCasa,
                 List.of(ServiciosIncluidos.WIFI, ServiciosIncluidos.COCINA, ServiciosIncluidos.ESTACIONAMIENTO),
                 6, 3, true, TipoAlojamiento.CASA);
@@ -78,7 +78,7 @@ public class App extends Application {
         // Apartamentos $150k-$230k
         controlador.getPlataforma().getServiciosAlojamiento().registrarAlojamiento(
                 "Apto " + ciudad.name(), ciudad, "Apartamento en " + ciudad.name(),
-                150000 + (int) (Math.random() * 80000), 2,
+                150000 + (int) (Math.random() * 80000),
                 imgApto,
                 List.of(ServiciosIncluidos.WIFI, ServiciosIncluidos.TV, ServiciosIncluidos.COCINA),
                 2, 1, true, TipoAlojamiento.APARTAMENTO);

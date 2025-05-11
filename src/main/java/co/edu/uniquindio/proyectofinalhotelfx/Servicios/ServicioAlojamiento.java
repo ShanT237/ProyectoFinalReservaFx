@@ -23,15 +23,15 @@ public class ServicioAlojamiento {
     Metodos Principales
      */
 
-    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
         String id = generarIdAlojamiento();
-        Alojamiento alojamiento = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
+        Alojamiento alojamiento = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
         alojamientoRepository.guardar(alojamiento);
     }
 
-    public Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id){
+    public Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id){
         AlojamientoFactory alojamientoFactory = new AlojamientoFactory();
-        Alojamiento alojamiento = alojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
+        Alojamiento alojamiento = alojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
         return alojamiento;
 
     }
@@ -54,8 +54,8 @@ public class ServicioAlojamiento {
         return id.toString();
     }
 
-    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
-        Alojamiento alojamientoActualizar = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, capacidadMaxima, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, idAlojamiento);
+    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+        Alojamiento alojamientoActualizar = crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, idAlojamiento);
         alojamientoRepository.actualizar(alojamientoActualizar);
     }
 
