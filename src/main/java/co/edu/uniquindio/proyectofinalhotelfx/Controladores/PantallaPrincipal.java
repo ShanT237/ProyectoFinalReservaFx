@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
+import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
@@ -240,9 +241,10 @@ import java.util.Objects;
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
                 Parent root = loader.load();
-
                 Stage stage = new Stage();
+                stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
                 stage.setScene(new Scene(root));
+
                 stage.setResizable(false);
                 stage.setTitle(tituloVentana);
                 stage.show();

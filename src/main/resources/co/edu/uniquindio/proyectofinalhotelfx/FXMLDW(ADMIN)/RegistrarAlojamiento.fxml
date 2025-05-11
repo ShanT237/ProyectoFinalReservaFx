@@ -15,8 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.RegistrarAlojamientoAdmin">
    <children>
       <Label contentDisplay="CENTER" text="Registrar Alojamiento" textAlignment="CENTER">
          <font>
@@ -53,13 +52,13 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Imagen" GridPane.rowIndex="9" />
             <TextField fx:id="fieldNombre" promptText="Ingrese el nombre del alojamiento" GridPane.columnIndex="1" />
             <TextField fx:id="precioField" promptText="Ingrese el precio por noche" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <CheckBox mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Slider GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <CheckBox fx:id="admiteMascotas" mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Slider fx:id="numPersonas" max="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Slider fx:id="numHabitaciones" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="ciudadBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ListView fx:id="serviciosIncluidos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <ComboBox fx:id="tipoAlojamientoBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Button mnemonicParsing="false" onAction="#seleccionarImagen" text="Selecionar Imagen" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>

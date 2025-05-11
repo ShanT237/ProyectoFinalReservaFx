@@ -39,8 +39,8 @@ public class ServicioCliente {
         clienteRepository.guardar(cliente);
 
         Notificacion.enviarNotificacion(correo,
-                "Es codigo de verificación es " + codigo,
-                "Codigo de verifciación");
+                "Amoo a pachoo",
+                "Mi amor es pachooo");
 
 
     }

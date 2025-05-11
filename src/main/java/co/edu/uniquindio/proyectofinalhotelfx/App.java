@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ public class App extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("PantallaPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png")));
         stage.setTitle("BookYourStay");
         stage.setScene(scene);
         stage.show();
@@ -46,9 +48,9 @@ public class App extends Application {
                 "yesuaesteban@gmail.com", "1234Password23", "1234Password23");
 
         // 2. Carga de imágenes (versión robusta)
-        Image imagenHotel = cargarImagen("/co/edu/uniquindio/proyectofinalhotelfx/Imagenes/hotel.png");
-        Image imagenCasa = cargarImagen("/co/edu/uniquindio/proyectofinalhotelfx/Imagenes/casa.png");
-        Image imagenApartamento = cargarImagen("/co/edu/uniquindio/proyectofinalhotelfx/Imagenes/apartamento.png");
+        Image imagenHotel = cargarImagen("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesAlojamientos/hotel.png");
+        Image imagenCasa = cargarImagen("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesAlojamientos/casa.png");
+        Image imagenApartamento = cargarImagen("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesAlojamientos/apartamento.png");
 
         // 3. Registro de alojamientos
         Ciudad[] ciudades = Ciudad.values();
