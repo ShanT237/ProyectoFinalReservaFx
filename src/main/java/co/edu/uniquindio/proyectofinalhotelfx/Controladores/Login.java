@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -78,7 +79,9 @@ public class Login {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
-        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
+        File archivoImagen = new File("Img/ImagenesApp/icon.png");
+        Image icono = new Image(archivoImagen.toURI().toString());
+        stage.getIcons().add(icono);
         stage.setTitle(tituloVentana);
         stage.setResizable(true);
         stage.setScene(scene);

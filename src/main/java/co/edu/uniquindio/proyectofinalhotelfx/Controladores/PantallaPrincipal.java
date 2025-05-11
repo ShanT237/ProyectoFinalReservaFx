@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -190,6 +191,9 @@ import java.util.Objects;
                     controller.setAlojamiento(alojamiento);
 
                     Stage stage = new Stage();
+                    File archivoImagen = new File("Img/ImagenesApp/icon.png");
+                    Image icono = new Image(archivoImagen.toURI().toString());
+                    stage.getIcons().add(icono);
                     stage.setScene(new Scene(root));
                     stage.setTitle("Detalles del alojamiento");
                     stage.show();
@@ -242,7 +246,9 @@ import java.util.Objects;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
                 Parent root = loader.load();
                 Stage stage = new Stage();
-                stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
+                File archivoImagen = new File("Img/ImagenesApp/icon.png");
+                Image icono = new Image(archivoImagen.toURI().toString());
+                stage.getIcons().add(icono);
                 stage.setScene(new Scene(root));
 
                 stage.setResizable(false);

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -114,7 +115,8 @@ public class GestionAlojamientosAdmin {
             }
 
             Stage stage = new Stage();
-            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
+            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+            Image icono = new Image(archivoImagen.toURI().toString());
             stage.setResizable(false);
             stage.setTitle(titulo);
 

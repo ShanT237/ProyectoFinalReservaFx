@@ -12,19 +12,23 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
 public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        iniciarDatos(); // Llama al método de inicialización
+        iniciarDatos(); // Inicialización de datos
 
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("PantallaPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.getIcons().add(new Image(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png")));
+
+        // Ícono de la aplicación (carga robusta)
+        Image icono = cargarImagenRobusta("Img/ImagenesApp/icon.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesApp/icon.png");
+        stage.getIcons().add(icono);
+
         stage.setTitle("BookYourStay");
         stage.setScene(scene);
         stage.show();
@@ -38,7 +42,7 @@ public class App extends Application {
                 .nombre("Santiago")
                 .cedula("12323")
                 .telefono("3216549870")
-                .correo("santiago.rodriguezt@uqvirtual.edu.co")
+                .correo("shanrt@gmail.com")
                 .password("1234password")
                 .build();
 
@@ -47,20 +51,23 @@ public class App extends Application {
                 "yesuaesteban@gmail.com", "1234Password23", "1234Password23");
 
         // 2. Carga de imágenes (versión robusta)
-        Image imagenHotel = cargarImagen("/Img/ImagenesAlojamientos/hotel.png");
-        Image imagenCasa = cargarImagen("/Img/ImagenesAlojamientos/casa.png");
-        Image imagenApartamento = cargarImagen("/Img/ImagenesAlojamientos/apartamento.png");
+        Image imagenHotel = cargarImagenRobusta("Img/ImagenesAlojamientos/hotel.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesAlojamientos/hotel.png");
+        Image imagenCasa = cargarImagenRobusta("Img/ImagenesAlojamientos/casa.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesAlojamientos/casa.png");
+        Image imagenApartamento = cargarImagenRobusta("Img/ImagenesAlojamientos/apartamento.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesAlojamientos/apartamento.png");
 
         // 3. Registro de alojamientos
         Ciudad[] ciudades = Ciudad.values();
         for (Ciudad ciudad : ciudades) {
-            registrarAlojamientos(controladorPrincipal, ciudad, imagenHotel, imagenCasa, imagenApartamento);
+            Image imgHotel = cargarImagenRobusta("Img/ImagenesAlojamientos/hotel.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesAlojamientos/hotel.png");
+            Image imgCasa = cargarImagenRobusta("Img/ImagenesAlojamientos/casa.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesAlojamientos/casa.png");
+            Image imgApto = cargarImagenRobusta("Img/ImagenesAlojamientos/apartamento.png", "/co/edu/uniquindio/proyectofinalhotelfx/Img/ImagenesAlojamientos/apartamento.png");
+
+            registrarAlojamientos(controladorPrincipal, ciudad, imgHotel, imgCasa, imgApto);
         }
     }
 
     private void registrarAlojamientos(ControladorPrincipal controlador, Ciudad ciudad,
                                        Image imgHotel, Image imgCasa, Image imgApto) {
-        // Hoteles $350k-$550k
         controlador.getPlataforma().getServiciosAlojamiento().registrarAlojamiento(
                 "Hotel " + ciudad.name(), ciudad, "Hotel confortable en " + ciudad.name(),
                 350000 + (int) (Math.random() * 200000),
@@ -68,7 +75,6 @@ public class App extends Application {
                 List.of(ServiciosIncluidos.WIFI, ServiciosIncluidos.DESAYUNO, ServiciosIncluidos.PISCINA),
                 20, 10, true, TipoAlojamiento.HOTEL);
 
-        // Casas $200k-$300k
         controlador.getPlataforma().getServiciosAlojamiento().registrarAlojamiento(
                 "Casa " + ciudad.name(), ciudad, "Casa acogedora en " + ciudad.name(),
                 200000 + (int) (Math.random() * 100000),
@@ -76,7 +82,6 @@ public class App extends Application {
                 List.of(ServiciosIncluidos.WIFI, ServiciosIncluidos.COCINA, ServiciosIncluidos.ESTACIONAMIENTO),
                 6, 3, true, TipoAlojamiento.CASA);
 
-        // Apartamentos $150k-$230k
         controlador.getPlataforma().getServiciosAlojamiento().registrarAlojamiento(
                 "Apto " + ciudad.name(), ciudad, "Apartamento en " + ciudad.name(),
                 150000 + (int) (Math.random() * 80000),
@@ -85,21 +90,24 @@ public class App extends Application {
                 2, 1, true, TipoAlojamiento.APARTAMENTO);
     }
 
-    private Image cargarImagen(String ruta) {
+    private Image cargarImagenRobusta(String rutaExterna, String rutaInterna) {
         try {
-            InputStream inputStream = getClass().getResourceAsStream(ruta);
-            if (inputStream == null) {
-                throw new IOException("No se encontró la imagen en: " + ruta);
+            // Intentar desde archivo del sistema (ej. Img/hotel.png)
+            File archivo = new File(rutaExterna);
+            if (archivo.exists()) {
+                return new Image(archivo.toURI().toString());
             }
-            return new Image(inputStream);
+
+            // Si no está, buscar en el classpath (recursos empaquetados)
+            InputStream inputStream = getClass().getResourceAsStream(rutaInterna);
+            if (inputStream != null) {
+                return new Image(inputStream);
+            }
+
+            throw new IOException("No se encontró la imagen ni en " + rutaExterna + " ni en " + rutaInterna);
         } catch (Exception e) {
             System.err.println("Error crítico al cargar imagen: " + e.getMessage());
-            System.exit(1); // Detiene la aplicación si no puede cargar imágenes críticas
-            return null;
+            return new Image("https://via.placeholder.com/80x60.png?text=Sin+Imagen");
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

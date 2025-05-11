@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -81,7 +82,9 @@ public class RegistroCliente {
                             codigoVerificacion.setCorreo(correo); // Asegúrate de tener este método
 
                             Stage stage = new Stage();
-                            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
+                            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+                            Image icono = new Image(archivoImagen.toURI().toString());
+                            stage.getIcons().add(icono);
                             stage.setTitle("Verificación de Código");
                             stage.setScene(new Scene(root));
                             stage.setResizable(false);
@@ -135,7 +138,9 @@ public class RegistroCliente {
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
+            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+            Image icono = new Image(archivoImagen.toURI().toString());
+            stage.getIcons().add(icono);
             stage.setScene(scene);
             stage.setTitle(tituloVentana);
             stage.setResizable(false);
