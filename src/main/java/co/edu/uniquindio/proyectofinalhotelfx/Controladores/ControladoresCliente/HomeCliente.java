@@ -18,22 +18,22 @@ public class HomeCliente{
 
     @FXML
     private void cargarBuscarAlojamientos() {
-        cargarContenido("/fxml/BuscarAlojamientos.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/BuscarAlojamientosCliente.fxml");
     }
 
     @FXML
     private void cargarMisReservas() {
-        cargarContenido("/fxml/MisReservas.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MisReservasCliente.fxml");
     }
 
     @FXML
     private void cargarBilletera() {
-        cargarContenido("/fxml/Billetera.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MiBilleteraCliente.fxml");
     }
 
     @FXML
     private void cargarResenas() {
-        cargarContenido("/fxml/Resenas.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/ResenasCliente.fxml");
     }
 
     @FXML

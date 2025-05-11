@@ -8,10 +8,11 @@ public class BuscarAlojamientosCliente {
 
     @FXML
     public void initialize() {
-        // Datos de prueba
+        // Datos de ejemplo
         lvAlojamientos.getItems().addAll(
                 "Hotel Ejemplo - $120/noche",
-                "Casa Campestre - $90/noche"
+                "Casa Campestre - $90/noche",
+                "Apartamento Premium - $150/noche"
         );
     }
 }
