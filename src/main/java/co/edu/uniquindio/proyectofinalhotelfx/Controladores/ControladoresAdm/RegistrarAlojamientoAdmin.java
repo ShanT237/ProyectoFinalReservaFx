@@ -172,7 +172,7 @@ public class RegistrarAlojamientoAdmin {
             String rutaImagen = null;
             Image imagen = null;
             if (imagenSeleccionada != null && !nombre.isEmpty()) {
-                File directorio = new File("co/edu/uniquindio/proyectofinalhotelfx/ImagenesAlojamientos");
+                File directorio = new File("/ImagenesAlojamientos");
                 if (!directorio.exists()) {
                     directorio.mkdirs();
                 }
