@@ -63,7 +63,8 @@
             <Button mnemonicParsing="false" onAction="#seleccionarImagen" text="Selecionar Imagen" GridPane.columnIndex="1" GridPane.rowIndex="9" />
          </children>
       </GridPane>
-      <ImageView fitHeight="61.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imagenPreview" fitHeight="61.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="informacionLabel" text="Label" visible="false" />
       <Button mnemonicParsing="false" onAction="#registrarAlojamiento" text="Registrar" />
    </children>
    <padding>

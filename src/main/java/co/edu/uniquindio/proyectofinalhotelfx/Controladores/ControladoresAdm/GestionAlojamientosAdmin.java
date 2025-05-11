@@ -2,8 +2,10 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
+import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
@@ -15,12 +17,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
@@ -81,7 +85,7 @@ public class GestionAlojamientosAdmin {
 
     @FXML
     void btnAgregar(ActionEvent event) {
-        irAPantallaPrincipal("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
+        mostrarVentana(event, "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
 
     }
 
@@ -94,25 +98,37 @@ public class GestionAlojamientosAdmin {
 
     @FXML
     void acturalizarAlojamiento(ActionEvent event) {
-        irAPantallaPrincipal("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
+        mostrarVentana(event,"/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
     }
 
     @FXML
-    private void irAPantallaPrincipal(String ruta, String titulo) {
+    private void mostrarVentana(ActionEvent event, String ruta, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
-            Stage nuevaVentana = new Stage();
-            nuevaVentana.setResizable(false);
-            nuevaVentana.setTitle(titulo);
-            nuevaVentana.setScene(new Scene(root));
-            nuevaVentana.show();
+            Object controller = loader.getController();
+
+            if (controller instanceof RegistrarAlojamientoAdmin) {
+                ((RegistrarAlojamientoAdmin) controller).setControladorAlojamientos(this);
+            }
+
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
+            stage.setResizable(false);
+            stage.setTitle(titulo);
+
+            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.initOwner(parentStage);
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            actualizarTabla();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 }

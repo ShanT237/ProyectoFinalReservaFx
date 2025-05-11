@@ -1,16 +1,19 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
+import co.edu.uniquindio.proyectofinalhotelfx.App;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class HomeAdmin {
     @FXML
@@ -65,11 +68,12 @@ public class HomeAdmin {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
-            Stage nuevaVentana = new Stage();
-            nuevaVentana.setResizable(true);
-            nuevaVentana.setTitle(titulo);
-            nuevaVentana.setScene(new Scene(root));
-            nuevaVentana.show();
+            Stage stage = new Stage();
+            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
+            stage.setResizable(true);
+            stage.setTitle(titulo);
+            stage.setScene(new Scene(root));
+            stage.show();
 
             Stage ventanaActual = (Stage) contenidoDinamico.getScene().getWindow();
             ventanaActual.close();

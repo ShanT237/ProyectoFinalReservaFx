@@ -23,7 +23,7 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         iniciarDatos(); // Llama al método de inicialización
 
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("HomeAdmin.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("PantallaPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png")));
         stage.setTitle("BookYourStay");
