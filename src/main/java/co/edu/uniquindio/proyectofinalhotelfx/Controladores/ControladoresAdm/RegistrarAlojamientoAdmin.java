@@ -172,7 +172,7 @@ public class RegistrarAlojamientoAdmin {
             String rutaImagen = null;
             Image imagen = null;
             if (imagenSeleccionada != null && !nombre.isEmpty()) {
-                File directorio = new File("/ImagenesAlojamientos");
+                File directorio = new File("Img/ImagenesAlojamientos/");
                 if (!directorio.exists()) {
                     directorio.mkdirs();
                 }
