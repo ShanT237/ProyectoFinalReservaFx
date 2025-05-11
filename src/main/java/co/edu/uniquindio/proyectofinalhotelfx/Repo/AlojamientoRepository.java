@@ -1,7 +1,11 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Constantes;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +14,11 @@ import java.util.List;
  */
 public class AlojamientoRepository {
 
-    private final List<Alojamiento> alojamientos = new ArrayList<>();
+    private final List<Alojamiento> alojamientos;
+
+    public AlojamientoRepository() {
+        this.alojamientos = leerDatos();
+    }
 
     /**
      * Obtiene una lista con todos los alojamientos registrados
@@ -26,6 +34,7 @@ public class AlojamientoRepository {
      */
     public void guardar(Alojamiento alojamiento) {
         alojamientos.add(alojamiento);
+        guardarDatos();
     }
 
     /**
@@ -74,5 +83,25 @@ public class AlojamientoRepository {
             }
         }
         return null;
+    }
+
+    private void guardarDatos() {
+        try {
+            Persistencia.serializarObjeto(Constantes.RUTA_ALOJAMIENTO, alojamientos);
+        } catch (IOException e) {
+            System.err.println("Error guardando alojamientos: " + e.getMessage());
+        }
+    }
+
+    private List<Alojamiento> leerDatos() {
+        try {
+            Object datos = Persistencia.deserializarObjeto(Constantes.RUTA_ALOJAMIENTO);
+            if (datos != null) {
+                return (List<Alojamiento>) datos;
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando alojamientos: " + e.getMessage());
+        }
+        return new ArrayList<>();
     }
 }

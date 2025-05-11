@@ -20,7 +20,7 @@ public abstract class Alojamiento implements Serializable {
     private String descripcion;
     private String id;
     private double precioPorNocheBase;
-    private Image imagen;
+    private String imagen;
     private List<ServiciosIncluidos> serviciosIncluidos;
     private List<Review> reviews;
     private Boolean estadoActivo;
@@ -29,7 +29,7 @@ public abstract class Alojamiento implements Serializable {
     private boolean admiteMascotas;
     private TipoAlojamiento tipoAlojamiento;
 
-    public Alojamiento(boolean admiteMascotas, int numeroHabitaciones, int capacidadHuespedes, List<ServiciosIncluidos> serviciosIncluidos, Image imagen, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
+    public Alojamiento(boolean admiteMascotas, int numeroHabitaciones, int capacidadHuespedes, List<ServiciosIncluidos> serviciosIncluidos, String imagen, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
         this.estadoActivo = true;
         this.admiteMascotas = admiteMascotas;
         this.numeroHabitaciones = numeroHabitaciones;

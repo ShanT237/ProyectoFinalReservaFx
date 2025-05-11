@@ -91,7 +91,7 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
+    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
        servicioAdm.registrarAlojamiento(nombre,ciudad,descripcion,precioPorNocheBase,imagen,serviciosIncluidos,capacidadPersonas,numeroHabitaciones,admiteMascotas,tipoAlojamiento);
     }
 
@@ -101,7 +101,7 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
+    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
         servicioAdm.actualizarAlojamiento(idAlojamiento,nombre,ciudad,descripcion,precioPorNocheBase,imagen,serviciosIncluidos,capacidadPersonas,numeroHabitaciones,admiteMascotas,tipoAlojamiento);
     }
 

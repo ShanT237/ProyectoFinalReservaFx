@@ -70,7 +70,9 @@ public class GestionAlojamientosAdmin {
         colTipo.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTipoAlojamiento()));
         colPrecio.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrecioPorNocheBase()));
         colImagen.setCellValueFactory(cellData -> {
-            Image imagen = cellData.getValue().getImagen();
+            String ruta = cellData.getValue().getImagen();
+            File file = new File(ruta);
+            Image imagen = new Image(file.toURI().toString());
             ImageView imageView = new ImageView(imagen);
             imageView.setFitWidth(80);
             imageView.setFitHeight(60);
@@ -79,8 +81,6 @@ public class GestionAlojamientosAdmin {
     }
 
     public void actualizarTabla() {
-        listaAlojamientos.setAll(controladorPrincipal.getPlataforma().obtenerListaAlojamientos());
-        tblAlojamientos.setItems(listaAlojamientos);
         tblAlojamientos.refresh();
     }
 

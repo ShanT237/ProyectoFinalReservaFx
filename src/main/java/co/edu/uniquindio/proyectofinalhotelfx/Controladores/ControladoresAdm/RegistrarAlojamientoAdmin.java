@@ -186,7 +186,7 @@ public class RegistrarAlojamientoAdmin {
                 System.out.println("Imagen guardada en: " + imagen.getUrl());
             }
 
-            controladorPrincipal.getPlataforma().registrarAlojamiento(nombre, ciudad, descripcion, precio, imagen, serviciosSeleccionados, personas, habitaciones, permiteMascotas, tipo);
+            controladorPrincipal.getPlataforma().registrarAlojamiento(nombre, ciudad, descripcion, precio, rutaImagen, serviciosSeleccionados, personas, habitaciones, permiteMascotas, tipo);
 
             limpiarCampos(); // Limpia todos los campos
 
