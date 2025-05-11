@@ -1,11 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 import co.edu.uniquindio.proyectofinalhotelfx.App;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioAlojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioCliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
 import javafx.event.ActionEvent;
@@ -13,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -84,7 +78,7 @@ public class Login {
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
-        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
+        stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
         stage.setTitle(tituloVentana);
         stage.setResizable(true);
         stage.setScene(scene);

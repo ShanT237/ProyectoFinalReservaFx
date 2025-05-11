@@ -81,7 +81,7 @@ public class RegistroCliente {
                             codigoVerificacion.setCorreo(correo); // Asegúrate de tener este método
 
                             Stage stage = new Stage();
-                            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
+                            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
                             stage.setTitle("Verificación de Código");
                             stage.setScene(new Scene(root));
                             stage.setResizable(false);
@@ -135,7 +135,7 @@ public class RegistroCliente {
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
+            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
             stage.setScene(scene);
             stage.setTitle(tituloVentana);
             stage.setResizable(false);

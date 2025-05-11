@@ -21,7 +21,7 @@
           AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="30">
 
         <ImageView fitHeight="100" fitWidth="200" preserveRatio="true">
-            <Image url="@ImagenesAlojamientos/expediav2-703354-2927a7-654387.png"/>
+            <Image url="@../../../../../../../Img/ImagenesAlojamientos/expediav2-703354-2927a7-654387.png"/>
         </ImageView>
 
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);"

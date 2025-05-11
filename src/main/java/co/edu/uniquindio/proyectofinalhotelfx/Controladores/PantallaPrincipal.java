@@ -242,7 +242,7 @@ import java.util.Objects;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
                 Parent root = loader.load();
                 Stage stage = new Stage();
-                stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/co/edu/uniquindio/proyectofinalhotelfx/ImagenesApp/icon.png"))));
+                stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
                 stage.setScene(new Scene(root));
 
                 stage.setResizable(false);
