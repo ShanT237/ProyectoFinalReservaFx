@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.GestionAlojamientosAdmin">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ecf0f1; -fx-padding: 15;">
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Gestión de Alojamientos" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#btnAgregar" style="-fx-background-color: #27ae60; -fx-text-fill: white;" text="+ Nuevo Alojamiento" />
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tblAlojamientos">
+            <columns>
+                <TableColumn fx:id="colNombre" prefWidth="150" text="Nombre" />
+                <TableColumn fx:id="colTipo" prefWidth="100" text="Tipo" />
+                <TableColumn fx:id="colCiudad" prefWidth="120" text="Ciudad" />
+                <TableColumn fx:id="colPrecio" prefWidth="100" text="Precio/Noche" />
+                <TableColumn fx:id="colImagen" prefWidth="180" text="Imagen" />
+            </columns>
+        </TableView>
+    </center>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#eliminarAlojamiento" style="-fx-background-color: #d71414;" text="Eliminar" textFill="WHITE" />
+            <Button mnemonicParsing="false" onAction="#acturalizarAlojamiento" style="-fx-background-color: #0787ff;" text="Actualizar" textFill="WHITE" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

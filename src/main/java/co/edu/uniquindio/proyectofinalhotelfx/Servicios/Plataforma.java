@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -66,9 +67,8 @@ public class Plataforma implements IPlataforma {
 
 
     public boolean loginAdm(String correo, String contrasena){
-
-
         return servicioAdm.loginAdm(correo,contrasena);
+
     }
 
 
@@ -91,13 +91,23 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
-       servicioAdm.registrarAlojamiento(nombre,ciudad,descripcion,precioPorNocheBase,capacidadMaxima,imagen,serviciosIncluidos,capacidadPersonas,numeroHabitaciones,admiteMascotas,tipoAlojamiento);
+    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
+       servicioAdm.registrarAlojamiento(nombre,ciudad,descripcion,precioPorNocheBase,imagen,serviciosIncluidos,capacidadPersonas,numeroHabitaciones,admiteMascotas,tipoAlojamiento);
     }
 
     @Override
     public void eliminarAlojamiento(String idAlojamiento) {
         servicioAdm.eliminarAlojamiento(idAlojamiento);
+    }
+
+    @Override
+    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
+        servicioAdm.actualizarAlojamiento(idAlojamiento,nombre,ciudad,descripcion,precioPorNocheBase,imagen,serviciosIncluidos,capacidadPersonas,numeroHabitaciones,admiteMascotas,tipoAlojamiento);
+    }
+
+    @Override
+    public List<Alojamiento> obtenerListaAlojamientos() {
+        return serviciosAlojamiento.obtenerTodosAlojamientos();
     }
 
     @Override

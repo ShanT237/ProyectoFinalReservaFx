@@ -3,10 +3,13 @@ package co.edu.uniquindio.proyectofinalhotelfx.Singleton;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class SesionAdm {
     private static SesionAdm INSTANCIA;
-    private Administrador usuario;
+    public Administrador usuario;
 
     private SesionAdm() { }
 
@@ -18,7 +21,9 @@ public class SesionAdm {
     }
 
     public void iniciarSesion(Administrador admin) {
+
         this.usuario = admin;
+        System.out.println("Usuario: " + admin.getNombre());
     }
 
     public void cerrarSesion() {

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
+import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
@@ -19,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -173,13 +175,26 @@ import java.util.Objects;
             HBox contenido = new HBox(10);
             contenido.setStyle("-fx-alignment: center-left;");
 
-            ImageView imagen = new ImageView(alojamiento.getImagen());
-            imagen.setFitWidth(150);
-            imagen.setFitHeight(100);
-            imagen.setPreserveRatio(true);
+            // Inicializar el ImageView
+            ImageView imagenView = new ImageView();
+
+            String rutaImagen = alojamiento.getImagen(); // Ruta de la imagen como String
+            File archivoImagen = new File(rutaImagen);
+
+            if (archivoImagen.exists()) {
+                Image imagen = new Image(archivoImagen.toURI().toString());
+                imagenView.setImage(imagen);
+            } else {
+                // Maneja el error de que la imagen no se encuentra
+                System.out.println("Imagen no encontrada en: " + rutaImagen);
+            }
+
+            imagenView.setFitWidth(150);
+            imagenView.setFitHeight(100);
+            imagenView.setPreserveRatio(true);
 
             // Agregar el evento de clic a la imagen
-            imagen.setOnMouseClicked(event -> {
+            imagenView.setOnMouseClicked(event -> {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/InformacionImagenCliente.fxml"));
                     Parent root = loader.load();
@@ -189,6 +204,9 @@ import java.util.Objects;
                     controller.setAlojamiento(alojamiento);
 
                     Stage stage = new Stage();
+                    File archivoImage = new File("Img/ImagenesApp/icon.png");
+                    Image icono = new Image(archivoImage.toURI().toString());
+                    stage.getIcons().add(icono);
                     stage.setScene(new Scene(root));
                     stage.setTitle("Detalles del alojamiento");
                     stage.show();
@@ -208,7 +226,7 @@ import java.util.Objects;
                     new Label(String.format("%.2f COP por noche", alojamiento.getPrecioPorNocheBase()))
             );
 
-            contenido.getChildren().addAll(imagen, detalles);
+            contenido.getChildren().addAll(imagenView, detalles);
             tarjeta.getChildren().add(contenido);
 
             return tarjeta;
@@ -240,9 +258,12 @@ import java.util.Objects;
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
                 Parent root = loader.load();
-
                 Stage stage = new Stage();
+                File archivoImagen = new File("Img/ImagenesApp/icon.png");
+                Image icono = new Image(archivoImagen.toURI().toString());
+                stage.getIcons().add(icono);
                 stage.setScene(new Scene(root));
+
                 stage.setResizable(false);
                 stage.setTitle(tituloVentana);
                 stage.show();

@@ -8,9 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class InformacionImagenCliente {
 
@@ -37,8 +40,13 @@ public class InformacionImagenCliente {
     }
 
     private void cargarDatosAlojamiento() {
-        if(alojamiento != null) {
-            imagenAlojamiento.setImage(alojamiento.getImagen());
+        if (alojamiento != null) {
+            String rutaImagen = alojamiento.getImagen();
+            File file = new File(rutaImagen);
+            Image imagen = new Image(file.toURI().toString());
+
+            // Configurar la imagen en la interfaz
+            imagenAlojamiento.setImage(imagen);
             lblNombre.setText(alojamiento.getNombre());
             lblCiudad.setText("Ciudad: " + alojamiento.getCiudad().name());
             lblTipo.setText("Tipo: " + alojamiento.getTipoAlojamiento().name());

@@ -14,10 +14,11 @@ public class ClienteRepository   {
     private final List<Cliente> clientes;
 
     // Lista de clientes bloqueados
-    private final List<Cliente> usuariosBloqueados = new ArrayList<>();
+    private final List<Cliente> usuariosBloqueados;
 
     public ClienteRepository() {
-        this.clientes = leerDatos(); // Cargar desde archivo al iniciar
+        this.clientes = leerDatos();
+        usuariosBloqueados = new ArrayList<>();
     }
 
     public Cliente buscarPorCedula(String cedula) {
@@ -40,7 +41,7 @@ public class ClienteRepository   {
 
     public void guardar(Cliente cliente) {
         clientes.add(cliente);
-        guardarDatos(); // Persistir después de guardar
+        guardarDatos();
     }
 
     public void actualizar(Cliente clienteActualizado) {

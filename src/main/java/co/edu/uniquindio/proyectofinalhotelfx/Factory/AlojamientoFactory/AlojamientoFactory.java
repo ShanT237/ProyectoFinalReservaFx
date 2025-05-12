@@ -13,14 +13,14 @@ import java.util.List;
 
 public class AlojamientoFactory {
 
-    public static Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, int capacidadMaxima, Image imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id) {
+    public static Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id) {
         return switch (tipoAlojamiento) {
             case HOTEL ->
-                    new Hotel(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, capacidadMaxima, precioPorNocheBase, id, descripcion, ciudad, nombre, tipoAlojamiento);
+                    new Hotel(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, precioPorNocheBase, id, descripcion, ciudad, nombre, tipoAlojamiento);
             case CASA ->
-                    new Casa(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, capacidadMaxima, precioPorNocheBase, id, descripcion, ciudad, nombre, tipoAlojamiento);
+                    new Casa(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, precioPorNocheBase, id, descripcion, ciudad, nombre, tipoAlojamiento);
             case APARTAMENTO ->
-                    new Apartamento(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, capacidadMaxima, precioPorNocheBase, id, descripcion, ciudad, nombre, tipoAlojamiento);
+                    new Apartamento(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, precioPorNocheBase, id, descripcion, ciudad, nombre, tipoAlojamiento);
             default -> throw new IllegalArgumentException("Tipo de alojamiento no válido");
         };
     }

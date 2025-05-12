@@ -18,8 +18,8 @@ public class Hotel extends Alojamiento{
     private int numeroEstrellas;
     private List<Habitacion> habitaciones;
 
-    public Hotel(boolean admiteMascotas, int numeroHabitaciones, int capacidadPersonas, List<ServiciosIncluidos> serviciosIncluidos, Image imagen, int capacidadMaxima, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
-        super(admiteMascotas, numeroHabitaciones, capacidadPersonas, serviciosIncluidos, imagen, capacidadMaxima, precioPorNoche, id, descripcion, ciudad, nombre, tipoAlojamiento);
+    public Hotel(boolean admiteMascotas, int numeroHabitaciones, int capacidadHuespedes, List<ServiciosIncluidos> serviciosIncluidos, String imagen, double precioPorNoche, String id, String descripcion, Ciudad ciudad, String nombre, TipoAlojamiento tipoAlojamiento) {
+        super(admiteMascotas, numeroHabitaciones, capacidadHuespedes, serviciosIncluidos, imagen, precioPorNoche, id, descripcion, ciudad, nombre, tipoAlojamiento);
         this.numeroEstrellas = 0;
         this.habitaciones = new ArrayList<>();
     }

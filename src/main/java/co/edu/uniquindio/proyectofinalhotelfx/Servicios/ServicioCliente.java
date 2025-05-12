@@ -16,6 +16,7 @@ public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
+    public final SesionCliente sesionCliente = SesionCliente.instancia();
 
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
@@ -38,8 +39,9 @@ public class ServicioCliente {
         clienteRepository.guardar(cliente);
 
         Notificacion.enviarNotificacion(correo,
-                "Su código de activación es "+ codigo,
-                "Código de validación de registro");
+                "Es codigo de verificación es " + codigo,
+                "Codigo de verifciación");
+
 
 
     }
@@ -79,7 +81,8 @@ public class ServicioCliente {
         }
 
         if (!telefono.matches("\\d{8,10}")) {
-            throw new Exception("El número de teléfono debe tener entre 8 y 10 dígitos");
+            throw new Exception("El número de teléfono debe tener entre 8" +
+                    " y 10 dígitos");
         }
 
         if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
@@ -87,7 +90,8 @@ public class ServicioCliente {
         }
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
-            throw new Exception("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+            throw new Exception("La contraseña debe tener al menos 8 caracteres," +
+                    " una mayúscula, una minúscula y un número");
         }
 
         if (!password.equals(confirmarPassword)) {
@@ -107,7 +111,7 @@ public class ServicioCliente {
             throw new Exception("Contraseña incorrecta");
         }
 
-        SesionCliente.instancia().setUsuario(cliente);
+        sesionCliente.setUsuario(cliente);
         return true;
     }
 

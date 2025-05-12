@@ -8,7 +8,7 @@ import lombok.Setter;
 
 public class SesionCliente {
     public static SesionCliente INSTANCIA;
-    private Cliente cliente;
+    public Cliente cliente;
     private SesionCliente() {
     }
 

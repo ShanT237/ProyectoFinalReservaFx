@@ -13,7 +13,7 @@
       <!-- Logo de la aplicación -->
       <ImageView fitHeight="120" fitWidth="250" preserveRatio="true">
          <image>
-            <Image url="@Imagenes/expediav2-703354-2927a7-654387.png" />
+            <Image url="@../../../../../../../Img/ImagenesAlojamientos/expediav2-703354-2927a7-654387.png" />
          </image>
       </ImageView>
 

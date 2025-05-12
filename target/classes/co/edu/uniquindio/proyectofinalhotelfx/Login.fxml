@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #fffaf0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.Login">
 
@@ -54,6 +55,9 @@
         <Hyperlink fx:id="linkRegistro" onAction="#irARegistro" style="-fx-text-fill: #4a7c91; -fx-underline: true;" text="¿No tienes cuenta? Regístrate" />
 
         <!-- Mensaje de error -->
-        <Label fx:id="lblMensajeError" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+        <Label fx:id="lblMensajeError" prefHeight="92.0" prefWidth="372.0" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;">
+         <font>
+            <Font size="6.0" />
+         </font></Label>
     </VBox>
 </AnchorPane>
