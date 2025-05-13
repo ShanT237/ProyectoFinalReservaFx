@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.GestionUsuariosAdmin">
+
+    <top>
+        <HBox style="-fx-background-color: #ecf0f1; -fx-padding: 15;" alignment="CENTER_LEFT">
+            <Label text="Gestión de Usuarios" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnAgregarUsuario" text="+ Nuevo Usuario" style="-fx-background-color: #9b59b6; -fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tblUsuarios">
+            <columns>
+                <TableColumn text="Nombre" prefWidth="150" />
+                <TableColumn text="Correo" prefWidth="200" />
+                <TableColumn text="Teléfono" prefWidth="120" />
+                <TableColumn text="Rol" prefWidth="100" />
+                <TableColumn text="Acciones" prefWidth="150" />
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
+
