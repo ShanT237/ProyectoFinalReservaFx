@@ -39,19 +39,45 @@ public class ClienteRepository   {
         return null;
     }
 
-    public void guardar(Cliente cliente) {
+    public void guardar(Cliente cliente) throws Exception {
+        // Validación para evitar contraseñas vacías
+        if (cliente.getPassword() == null || cliente.getPassword().isEmpty()) {
+            throw new Exception("La contraseña no puede estar vacía.");
+        }
+
+        // Validación para evitar correos y cédulas duplicados
+        Cliente clienteExistentePorCorreo = buscarPorCorreo(cliente.getCorreo());
+        if (clienteExistentePorCorreo != null) {
+            throw new Exception("Ya existe un cliente con ese correo.");
+        }
+
+        Cliente clienteExistentePorCedula = buscarPorCedula(cliente.getCedula());
+        if (clienteExistentePorCedula != null) {
+            throw new Exception("Ya existe un cliente con esa cédula.");
+        }
+
+        // Si no hay errores, agregar el cliente a la lista
         clientes.add(cliente);
+
+        // Guardar los datos si el cliente fue agregado correctamente
         guardarDatos();
     }
 
-    public void actualizar(Cliente clienteActualizado) {
+    public boolean actualizar(Cliente clienteActualizado) {
         for (int i = 0; i < clientes.size(); i++) {
-            if (clientes.get(i).getCedula().equals(clienteActualizado.getCedula())) {
-                clientes.set(i, clienteActualizado);
-                guardarDatos(); // Persistir después de actualizar
-                return;
+            Cliente actual = clientes.get(i);
+            if (actual.getCedula().equals(clienteActualizado.getCedula())) {
+                if (!actual.getPassword().equals(clienteActualizado.getPassword())) {
+                    throw new IllegalArgumentException("La contraseña no puede ser modificada de manera no autorizada.");
+                }
+                if (!actual.equals(clienteActualizado)) {
+                    clientes.set(i, clienteActualizado);
+                    return true; // Hubo cambios
+                }
+                return false; // No hubo cambios
             }
         }
+        return false;
     }
 
     public void eliminar(String cedula) {
@@ -87,6 +113,7 @@ public class ClienteRepository   {
         }
         return new ArrayList<>();
     }
+
 
 
 }

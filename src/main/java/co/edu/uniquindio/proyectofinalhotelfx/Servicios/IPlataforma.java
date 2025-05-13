@@ -15,7 +15,7 @@ public interface IPlataforma {
     /*
     /Metodos ADM
      */
-    public boolean loginAdm(String correo, String password);
+    public  boolean loginAdm(String correo, String password);
     public boolean loginCliente(String correo, String password) throws Exception;
     public void bloquearCliente(String idUsuario) throws Exception;
     public void verActividadesCliente(String idUsuario);
@@ -27,9 +27,15 @@ public interface IPlataforma {
 
     public void registrarReserva();
     public void registrarOferta();
-    public void registrarCliente(String nombre, String id, String telefono, String  email, String password, String confirmarPassword) throws Exception;
+    public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception;
 
-    public boolean validarCodigoVerificacion(String correo, String codigoIngresado);
+    public  boolean validarCodigoVerificacion(String correo, String codigoIngresado);
+    public void recuperarContrasena(String correo, String nuevaContrasena) throws Exception;
+
+    boolean existeUsuarioPorCorreo(String correo);
+    String generarCodigoVerificacion(String correo);
+    public void actualizarContrasena(String correo, String nuevaContrasena, String confirmarPassword, String codigoIngresado) throws Exception ;
+
 
 
 }

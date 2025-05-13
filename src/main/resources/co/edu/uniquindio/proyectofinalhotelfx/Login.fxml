@@ -49,7 +49,7 @@
         <Button onAction="#iniciarSesion" style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-pref-width: 160; -fx-pref-height: 32;" text="Ingresar" />
 
         <!-- Enlace recuperación -->
-        <Hyperlink fx:id="linkRecuperar" style="-fx-text-fill: #4a7c91; -fx-underline: true;" text="¿Olvidaste tu contraseña?" />
+        <Hyperlink fx:id="linkRecuperar" onAction="#irARecuperar" style=" -fx-text-fill: #4a7c91; -fx-underline: true;" text="¿Olvidaste tu contraseña?" />
 
         <!-- Enlace de registro -->
         <Hyperlink fx:id="linkRegistro" onAction="#irARegistro" style="-fx-text-fill: #4a7c91; -fx-underline: true;" text="¿No tienes cuenta? Regístrate" />

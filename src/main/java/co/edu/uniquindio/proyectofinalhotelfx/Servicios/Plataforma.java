@@ -3,9 +3,11 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
 import javafx.scene.image.Image;
 import lombok.Getter;
@@ -133,5 +135,23 @@ public class Plataforma implements IPlataforma {
         return servicioCliente.validarCodigoVerificacion(correo, codigoIngresado);
     }
 
+    @Override
+    public void recuperarContrasena(String correo, String nuevaContrasena) throws Exception {
+        servicioCliente.cambiarContrasena(correo, nuevaContrasena);
+    }
 
+    @Override
+    public boolean existeUsuarioPorCorreo(String correo) {
+        return servicioCliente.existeUsuarioPorCorreo(correo);
+    }
+
+    @Override
+    public String generarCodigoVerificacion(String correo) {
+        return servicioCliente.generarCodigoVerificacion(correo);
+    }
+
+    @Override
+    public void actualizarContrasena(String correo, String nuevaContrasena, String confirmarPassword, String codigoIngresado) throws Exception {
+        servicioCliente.actualizarContrasena(correo, nuevaContrasena, confirmarPassword, codigoIngresado);
+    }
 }

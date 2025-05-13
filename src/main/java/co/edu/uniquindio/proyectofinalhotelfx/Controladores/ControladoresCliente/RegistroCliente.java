@@ -62,6 +62,12 @@ public class RegistroCliente {
             String password = txtPassword.getText();
             String confirmarPassword = txtConfirmarPassword.getText();
 
+
+            if (password.isEmpty() || confirmarPassword.isEmpty()) {
+                mostrarError("La contraseña no puede estar vacía.");
+                return;
+            }
+
             ControladorPrincipal controladorPrincipal= ControladorPrincipal.getInstancia();
 
             controladorPrincipal.getPlataforma().registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);

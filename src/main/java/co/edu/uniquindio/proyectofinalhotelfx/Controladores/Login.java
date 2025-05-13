@@ -1,8 +1,5 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
-import co.edu.uniquindio.proyectofinalhotelfx.App;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,43 +9,48 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class Login {
 
-    @FXML private ResourceBundle resources;
-    @FXML private URL location;
-    @FXML private Hyperlink linkRecuperar;
-    @FXML private Label lblMensajeError;
-    @FXML private TextField txtCorreo;
-    @FXML private PasswordField txtPassword;
-
-    ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-    SesionCliente sesionCliente = SesionCliente.instancia();
-    SesionAdm sesionAdm = SesionAdm.instancia();
+    @FXML
+    private Hyperlink linkRegistro;
 
     @FXML
+    private Hyperlink linkRecuperar;
+
+    @FXML
+    private Label lblMensajeError;
+
+    @FXML
+    private TextField txtCorreo;
+
+    @FXML
+    private PasswordField txtPassword;
+
+    // Instancias necesarias (en el contexto de tu aplicación, ajusta según sea necesario)
+    ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
+    @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert linkRecuperar != null : "fx:id=\"linkRecuperar\" was not injected.";
-        assert lblMensajeError != null : "fx:id=\"lblMensajeError\" was not injected.";
-        assert txtCorreo != null : "fx:id=\"txtCorreo\" was not injected.";
-        assert txtPassword != null : "fx:id=\"txtPassword\" was not injected.";
+        assert linkRegistro != null : "fx:id=\"linkRegistro\" was not injected: check your FXML file 'Login.fxml'.";
+        assert linkRecuperar != null : "fx:id=\"linkRecuperar\" was not injected: check your FXML file 'Login.fxml'.";
+        assert lblMensajeError != null : "fx:id=\"lblMensajeError\" was not injected: check your FXML file 'Login.fxml'.";
+        assert txtCorreo != null : "fx:id=\"txtCorreo\" was not injected: check your FXML file 'Login.fxml'.";
+        assert txtPassword != null : "fx:id=\"txtPassword\" was not injected: check your FXML file 'Login.fxml'.";
+
     }
 
     @FXML
-    private void iniciarSesion(ActionEvent event) {
+    void iniciarSesion(ActionEvent event) {
         try {
             String correo = txtCorreo.getText().trim();
             String password = txtPassword.getText().trim();
 
+            // Validación de las credenciales y redirección
             if (controladorPrincipal.getPlataforma().loginAdm(correo, password)) {
                 mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
                 redirigirAHomeAdm();
@@ -65,46 +67,57 @@ public class Login {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
         }
     }
-    public void redirigirAHomeAdm() throws IOException {
+
+    @FXML
+    void irARegistro(ActionEvent actionEvent) throws IOException {
+        // Redirigir a la ventana de registro
+        mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/RegistroCliente.fxml", "Registro Cliente");
+    }
+
+    @FXML
+    void irARecuperar(ActionEvent actionEvent) throws IOException {
+        // Redirigir a la ventana de recuperación de contraseña
+        mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/RecuperarPassword.fxml", "Recuperar Contraseña");
+    }
+
+    // Método de redirección para Home Admin
+    private void redirigirAHomeAdm() throws IOException {
         mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/HomeAdmin.fxml", "BookYourStay - Home Admin");
     }
 
-    public void redirigirAHomeCliente() throws IOException {
+    // Método de redirección para Home Cliente
+    private void redirigirAHomeCliente() throws IOException {
         mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml", "BookYourStay - Home Cliente");
     }
 
-
+    // Método para mostrar una ventana específica
     private void mostrarVentana(String ruta, String tituloVentana) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
-        File archivoImagen = new File("Img/ImagenesApp/icon.png");
-        Image icono = new Image(archivoImagen.toURI().toString());
-        stage.getIcons().add(icono);
-        stage.setTitle(tituloVentana);
-        stage.setResizable(true);
         stage.setScene(scene);
+        stage.setTitle(tituloVentana);
+        stage.setResizable(false);
         stage.show();
     }
 
+    // Método para mostrar mensajes de error
     private void mostrarError(String mensaje) {
         lblMensajeError.setTextFill(Color.RED);
         lblMensajeError.setText(mensaje);
     }
 
+    // Método para mostrar mensajes de éxito
     private void mostrarMensaje(String mensaje) {
         lblMensajeError.setTextFill(Color.GREEN);
         lblMensajeError.setText(mensaje);
     }
 
+    // Limpiar los campos de texto y el mensaje de error
     private void limpiarCampos() {
         txtCorreo.clear();
         txtPassword.clear();
         lblMensajeError.setText("");
-    }
-
-    public void irARegistro(ActionEvent actionEvent) {
-
     }
 }
