@@ -10,13 +10,19 @@ import javafx.util.Duration;
 
 public class CodigoVerificacionPassword {
 
-    @FXML private PasswordField txtConfirmarContrasena;
-    @FXML private Label lblMensaje;
-    @FXML private Button btnCambiarContrasena;
-    @FXML private TextField txtCodigo;
-    @FXML private PasswordField txtNuevaContrasena;
+    @FXML
+    private PasswordField txtConfirmarContrasena;
+    @FXML
+    private Label lblMensaje;
+    @FXML
+    private Button btnCambiarContrasena;
+    @FXML
+    private TextField txtCodigo;
+    @FXML
+    private PasswordField txtNuevaContrasena;
 
-    private String correo;
+    private String correoUsuario;
+    private String codigoRecuperacion;
 
     @FXML
     void initialize() {
@@ -30,9 +36,9 @@ public class CodigoVerificacionPassword {
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.correoUsuario = correo;
+        this.codigoRecuperacion = ControladorPrincipal.getInstancia().getPlataforma().generarCodigoVerificacion(correo);
     }
-
 
     @FXML
     void cambiarContrasena(ActionEvent event) {
@@ -52,8 +58,13 @@ public class CodigoVerificacionPassword {
             return;
         }
 
-        if (correo == null || correo.isEmpty()) {
+        if (correoUsuario == null || correoUsuario.isEmpty()) {
             lblMensaje.setText("No se ha proporcionado un correo para recuperación.");
+            return;
+        }
+
+        if (!codigoIngresado.equals(codigoRecuperacion)) {
+            lblMensaje.setText("El código de verificación no es válido.");
             return;
         }
 
@@ -61,13 +72,13 @@ public class CodigoVerificacionPassword {
 
         try {
             // Primero verificamos si existe un código activo
-            if (!controlador.getPlataforma().existeUsuarioPorCorreo(correo)) {
+            if (!controlador.getPlataforma().existeUsuarioPorCorreo(correoUsuario)) {
                 lblMensaje.setText("No hay código de verificación activo. Por favor, solicite uno nuevo.");
                 return;
             }
 
             // Si existe un código activo, procedemos con la actualización
-            controlador.getPlataforma().actualizarContrasena(correo, nuevaContrasena, confirmar, codigoIngresado);
+            controlador.getPlataforma().actualizarContrasena(correoUsuario, nuevaContrasena, confirmar, codigoIngresado);
 
             lblMensaje.setStyle("-fx-text-fill: green;");
             lblMensaje.setText("Contraseña actualizada exitosamente.");
