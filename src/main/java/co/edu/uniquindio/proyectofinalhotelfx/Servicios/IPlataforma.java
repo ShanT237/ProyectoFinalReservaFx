@@ -30,10 +30,7 @@ public interface IPlataforma {
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception;
 
     public  boolean validarCodigoVerificacion(String correo, String codigoIngresado);
-    public void recuperarContrasena(String correo, String nuevaContrasena) throws Exception;
-
-    boolean existeUsuarioPorCorreo(String correo);
-    String generarCodigoVerificacion(String correo);
+    public void recuperarContrasena(String correo) throws Exception;
     public void actualizarContrasena(String correo, String nuevaContrasena, String confirmarPassword, String codigoIngresado) throws Exception ;
 
 

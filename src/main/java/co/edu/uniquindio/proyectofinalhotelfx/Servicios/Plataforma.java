@@ -136,18 +136,8 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void recuperarContrasena(String correo, String nuevaContrasena) throws Exception {
-        servicioCliente.cambiarContrasena(correo, nuevaContrasena);
-    }
-
-    @Override
-    public boolean existeUsuarioPorCorreo(String correo) {
-        return servicioCliente.existeUsuarioPorCorreo(correo);
-    }
-
-    @Override
-    public String generarCodigoVerificacion(String correo) {
-        return servicioCliente.generarCodigoVerificacion(correo);
+    public void recuperarContrasena(String correo) throws Exception {
+        servicioCliente.recuperarContrasena(correo);
     }
 
     @Override

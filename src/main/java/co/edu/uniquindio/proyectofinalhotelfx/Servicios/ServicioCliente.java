@@ -31,21 +31,20 @@ public class ServicioCliente {
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
         validarDatos(nombre, cedula, telefono, correo, password, confirmarPassword);
 
-        int codigo = crearCodigo();
+        int codigo = generarCodigoVerificacion(correo);
         codigosVerificacion.put(correo, String.valueOf(codigo));
 
         if (!password.equals(confirmarPassword)) {
             throw new Exception("Las contraseñas no coinciden");
         }
 
+        enviarCorreo(String.valueOf(correo), String.valueOf(codigo));
         Cliente cliente = crearCliente(nombre, cedula, telefono, codigo, correo, password, confirmarPassword);
         cliente.setActivo(false);
         clienteRepository.guardar(cliente);
 
         System.out.println(codigo);
-        /*Notificacion.enviarNotificacion(correo,
-                "Es código de verificación es " + codigo,
-                "Código de verificación");*/
+
     }
 
     public String generarCodigoRecuperacion(String correo) throws Exception {
@@ -185,13 +184,7 @@ public class ServicioCliente {
         return cliente;
     }
 
-    public void cambiarContrasena(String correo, String nuevaContrasena) throws Exception {
-        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-        if (cliente == null) {
-            throw new Exception("Correo no registrado");
-        }
-        cliente.setPassword(nuevaContrasena);
-        clienteRepository.actualizar(cliente);
+    public void cambiarContrasena(String correo) throws Exception {
     }
 
     public List<Cliente> listarClientes() {
@@ -298,10 +291,39 @@ public class ServicioCliente {
         return cliente != null;
     }
 
-    public String generarCodigoVerificacion(String correo) {
+    public int generarCodigoVerificacion(String correo) {
         int codigo = crearCodigo();
         codigosVerificacion.put(correo, String.valueOf(codigo));
-        return String.valueOf(codigo);
+        return codigo;
     }
+
+    public void recuperarContrasena(String correo) throws Exception {
+        if (correo == null || correo.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios");
+        }
+        if(existeUsuarioPorCorreo(correo)){
+            throw new Exception("El correo no existe");
+        }
+
+        String codigo = generarCodigoRecuperacion(correo);
+        enviarCorreo(correo, codigo);
+
+
+    }
+
+    public void enviarCorreo(String correo, String codigo) throws Exception{
+
+        try {
+            Notificacion.enviarNotificacion(
+                    correo,
+                    "Su codigo de verificación es " + codigo, "Su codigo de verificación " + codigo
+            );
+        } catch (Exception e) {
+            throw new Exception("Error al enviar el correo: " + e.getMessage());
+        }
+
+    }
+
+
 }
 
