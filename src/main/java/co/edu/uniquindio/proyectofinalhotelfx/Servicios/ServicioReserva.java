@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 import lombok.Builder;
@@ -59,4 +61,21 @@ public class ServicioReserva {
         reserva.getAlojamiento().getReviews().add(reserva.getReview());
         reservaRepository.actualizar(reserva);
     }
+
+    public void agendarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
+        if (cliente == null || alojamiento == null) {
+            throw new Exception("Cliente o alojamiento no válido");
+        }
+
+        Reserva reserva = new Reserva();
+        reserva.setCodigo(UUID.randomUUID());
+        reserva.setCliente(cliente);
+        reserva.setAlojamiento(alojamiento);
+        reserva.setEstadoReserva(true);
+        reserva.setFechaReserva(java.time.LocalDate.now());
+
+        reservaRepository.guardar(reserva);
+    }
+
+
 }

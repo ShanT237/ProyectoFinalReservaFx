@@ -33,7 +33,7 @@
     <VBox spacing="25" alignment="CENTER"
           AnchorPane.topAnchor="80" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.bottomAnchor="20">
 
-        <Label text="Encuentra tu alojamiento ideal frente al mar"
+        <Label text="Encuentra tu alojamiento ideal"
                style="-fx-font-size: 20px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;"/>
 
         <!-- Barra de búsqueda -->

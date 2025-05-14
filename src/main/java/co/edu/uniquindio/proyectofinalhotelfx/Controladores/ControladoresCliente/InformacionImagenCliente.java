@@ -1,6 +1,8 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +29,16 @@ public class InformacionImagenCliente {
     @FXML private VBox contenedorPrincipal;
 
     private Alojamiento alojamiento;
+    private SesionUsuario sesionUsuario = SesionUsuario.instancia();
+   
+
+    public void setDatos(Alojamiento alojamiento) {
+        this.alojamiento = alojamiento;
+        cargarDatosEnPantalla(); // Llenas los labels, etc.
+    }
+
+    private void cargarDatosEnPantalla() {
+    }
 
     @FXML
     void initialize() {
@@ -56,33 +68,67 @@ public class InformacionImagenCliente {
     }
 
     private void agendarAlojamiento() {
-        // 1. Mostrar mensaje de confirmación
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Acción requerida");
-        alert.setHeaderText(null);
-        alert.setContentText("Por favor inicia sesión para agendar este alojamiento");
+            if(sesionUsuario.getUsuario() == null) {
+                // 1. Mostrar mensaje de confirmación
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Acción requerida");
+                alert.setHeaderText(null);
+                alert.setContentText("Por favor inicia sesión para agendar este alojamiento");
 
-        // 2. Esperar a que el usuario cierre el mensaje
-        alert.showAndWait();
+                // 2. Esperar a que el usuario cierre el mensaje
+                alert.showAndWait();
 
-        // 3. Redirigir al login después de cerrar el mensaje
+                // 3. Redirigir al login después de cerrar el mensaje
+                try {
+                    // Cerrar la ventana actual de detalles
+                    Stage stageActual = (Stage) btnAgendar.getScene().getWindow();
+                    stageActual.close();
+
+                    // Abrir la ventana de Login
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Login.fxml"));
+                    Parent root = loader.load();
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Iniciar Sesión");
+                    stage.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Error al abrir la ventana de Login: " + e.getMessage());
+                }
+            }else{
+                agendarReserva();
+            }
+    }
+
+    private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle("Alerta");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
+    @FXML
+    private void agendarReserva() {
         try {
-            // Cerrar la ventana actual de detalles
-            Stage stageActual = (Stage) btnAgendar.getScene().getWindow();
-            stageActual.close();
-
-            // Abrir la ventana de Login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/co/edu/uniquindio/proyectofinalhotelfx/AgendarReservaCliente.fxml"));
             Parent root = loader.load();
+
+            AgendarReservaCliente controller = loader.getController();
+            controller.setDatos(alojamiento);  // LE PASAS AMBOS
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Iniciar Sesión");
+            stage.setTitle("Agendar reserva");
             stage.show();
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error al abrir la ventana de Login: " + e.getMessage());
+            mostrarAlerta("No se pudo cargar la ventana de agendar reserva", Alert.AlertType.ERROR);
         }
     }
+
 }

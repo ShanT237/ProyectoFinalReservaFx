@@ -19,5 +19,11 @@ public class Cliente extends Usuario implements Serializable {
     private BilleteraVirtual billetera;
     private boolean activo;
 
-
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "codigoActivacion=" + codigoActivacion +
+                ", activo=" + activo +
+                '}';
+    }
 }

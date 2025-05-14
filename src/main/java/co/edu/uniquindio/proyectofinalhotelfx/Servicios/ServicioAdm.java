@@ -2,14 +2,11 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Review;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionAdm;
-import javafx.scene.image.Image;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import lombok.Builder;
 
 import java.util.List;
@@ -20,17 +17,20 @@ public class ServicioAdm {
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioReserva servicioReserva;
     private final ServicioCliente servicioCliente;
-    public final SesionAdm sesionAdm = SesionAdm.instancia();
 
-
-    public boolean loginAdm(String correo, String password){
-        if(sesionAdm.getUsuario().getCorreo().equals(correo) && sesionAdm.getUsuario().getPassword().equals(password)){
-            return true;
+    public Administrador loginAdm(String correo, String password){
+        if(correo.equals("shanrt@gmail.com") &&  password.equals("1234password") ){
+            return Administrador.builder()
+                    .nombre("Santiago")
+                    .cedula("12323")
+                    .telefono("3216549870")
+                    .correo("shanrt@gmail.com")
+                    .password("1234password")
+                    .build();
         }
-        return false;
+
+        return null;
     }
-
-
 
     /*
     Metodos gestionar usuario

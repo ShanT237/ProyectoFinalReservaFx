@@ -45,21 +45,7 @@ public class RecuperarPassword implements Initializable {
             }
 
             ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-
-            if (!controladorPrincipal.getPlataforma().existeUsuarioPorCorreo(correo)) {
-                mostrarError("El correo no está registrado.");
-                return;
-            }
-
-            // Genera el código de verificación
-            String codigo = controladorPrincipal.getPlataforma().generarCodigoVerificacion(correo);
-
-            // Envía el código al correo
-            Notificacion.enviarNotificacion(
-                    correo,
-                    "Tu código de verificación es: " + codigo,
-                    "Código de verificación"
-            );
+            controladorPrincipal.getPlataforma().recuperarContrasena(correo);
 
             mostrarMensaje("Se ha enviado un código de verificación a tu correo.");
             limpiarCampos();

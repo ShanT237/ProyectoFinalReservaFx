@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +8,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 
 public class Reserva {
 
@@ -26,8 +26,10 @@ public class Reserva {
     private Factura factura;
     private String qrCode;
     private Review review;
+    private LocalDate fechaReserva;
 
-    public Reserva(UUID codigo, Cliente cliente, Alojamiento alojamiento, LocalDateTime fechaInicio, LocalDateTime fechaFin, int numeroHuespedes, double total, LocalDateTime fechaCreacion, boolean estadoReserva, Factura factura, String qrCode) {
+
+    public Reserva(UUID codigo, Cliente cliente, Alojamiento alojamiento, LocalDateTime fechaInicio, LocalDateTime fechaFin, int numeroHuespedes, double total, LocalDateTime fechaCreacion, boolean estadoReserva, Factura factura, String qrCode, LocalDate fechaReserva) {
         this.codigo = codigo;
         this.cliente = cliente;
         this.alojamiento = alojamiento;
@@ -40,5 +42,6 @@ public class Reserva {
         this.factura = factura;
         this.qrCode = qrCode;
         review = null;
+        this.fechaReserva = fechaReserva;
     }
 }

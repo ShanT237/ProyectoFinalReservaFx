@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.AgendarReservaCliente"
+            prefWidth="800" prefHeight="600">
+
+    <VBox alignment="TOP_CENTER" spacing="20">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
+        <Label text="Agendar Reserva" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+        <GridPane hgap="10" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" />
+                <ColumnConstraints halignment="LEFT" />
+            </columnConstraints>
+
+            <!-- Info del alojamiento -->
+            <Label text="Nombre del Alojamiento:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label fx:id="nombreLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Ciudad:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="ciudadLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Capacidad Máxima:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="capacidadLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Precio por Noche:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="precioLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Descripción:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextArea fx:id="descripcionArea" editable="false" wrapText="true" prefRowCount="2" prefWidth="300" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <!-- Reserva -->
+            <Label text="Fecha Inicio:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <DatePicker fx:id="fechaInicioPicker" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="Fecha Fin:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <DatePicker fx:id="fechaFinPicker" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+            <Label text="Número de Huéspedes:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+            <Spinner fx:id="huespedesSpinner" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+            <Label text="Total a Pagar:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+            <Label fx:id="totalLabel" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <!-- Botón confirmar -->
+        <Button text="Confirmar Reserva" fx:id="confirmarBtn" onAction="#confirmarReserva"/>
+    </VBox>
+</AnchorPane>

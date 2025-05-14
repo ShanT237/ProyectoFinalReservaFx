@@ -1,9 +1,9 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,12 +15,11 @@ public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
-    public final SesionCliente sesionCliente = SesionCliente.instancia();
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
     private static final long CODIGO_EXPIRACION = 600000; // 10 minutos
-    private final Map<String, Map.Entry<String, Long>> codigosRecuperacionConTiempo = new HashMap<>();
+
 
 
     public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
@@ -31,20 +30,20 @@ public class ServicioCliente {
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
         validarDatos(nombre, cedula, telefono, correo, password, confirmarPassword);
 
-        int codigo = crearCodigo();
+        int codigo = generarCodigoVerificacion(correo);
         codigosVerificacion.put(correo, String.valueOf(codigo));
 
         if (!password.equals(confirmarPassword)) {
             throw new Exception("Las contraseñas no coinciden");
         }
 
+        enviarCorreo(String.valueOf(correo), String.valueOf(codigo));
         Cliente cliente = crearCliente(nombre, cedula, telefono, codigo, correo, password, confirmarPassword);
         cliente.setActivo(false);
         clienteRepository.guardar(cliente);
 
-        Notificacion.enviarNotificacion(correo,
-                "Es código de verificación es " + codigo,
-                "Código de verificación");
+        System.out.println(codigo);
+
     }
 
     public String generarCodigoRecuperacion(String correo) throws Exception {
@@ -56,8 +55,7 @@ public class ServicioCliente {
         String codigoStr = String.valueOf(codigo);
 
         // Almacenar el código con su tiempo de generación
-        codigosRecuperacionConTiempo.put(correo,
-                new AbstractMap.SimpleEntry<>(codigoStr, System.currentTimeMillis()));
+        codigosVerificacion.put(correo, codigoStr);
 
         // Enviar el código por correo
         try {
@@ -67,7 +65,7 @@ public class ServicioCliente {
                     "Código de Recuperación de Contraseña"
             );
         } catch (Exception e) {
-            codigosRecuperacionConTiempo.remove(correo);
+            codigosVerificacion.remove(correo);
             throw new Exception("Error al enviar el código de verificación: " + e.getMessage());
         }
 
@@ -131,7 +129,7 @@ public class ServicioCliente {
         }
     }
 
-    public boolean iniciarSesion(String correo, String password) throws Exception {
+    public Cliente iniciarSesion(String correo, String password) throws Exception {
         verificarDatosSesion(correo, password);
         Cliente cliente = clienteRepository.buscarPorCorreo(correo);
 
@@ -147,8 +145,7 @@ public class ServicioCliente {
             throw new Exception("Debe validar su estado de cuenta.");
         }
 
-        sesionCliente.setUsuario(cliente);
-        return true;
+        return cliente;
     }
 
     public void verificarDatosSesion(String correo, String password) throws Exception {
@@ -185,13 +182,7 @@ public class ServicioCliente {
         return cliente;
     }
 
-    public void cambiarContrasena(String correo, String nuevaContrasena) throws Exception {
-        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-        if (cliente == null) {
-            throw new Exception("Correo no registrado");
-        }
-        cliente.setPassword(nuevaContrasena);
-        clienteRepository.actualizar(cliente);
+    public void cambiarContrasena(String correo) throws Exception {
     }
 
     public List<Cliente> listarClientes() {
@@ -214,22 +205,16 @@ public class ServicioCliente {
         }
 
         // Validar datos de la contraseña
-        validarDatosActualizarContraseña(codigoIngresado, nuevaContrasena, confirmarPassword);
+        //validarDatosActualizarContraseña(codigoIngresado, nuevaContrasena, confirmarPassword);
 
         // Verificar si existe un código para este correo
-        Map.Entry<String, Long> codigoInfo = codigosRecuperacionConTiempo.get(correo);
+        String codigoInfo = codigosVerificacion.get(correo);
         if (codigoInfo == null) {
             throw new Exception("No hay un código de verificación activo para este correo. Por favor, solicite uno nuevo.");
         }
+            codigosVerificacion.remove(correo);
 
-        // Verificar si el código ha expirado
-        if (System.currentTimeMillis() - codigoInfo.getValue() > CODIGO_EXPIRACION) {
-            codigosRecuperacionConTiempo.remove(correo);
-            throw new Exception("El código de verificación ha expirado. Por favor, solicite uno nuevo.");
-        }
-
-        // Verificar si el código es correcto
-        if (!codigoInfo.getKey().equals(codigoIngresado)) {
+        if (!codigoInfo.equals(codigoIngresado)) {
             throw new Exception("El código es incorrecto. Por favor, verifique e intente nuevamente.");
         }
 
@@ -249,18 +234,13 @@ public class ServicioCliente {
             cliente.setPassword(nuevaContrasena);
             clienteRepository.actualizar(cliente);
 
-            // Actualizar sesión si es necesario
-            if (SesionCliente.instancia().cliente != null &&
-                    SesionCliente.instancia().cliente.getCorreo().equals(correo)) {
-                SesionCliente.instancia().cliente.setPassword(nuevaContrasena);
-            }
-
             // Limpiar el código usado
-            codigosRecuperacionConTiempo.remove(correo);
+            codigosVerificacion.remove(correo);
 
         } catch (Exception e) {
             throw new Exception("Error al actualizar la contraseña: " + e.getMessage());
         }
+
     }
 
 
@@ -277,7 +257,8 @@ public class ServicioCliente {
 
 
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
-        String codigoCorrecto = codigosVerificacion.get(correo);
+        System.out.println("validarCodigoVerificacion");
+        String codigoCorrecto = codigosVerificacion.get(correo); //Hashmap
 
         if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {
             try {
@@ -292,15 +273,49 @@ public class ServicioCliente {
         return false;
     }
 
+
+
+
+    public void recuperarContrasena(String correo) throws Exception {
+        if (correo == null || correo.isEmpty()) {
+            throw new Exception("Todos los campos son obligatorios");
+        }
+        if(!existeUsuarioPorCorreo(correo)){
+            throw new Exception("El correo no existe");
+        }
+
+        String codigo = generarCodigoRecuperacion(correo);
+        enviarCorreo(correo, codigo);
+
+
+    }
+
+    /*
+    Bien
+     */
+    public void enviarCorreo(String correo, String codigo) throws Exception{
+
+        try {
+            Notificacion.enviarNotificacion(
+                    correo,
+                    "Su codigo de verificación es " + codigo, "Su codigo de verificación " + codigo
+            );
+        } catch (Exception e) {
+            throw new Exception("Error al enviar el correo: " + e.getMessage());
+        }
+
+    }
+    public int generarCodigoVerificacion(String correo) {
+        int codigo = crearCodigo();
+        codigosVerificacion.put(correo, String.valueOf(codigo));
+        return codigo;
+    }
+
     public boolean existeUsuarioPorCorreo(String correo) {
         Cliente cliente = clienteRepository.buscarPorCorreo(correo);
         return cliente != null;
     }
 
-    public String generarCodigoVerificacion(String correo) {
-        int codigo = crearCodigo();
-        codigosVerificacion.put(correo, String.valueOf(codigo));
-        return String.valueOf(codigo);
-    }
+
 }
 

@@ -7,29 +7,27 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SesionAdm {
-    private static SesionAdm INSTANCIA;
-    public Administrador usuario;
+public class SesionUsuario {
+    private static SesionUsuario INSTANCIA;
+    public Usuario usuario;
 
-    private SesionAdm() { }
+    private SesionUsuario() { }
 
-    public static SesionAdm instancia() {
+    public static SesionUsuario instancia() {
         if (INSTANCIA == null) {
-            INSTANCIA = new SesionAdm();
+            INSTANCIA = new SesionUsuario();
         }
         return INSTANCIA;
     }
 
-    public void iniciarSesion(Administrador admin) {
-
+    public void iniciarSesion(Usuario admin) {
         this.usuario = admin;
-        System.out.println("Usuario: " + admin.getNombre());
     }
 
     public void cerrarSesion() {
         this.usuario = null;
     }
-    public Administrador getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 

@@ -56,7 +56,7 @@ public class GestionAlojamientosAdmin {
     private TableView<Alojamiento> tblAlojamientos;
 
     ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-    private final ObservableList<Alojamiento> listaAlojamientos = FXCollections.observableArrayList();
+    private ObservableList<Alojamiento> listaAlojamientos = FXCollections.observableArrayList();
 
     @FXML
     void initialize() {
@@ -81,6 +81,8 @@ public class GestionAlojamientosAdmin {
     }
 
     public void actualizarTabla() {
+        listaAlojamientos.setAll(ControladorPrincipal.getInstancia().getPlataforma().getServiciosAlojamiento().getAlojamientoRepository().obtenerTodos());
+        tblAlojamientos.setItems(listaAlojamientos);
         tblAlojamientos.refresh();
     }
 
