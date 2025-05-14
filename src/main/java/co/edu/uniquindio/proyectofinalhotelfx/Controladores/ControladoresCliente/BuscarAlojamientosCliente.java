@@ -2,8 +2,10 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioReserva;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +38,12 @@ public class BuscarAlojamientosCliente {
             .getAlojamientoRepository()
             .obtenerTodos();
     private final ObservableList<Alojamiento> alojamientos = FXCollections.observableArrayList(alojamientosList);
+
+    private Cliente clienteActual;
+
+    public void setCliente(Cliente cliente) {
+        this.clienteActual = cliente;
+    }
 
     @FXML
     void initialize() {
@@ -87,13 +95,21 @@ public class BuscarAlojamientosCliente {
     }
 
     private VBox crearTarjetaAlojamiento(Alojamiento alojamiento) {
+        // Contenedor principal de la tarjeta
         VBox tarjeta = new VBox(10);
-        tarjeta.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: #f9f9f9;");
+        tarjeta.setStyle("""
+        -fx-padding: 10;
+        -fx-border-color: #ccc;
+        -fx-border-radius: 10;
+        -fx-background-color: #f9f9f9;
+    """);
         tarjeta.setPrefWidth(500);
 
+        // Contenedor del contenido (imagen + detalles)
         HBox contenido = new HBox(10);
         contenido.setStyle("-fx-alignment: center-left;");
 
+        // Imagen del alojamiento
         ImageView imagenView = new ImageView();
         File archivoImagen = new File(alojamiento.getImagen());
 
@@ -108,13 +124,16 @@ public class BuscarAlojamientosCliente {
         imagenView.setFitHeight(100);
         imagenView.setPreserveRatio(true);
 
+        // Evento: click sobre la imagen
         imagenView.setOnMouseClicked(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/InformacionImagenCliente.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                        "/co/edu/uniquindio/proyectofinalhotelfx/InformacionImagenCliente.fxml"));
                 Parent root = loader.load();
 
                 InformacionImagenCliente controller = loader.getController();
-                controller.setAlojamiento(alojamiento);
+                controller.setDatos(clienteActual, alojamiento);
+                controller.setAlojamiento(alojamiento); // PASAS EL CLIENTE
 
                 Stage stage = new Stage();
                 stage.getIcons().add(new Image(new File("Img/ImagenesApp/icon.png").toURI().toString()));
@@ -128,20 +147,24 @@ public class BuscarAlojamientosCliente {
             }
         });
 
+        // Detalles del alojamiento
         VBox detalles = new VBox(5);
-        detalles.getChildren().addAll(
-                new Label(alojamiento.getNombre()) {{
-                    setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-                }},
-                new Label(alojamiento.getCiudad().name()),
-                new Label(String.format("%.2f COP por noche", alojamiento.getPrecioPorNocheBase()))
-        );
 
+        Label nombreLabel = new Label(alojamiento.getNombre());
+        nombreLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        Label ciudadLabel = new Label(alojamiento.getCiudad().name());
+        Label precioLabel = new Label(String.format("%.2f COP por noche", alojamiento.getPrecioPorNocheBase()));
+
+        detalles.getChildren().addAll(nombreLabel, ciudadLabel, precioLabel);
+
+        // Ensamblar tarjeta
         contenido.getChildren().addAll(imagenView, detalles);
         tarjeta.getChildren().add(contenido);
 
         return tarjeta;
     }
+
 
     public boolean verificarDatos(String precioTexto) {
         if (!precioTexto.isEmpty()) {
@@ -172,4 +195,8 @@ public class BuscarAlojamientosCliente {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
+
+    private final ServicioReserva servicioReserva = ControladorPrincipal.getInstancia()
+            .getPlataforma().getServicioReserva();
+
 }

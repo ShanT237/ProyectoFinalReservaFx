@@ -26,4 +26,6 @@ public class SesionCliente {
     public void cerrarSesion() {
         cliente = null;
     }
+
+
 }

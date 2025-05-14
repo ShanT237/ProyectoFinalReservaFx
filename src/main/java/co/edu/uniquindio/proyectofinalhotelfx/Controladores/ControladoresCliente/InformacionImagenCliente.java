@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +28,17 @@ public class InformacionImagenCliente {
     @FXML private VBox contenedorPrincipal;
 
     private Alojamiento alojamiento;
+    private Cliente clienteActual;
+   
+
+    public void setDatos(Cliente cliente, Alojamiento alojamiento) {
+        this.clienteActual = cliente;
+        this.alojamiento = alojamiento;
+        cargarDatosEnPantalla(); // Llenas los labels, etc.
+    }
+
+    private void cargarDatosEnPantalla() {
+    }
 
     @FXML
     void initialize() {
@@ -85,4 +97,34 @@ public class InformacionImagenCliente {
             System.err.println("Error al abrir la ventana de Login: " + e.getMessage());
         }
     }
+
+    private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle("Alerta");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
+    @FXML
+    private void agendarReserva() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/co/edu/uniquindio/proyectofinalhotelfx/AgendarReservaCliente.fxml"));
+            Parent root = loader.load();
+
+            AgendarReservaCliente controller = loader.getController();
+            controller.setDatos(clienteActual, alojamiento);  // LE PASAS AMBOS
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Agendar reserva");
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("No se pudo cargar la ventana de agendar reserva", Alert.AlertType.ERROR);
+        }
+    }
+
 }
