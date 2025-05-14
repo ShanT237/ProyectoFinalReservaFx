@@ -54,8 +54,13 @@ public class PlataformaTest {
     }
 
     @Test
-    public void registrarAlojamientoTest(){}
+    public void crearAlojamientoTest(){
+        
+        
+    }
 
+    @Test
+    public void registrarAlojamientoTest(){}
 
 
     @Test
