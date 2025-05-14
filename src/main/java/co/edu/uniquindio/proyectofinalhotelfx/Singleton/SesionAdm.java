@@ -21,9 +21,7 @@ public class SesionAdm {
     }
 
     public void iniciarSesion(Administrador admin) {
-
         this.usuario = admin;
-        System.out.println("Usuario: " + admin.getNombre());
     }
 
     public void cerrarSesion() {

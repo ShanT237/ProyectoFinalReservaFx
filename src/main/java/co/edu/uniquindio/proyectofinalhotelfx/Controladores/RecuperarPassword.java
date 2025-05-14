@@ -53,13 +53,14 @@ public class RecuperarPassword implements Initializable {
 
             // Genera el código de verificación
             String codigo = controladorPrincipal.getPlataforma().generarCodigoVerificacion(correo);
+            System.out.println(codigo);
 
             // Envía el código al correo
-            Notificacion.enviarNotificacion(
+            /*Notificacion.enviarNotificacion(
                     correo,
                     "Tu código de verificación es: " + codigo,
                     "Código de verificación"
-            );
+            );*/
 
             mostrarMensaje("Se ha enviado un código de verificación a tu correo.");
             limpiarCampos();

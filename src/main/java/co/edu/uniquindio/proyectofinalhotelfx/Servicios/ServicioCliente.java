@@ -20,7 +20,7 @@ public class ServicioCliente {
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
     private static final long CODIGO_EXPIRACION = 600000; // 10 minutos
-    private final Map<String, Map.Entry<String, Long>> codigosRecuperacionConTiempo = new HashMap<>();
+    //private final Map<String, Map.Entry<String, Long>> codigosRecuperacionConTiempo = new HashMap<>();
 
 
     public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
@@ -42,9 +42,10 @@ public class ServicioCliente {
         cliente.setActivo(false);
         clienteRepository.guardar(cliente);
 
-        Notificacion.enviarNotificacion(correo,
+        System.out.println(codigo);
+        /*Notificacion.enviarNotificacion(correo,
                 "Es código de verificación es " + codigo,
-                "Código de verificación");
+                "Código de verificación");*/
     }
 
     public String generarCodigoRecuperacion(String correo) throws Exception {
@@ -56,8 +57,7 @@ public class ServicioCliente {
         String codigoStr = String.valueOf(codigo);
 
         // Almacenar el código con su tiempo de generación
-        codigosRecuperacionConTiempo.put(correo,
-                new AbstractMap.SimpleEntry<>(codigoStr, System.currentTimeMillis()));
+        codigosVerificacion.put(correo, codigoStr);
 
         // Enviar el código por correo
         try {
@@ -67,7 +67,7 @@ public class ServicioCliente {
                     "Código de Recuperación de Contraseña"
             );
         } catch (Exception e) {
-            codigosRecuperacionConTiempo.remove(correo);
+            codigosVerificacion.remove(correo);
             throw new Exception("Error al enviar el código de verificación: " + e.getMessage());
         }
 
@@ -214,22 +214,22 @@ public class ServicioCliente {
         }
 
         // Validar datos de la contraseña
-        validarDatosActualizarContraseña(codigoIngresado, nuevaContrasena, confirmarPassword);
+        //validarDatosActualizarContraseña(codigoIngresado, nuevaContrasena, confirmarPassword);
 
         // Verificar si existe un código para este correo
-        Map.Entry<String, Long> codigoInfo = codigosRecuperacionConTiempo.get(correo);
+        String codigoInfo = codigosVerificacion.get(correo);
         if (codigoInfo == null) {
             throw new Exception("No hay un código de verificación activo para este correo. Por favor, solicite uno nuevo.");
         }
 
         // Verificar si el código ha expirado
-        if (System.currentTimeMillis() - codigoInfo.getValue() > CODIGO_EXPIRACION) {
-            codigosRecuperacionConTiempo.remove(correo);
-            throw new Exception("El código de verificación ha expirado. Por favor, solicite uno nuevo.");
-        }
+        //if (System.currentTimeMillis() - codigoInfo.getValue() > CODIGO_EXPIRACION) {
+            codigosVerificacion.remove(correo);
+        //    throw new Exception("El código de verificación ha expirado. Por favor, solicite uno nuevo.");
+        //}
 
         // Verificar si el código es correcto
-        if (!codigoInfo.getKey().equals(codigoIngresado)) {
+        if (!codigoInfo.equals(codigoIngresado)) {
             throw new Exception("El código es incorrecto. Por favor, verifique e intente nuevamente.");
         }
 
@@ -256,7 +256,7 @@ public class ServicioCliente {
             }
 
             // Limpiar el código usado
-            codigosRecuperacionConTiempo.remove(correo);
+            codigosVerificacion.remove(correo);
 
         } catch (Exception e) {
             throw new Exception("Error al actualizar la contraseña: " + e.getMessage());
@@ -277,6 +277,7 @@ public class ServicioCliente {
 
 
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
+        System.out.println("validarCodigoVerificacion");
         String codigoCorrecto = codigosVerificacion.get(correo);
 
         if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {

@@ -22,7 +22,6 @@ public class CodigoVerificacionPassword {
     private PasswordField txtNuevaContrasena;
 
     private String correoUsuario;
-    private String codigoRecuperacion;
 
     @FXML
     void initialize() {
@@ -37,7 +36,6 @@ public class CodigoVerificacionPassword {
 
     public void setCorreo(String correo) {
         this.correoUsuario = correo;
-        this.codigoRecuperacion = ControladorPrincipal.getInstancia().getPlataforma().generarCodigoVerificacion(correo);
     }
 
     @FXML
@@ -63,21 +61,12 @@ public class CodigoVerificacionPassword {
             return;
         }
 
-        if (!codigoIngresado.equals(codigoRecuperacion)) {
-            lblMensaje.setText("El código de verificación no es válido.");
-            return;
-        }
-
         ControladorPrincipal controlador = ControladorPrincipal.getInstancia();
 
         try {
-            // Primero verificamos si existe un código activo
-            if (!controlador.getPlataforma().existeUsuarioPorCorreo(correoUsuario)) {
-                lblMensaje.setText("No hay código de verificación activo. Por favor, solicite uno nuevo.");
-                return;
-            }
 
             // Si existe un código activo, procedemos con la actualización
+            System.out.println(correoUsuario);
             controlador.getPlataforma().actualizarContrasena(correoUsuario, nuevaContrasena, confirmar, codigoIngresado);
 
             lblMensaje.setStyle("-fx-text-fill: green;");

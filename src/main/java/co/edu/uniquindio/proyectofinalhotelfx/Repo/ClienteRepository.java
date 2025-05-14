@@ -64,17 +64,22 @@ public class ClienteRepository   {
     }
 
     public boolean actualizar(Cliente clienteActualizado) {
+        System.out.println("actualizar");
         for (int i = 0; i < clientes.size(); i++) {
             Cliente actual = clientes.get(i);
+            System.out.println("for cliente");
             if (actual.getCedula().equals(clienteActualizado.getCedula())) {
+                System.out.println("Existe un cliente");
                 if (!actual.getPassword().equals(clienteActualizado.getPassword())) {
                     throw new IllegalArgumentException("La contraseña no puede ser modificada de manera no autorizada.");
                 }
-                if (!actual.equals(clienteActualizado)) {
+                //if (!actual.equals(clienteActualizado)) {
                     clientes.set(i, clienteActualizado);
+                    System.out.println(clientes);
+                    guardarDatos();
                     return true; // Hubo cambios
-                }
-                return false; // No hubo cambios
+                //}
+                //return false; // No hubo cambios
             }
         }
         return false;
