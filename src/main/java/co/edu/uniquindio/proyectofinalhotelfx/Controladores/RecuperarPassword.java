@@ -45,7 +45,7 @@ public class RecuperarPassword implements Initializable {
             }
 
             ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-            ControladorPrincipal.getInstancia().getPlataforma().recuperarContrasena(correo);
+            controladorPrincipal.getPlataforma().recuperarContrasena(correo);
 
             mostrarMensaje("Se ha enviado un código de verificación a tu correo.");
             limpiarCampos();
