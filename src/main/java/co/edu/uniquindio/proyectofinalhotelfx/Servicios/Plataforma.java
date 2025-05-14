@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
@@ -66,17 +67,12 @@ public class Plataforma implements IPlataforma {
 
     }
 
-
-
-    public boolean loginAdm(String correo, String contrasena){
+    public Administrador loginAdm(String correo, String contrasena){
         return servicioAdm.loginAdm(correo,contrasena);
-
     }
 
-
-
     @Override
-    public boolean loginCliente(String correo, String password) throws Exception {
+    public Cliente loginCliente(String correo, String password) throws Exception {
         return servicioCliente.iniciarSesion(correo, password);
     }
 

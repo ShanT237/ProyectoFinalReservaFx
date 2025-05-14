@@ -2,7 +2,9 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -15,8 +17,8 @@ public interface IPlataforma {
     /*
     /Metodos ADM
      */
-    public  boolean loginAdm(String correo, String password);
-    public boolean loginCliente(String correo, String password) throws Exception;
+    public Administrador loginAdm(String correo, String password);
+    public Cliente loginCliente(String correo, String password) throws Exception;
     public void bloquearCliente(String idUsuario) throws Exception;
     public void verActividadesCliente(String idUsuario);
 

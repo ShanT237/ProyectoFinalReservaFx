@@ -1,5 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,16 +52,21 @@ public class Login {
             String correo = txtCorreo.getText().trim();
             String password = txtPassword.getText().trim();
 
+            Usuario usuario1 = controladorPrincipal.getPlataforma().loginAdm(correo, password);
+
             // Validación de las credenciales y redirección
-            if (controladorPrincipal.getPlataforma().loginAdm(correo, password)) {
+            if (usuario1 != null) {
+                controladorPrincipal.guardarSesion(usuario1);
                 mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
                 redirigirAHomeAdm();
 
-            } else if (controladorPrincipal.getPlataforma().loginCliente(correo, password)) {
+            } else {
+
+                Usuario usuario2 = controladorPrincipal.getPlataforma().loginCliente(correo, password);
+
+                controladorPrincipal.guardarSesion(usuario2);
                 mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
                 redirigirAHomeCliente(); // Redirigir al home para cliente
-            } else {
-                mostrarError("Credenciales inválidas.");
             }
 
             limpiarCampos(); // Limpiar los campos de entrada

@@ -1,7 +1,9 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -42,6 +44,13 @@ public class ControladorPrincipal {
         alert.showAndWait();
     }
 
+    public void guardarSesion(Usuario usuario){
+        SesionUsuario.instancia().iniciarSesion(usuario);
+    }
+
+    public Usuario obtenerSesion(){
+        return SesionUsuario.instancia().getUsuario();
+    }
 }
 
 

@@ -1,9 +1,9 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,7 +15,6 @@ public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
-    public final SesionCliente sesionCliente = SesionCliente.instancia();
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
@@ -130,7 +129,7 @@ public class ServicioCliente {
         }
     }
 
-    public boolean iniciarSesion(String correo, String password) throws Exception {
+    public Cliente iniciarSesion(String correo, String password) throws Exception {
         verificarDatosSesion(correo, password);
         Cliente cliente = clienteRepository.buscarPorCorreo(correo);
 
@@ -146,8 +145,7 @@ public class ServicioCliente {
             throw new Exception("Debe validar su estado de cuenta.");
         }
 
-        sesionCliente.setUsuario(cliente);
-        return true;
+        return cliente;
     }
 
     public void verificarDatosSesion(String correo, String password) throws Exception {
@@ -235,14 +233,6 @@ public class ServicioCliente {
             // Actualizar la contraseña
             cliente.setPassword(nuevaContrasena);
             clienteRepository.actualizar(cliente);
-
-
-
-            // Actualizar sesión si es necesario
-            if (SesionCliente.instancia().cliente != null &&
-                    SesionCliente.instancia().cliente.getCorreo().equals(correo)) {
-                SesionCliente.instancia().cliente.setPassword(nuevaContrasena);
-            }
 
             // Limpiar el código usado
             codigosVerificacion.remove(correo);

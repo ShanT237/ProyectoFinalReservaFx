@@ -39,12 +39,6 @@ public class BuscarAlojamientosCliente {
             .obtenerTodos();
     private final ObservableList<Alojamiento> alojamientos = FXCollections.observableArrayList(alojamientosList);
 
-    private Cliente clienteActual;
-
-    public void setCliente(Cliente cliente) {
-        this.clienteActual = cliente;
-    }
-
     @FXML
     void initialize() {
         cargarCiudades();
@@ -132,7 +126,7 @@ public class BuscarAlojamientosCliente {
                 Parent root = loader.load();
 
                 InformacionImagenCliente controller = loader.getController();
-                controller.setDatos(clienteActual, alojamiento);
+                controller.setDatos(alojamiento);
                 controller.setAlojamiento(alojamiento); // PASAS EL CLIENTE
 
                 Stage stage = new Stage();

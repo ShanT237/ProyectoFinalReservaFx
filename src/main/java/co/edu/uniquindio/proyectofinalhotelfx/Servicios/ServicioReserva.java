@@ -4,12 +4,8 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionCliente;
-import javafx.fxml.FXML;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.awt.event.ActionEvent;
 
 import java.util.List;
 import java.util.UUID;
