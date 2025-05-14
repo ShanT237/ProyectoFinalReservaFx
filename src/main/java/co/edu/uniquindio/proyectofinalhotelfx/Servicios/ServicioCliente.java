@@ -20,7 +20,7 @@ public class ServicioCliente {
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
     private static final long CODIGO_EXPIRACION = 600000; // 10 minutos
-    //private final Map<String, Map.Entry<String, Long>> codigosRecuperacionConTiempo = new HashMap<>();
+
 
 
     public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
@@ -214,14 +214,8 @@ public class ServicioCliente {
         if (codigoInfo == null) {
             throw new Exception("No hay un código de verificación activo para este correo. Por favor, solicite uno nuevo.");
         }
-
-        // Verificar si el código ha expirado
-        //if (System.currentTimeMillis() - codigoInfo.getValue() > CODIGO_EXPIRACION) {
             codigosVerificacion.remove(correo);
-        //    throw new Exception("El código de verificación ha expirado. Por favor, solicite uno nuevo.");
-        //}
 
-        // Verificar si el código es correcto
         if (!codigoInfo.equals(codigoIngresado)) {
             throw new Exception("El código es incorrecto. Por favor, verifique e intente nuevamente.");
         }
@@ -242,6 +236,8 @@ public class ServicioCliente {
             cliente.setPassword(nuevaContrasena);
             clienteRepository.actualizar(cliente);
 
+
+
             // Actualizar sesión si es necesario
             if (SesionCliente.instancia().cliente != null &&
                     SesionCliente.instancia().cliente.getCorreo().equals(correo)) {
@@ -254,6 +250,7 @@ public class ServicioCliente {
         } catch (Exception e) {
             throw new Exception("Error al actualizar la contraseña: " + e.getMessage());
         }
+
     }
 
 
@@ -271,7 +268,7 @@ public class ServicioCliente {
 
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
         System.out.println("validarCodigoVerificacion");
-        String codigoCorrecto = codigosVerificacion.get(correo);
+        String codigoCorrecto = codigosVerificacion.get(correo); //Hashmap
 
         if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {
             try {
@@ -286,22 +283,14 @@ public class ServicioCliente {
         return false;
     }
 
-    public boolean existeUsuarioPorCorreo(String correo) {
-        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-        return cliente != null;
-    }
 
-    public int generarCodigoVerificacion(String correo) {
-        int codigo = crearCodigo();
-        codigosVerificacion.put(correo, String.valueOf(codigo));
-        return codigo;
-    }
+
 
     public void recuperarContrasena(String correo) throws Exception {
         if (correo == null || correo.isEmpty()) {
             throw new Exception("Todos los campos son obligatorios");
         }
-        if(existeUsuarioPorCorreo(correo)){
+        if(!existeUsuarioPorCorreo(correo)){
             throw new Exception("El correo no existe");
         }
 
@@ -311,6 +300,9 @@ public class ServicioCliente {
 
     }
 
+    /*
+    Bien
+     */
     public void enviarCorreo(String correo, String codigo) throws Exception{
 
         try {
@@ -322,6 +314,16 @@ public class ServicioCliente {
             throw new Exception("Error al enviar el correo: " + e.getMessage());
         }
 
+    }
+    public int generarCodigoVerificacion(String correo) {
+        int codigo = crearCodigo();
+        codigosVerificacion.put(correo, String.valueOf(codigo));
+        return codigo;
+    }
+
+    public boolean existeUsuarioPorCorreo(String correo) {
+        Cliente cliente = clienteRepository.buscarPorCorreo(correo);
+        return cliente != null;
     }
 
 
