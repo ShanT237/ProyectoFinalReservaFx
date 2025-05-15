@@ -52,6 +52,15 @@ public class CodigoVerificacion {
             String codigoIngresado = txtCodigo.getText().trim();
             String correo = obtenerCorreo();
 
+            System.out.println("Correo recibido en CódigoVerificacion: " + correo);
+            System.out.println("Código ingresado por el usuario: " + codigoIngresado);
+
+            if (correo == null || correo.isEmpty()) {
+                lblMensajeError.setText("Error: no se recibió el correo del usuario.");
+                System.out.println("⚠️ correoUsuario es null o vacío en validarCodigo");
+                return;
+            }
+
             boolean validado = ControladorPrincipal.getInstancia()
                     .getPlataforma()
                     .validarCodigoVerificacion(correo, codigoIngresado);
@@ -61,7 +70,8 @@ public class CodigoVerificacion {
 
                 // Esperar 1.5 segundos antes de cambiar de pantalla
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                irPantallaPrincipal(event);
+                pause.setOnFinished(e -> irPantallaPrincipal(event));
+                pause.play();
 
             } else {
                 lblMensajeError.setText("Código incorrecto, por favor inténtalo nuevamente.");
@@ -71,6 +81,7 @@ public class CodigoVerificacion {
             lblMensajeError.setText("Error en la validación del código.");
         }
     }
+
 
     public void irPantallaPrincipal(ActionEvent event) {
         try {

@@ -260,21 +260,31 @@ public class ServicioCliente {
 
 
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
-        System.out.println("validarCodigoVerificacion");
-        String codigoCorrecto = codigosVerificacion.get(correo); //Hashmap
+        System.out.println("Validando código para: " + correo);
+
+        String codigoCorrecto = codigosVerificacion.get(correo); // HashMap<String, String>
+
+        System.out.println("Código ingresado: " + codigoIngresado);
+        System.out.println("Código registrado: " + codigoCorrecto);
 
         if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {
             try {
                 Cliente cliente = clienteRepository.buscarPorCorreo(correo);
                 cliente.setActivo(true);
                 clienteRepository.actualizar(cliente);
+
+                // Eliminar el código ya usado
+                codigosVerificacion.remove(correo);
+
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
         return false;
     }
+
 
     public boolean validarEstadoCuenta(String correo, boolean estado) {
         System.out.println("validarEstadoCuenta");
@@ -288,29 +298,35 @@ public class ServicioCliente {
         try {
             Cliente cliente = clienteRepository.buscarPorCorreo(correo);
             if (cliente != null && !cliente.isActivo()) {
-                int codigo = crearCodigo();  // <-- Cambiado a int
-                codigosVerificacion.put(correo, String.valueOf(codigo));  // Guardar como String en el mapa
 
-                // Enviar el código por correo
-                enviarCorreo(correo, String.valueOf(codigo));
+                // Generar nuevo código
+                int nuevoCodigo = crearCodigo();
 
-                // Mostrar mensaje para depuración
-                System.out.println("Cuenta inactiva. Se envió código de activación al correo: " + codigo);
+                // Verificar si ya existe uno anterior
+                if (codigosVerificacion.containsKey(correo)) {
+                    System.out.println("Reemplazando código anterior de verificación para el correo: " + correo);
+                }
 
-                cliente.setCodigoActivacion(codigo);  // <-- Pasa int directamente
+                // Guardar o reemplazar el código
+                codigosVerificacion.put(correo, String.valueOf(nuevoCodigo));
+
+                // Enviar el nuevo código por correo
+                enviarCorreo(correo, String.valueOf(nuevoCodigo));
+
+                // Actualizar el cliente
+                cliente.setCodigoActivacion(nuevoCodigo);
                 clienteRepository.actualizar(cliente);
 
-                // Cliente NO puede continuar aún, debe validar código
+                System.out.println("Cuenta inactiva. Se envió nuevo código de activación al correo: " + nuevoCodigo);
+
                 return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Retorna false para indicar que el cliente aún no puede continuar
         return false;
     }
-
 
 
     public void recuperarContrasena(String correo) throws Exception {
