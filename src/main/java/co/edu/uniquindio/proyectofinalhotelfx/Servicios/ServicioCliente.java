@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
@@ -142,6 +143,8 @@ public class ServicioCliente {
         }
 
         if (!cliente.isActivo()) {
+
+            validarEstadoCuenta(correo, cliente.isActivo());
             throw new Exception("Debe validar su estado de cuenta.");
         }
 
@@ -273,6 +276,40 @@ public class ServicioCliente {
         return false;
     }
 
+    public boolean validarEstadoCuenta(String correo, boolean estado) {
+        System.out.println("validarEstadoCuenta");
+
+        // Si el estado es verdadero, el cliente está activo y puede continuar
+        if (estado) {
+            return true;
+        }
+
+        // Si el estado es falso, se realiza el proceso de verificación
+        try {
+            Cliente cliente = clienteRepository.buscarPorCorreo(correo);
+            if (cliente != null && !cliente.isActivo()) {
+                int codigo = crearCodigo();  // <-- Cambiado a int
+                codigosVerificacion.put(correo, String.valueOf(codigo));  // Guardar como String en el mapa
+
+                // Enviar el código por correo
+                enviarCorreo(correo, String.valueOf(codigo));
+
+                // Mostrar mensaje para depuración
+                System.out.println("Cuenta inactiva. Se envió código de activación al correo: " + codigo);
+
+                cliente.setCodigoActivacion(codigo);  // <-- Pasa int directamente
+                clienteRepository.actualizar(cliente);
+
+                // Cliente NO puede continuar aún, debe validar código
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Retorna false para indicar que el cliente aún no puede continuar
+        return false;
+    }
 
 
 

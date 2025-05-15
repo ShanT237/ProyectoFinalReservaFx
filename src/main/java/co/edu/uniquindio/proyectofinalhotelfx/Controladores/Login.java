@@ -54,26 +54,36 @@ public class Login {
 
             Usuario usuario1 = controladorPrincipal.getPlataforma().loginAdm(correo, password);
 
-            // Validación de las credenciales y redirección
+            // Si es administrador
             if (usuario1 != null) {
                 controladorPrincipal.guardarSesion(usuario1);
                 mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
                 redirigirAHomeAdm();
-
             } else {
-
-                Usuario usuario2 = controladorPrincipal.getPlataforma().loginCliente(correo, password);
-
-                controladorPrincipal.guardarSesion(usuario2);
-                mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
-                redirigirAHomeCliente(); // Redirigir al home para cliente
+                // Si no es administrador, intenta como cliente
+                try {
+                    Usuario usuario2 = controladorPrincipal.getPlataforma().loginCliente(correo, password);
+                    controladorPrincipal.guardarSesion(usuario2);
+                    mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
+                    redirigirAHomeCliente(); // Redirigir al home para cliente
+                } catch (Exception ex) {
+                    // Si la excepción es por cuenta inactiva, redirige a validación
+                    if (ex.getMessage().contains("Debe validar su estado de cuenta")) {
+                        mostrarMensaje("Cuenta inactiva. Redirigiendo a validación...");
+                        redirigirCodigoVerificacion();
+                    } else {
+                        mostrarError("Error al iniciar sesión: " + ex.getMessage());
+                    }
+                }
             }
 
             limpiarCampos(); // Limpiar los campos de entrada
+
         } catch (Exception e) {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
         }
     }
+
 
     @FXML
     void irARegistro(ActionEvent actionEvent) throws IOException {
@@ -95,6 +105,10 @@ public class Login {
     // Método de redirección para Home Cliente
     private void redirigirAHomeCliente() throws IOException {
         mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/HomeCliente.fxml", "BookYourStay - Home Cliente");
+    }
+
+    private void redirigirCodigoVerificacion() throws IOException {
+        mostrarVentana("/co/edu/uniquindio/proyectofinalhotelfx/CodigoVerificacion.fxml", "BookYourStay - Codigo Verificacion");
     }
 
     // Método para mostrar una ventana específica
