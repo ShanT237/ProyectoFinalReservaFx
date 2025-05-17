@@ -21,6 +21,7 @@ public class SesionUsuario {
     }
 
     public void iniciarSesion(Usuario admin) {
+
         this.usuario = admin;
     }
 

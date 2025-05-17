@@ -155,7 +155,7 @@ import java.util.Objects;
             }
 
             // Filtro por precio
-            if (alojamiento.getPrecioPorNocheBase() > precioMax) {
+            if (alojamiento.getPrecioNoche() > precioMax) {
                 return false;
             }
 
@@ -223,7 +223,7 @@ import java.util.Objects;
                         setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
                     }},
                     new Label(alojamiento.getCiudad().name()),
-                    new Label(String.format("%.2f COP por noche", alojamiento.getPrecioPorNocheBase()))
+                    new Label(String.format("%.2f COP por noche", alojamiento.getPrecioNoche()))
             );
 
             contenido.getChildren().addAll(imagenView, detalles);

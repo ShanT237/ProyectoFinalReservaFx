@@ -68,7 +68,7 @@ public class GestionAlojamientosAdmin {
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
         colCiudad.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCiudad()));
         colTipo.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTipoAlojamiento()));
-        colPrecio.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrecioPorNocheBase()));
+        colPrecio.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrecioNoche()));
         colImagen.setCellValueFactory(cellData -> {
             String ruta = cellData.getValue().getImagen();
             File file = new File(ruta);

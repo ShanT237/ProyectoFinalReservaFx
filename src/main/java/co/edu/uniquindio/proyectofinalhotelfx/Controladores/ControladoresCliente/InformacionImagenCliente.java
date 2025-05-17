@@ -62,7 +62,7 @@ public class InformacionImagenCliente {
             lblNombre.setText(alojamiento.getNombre());
             lblCiudad.setText("Ciudad: " + alojamiento.getCiudad().name());
             lblTipo.setText("Tipo: " + alojamiento.getTipoAlojamiento().name());
-            lblPrecio.setText(String.format("Precio: %.2f COP por noche", alojamiento.getPrecioPorNocheBase()));
+            lblPrecio.setText(String.format("Precio: %.2f COP por noche", alojamiento.getPrecioNoche()));
             lblDescripcion.setText("Descripción: " + alojamiento.getDescripcion());
         }
     }

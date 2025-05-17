@@ -95,7 +95,7 @@ public class ServicioAlojamiento {
     public List<Alojamiento> buscarPorRangoPrecio(double min, double max) {
         return alojamientoRepository.obtenerTodos()
                 .stream()
-                .filter(a -> a.getPrecioPorNocheBase() >= min && a.getPrecioPorNocheBase() <= max)
+                .filter(a -> a.getPrecioNoche() >= min && a.getPrecioNoche() <= max)
                 .collect(Collectors.toList());
     }
 

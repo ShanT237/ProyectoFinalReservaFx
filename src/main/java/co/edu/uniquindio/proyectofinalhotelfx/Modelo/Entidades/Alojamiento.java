@@ -19,7 +19,7 @@ public abstract class Alojamiento implements Serializable {
     private Ciudad ciudad;
     private String descripcion;
     private String id;
-    private double precioPorNocheBase;
+    private double precioNoche;
     private String imagen;
     private List<ServiciosIncluidos> serviciosIncluidos;
     private List<Review> reviews;
@@ -37,7 +37,7 @@ public abstract class Alojamiento implements Serializable {
         this.reviews = new ArrayList<>();
         this.serviciosIncluidos = serviciosIncluidos;
         this.imagen = imagen;
-        this.precioPorNocheBase = precioPorNoche;
+        this.precioNoche = precioPorNoche;
         this.id = id;
         this.descripcion = descripcion;
         this.ciudad = ciudad;

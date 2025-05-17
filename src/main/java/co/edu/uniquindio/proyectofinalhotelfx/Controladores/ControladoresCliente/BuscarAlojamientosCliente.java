@@ -85,7 +85,7 @@ public class BuscarAlojamientosCliente {
                                     TipoAlojamiento tipo, double precioMax) {
         if (ciudad != null && !alojamiento.getCiudad().equals(ciudad)) return false;
         if (tipo != null && !alojamiento.getTipoAlojamiento().equals(tipo)) return false;
-        return alojamiento.getPrecioPorNocheBase() <= precioMax;
+        return alojamiento.getPrecioNoche() <= precioMax;
     }
 
     private VBox crearTarjetaAlojamiento(Alojamiento alojamiento) {
@@ -148,7 +148,7 @@ public class BuscarAlojamientosCliente {
         nombreLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
 
         Label ciudadLabel = new Label(alojamiento.getCiudad().name());
-        Label precioLabel = new Label(String.format("%.2f COP por noche", alojamiento.getPrecioPorNocheBase()));
+        Label precioLabel = new Label(String.format("%.2f COP por noche", alojamiento.getPrecioNoche()));
 
         detalles.getChildren().addAll(nombreLabel, ciudadLabel, precioLabel);
 

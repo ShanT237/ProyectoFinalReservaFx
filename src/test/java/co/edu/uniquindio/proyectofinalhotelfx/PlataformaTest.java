@@ -1,7 +1,12 @@
 package co.edu.uniquindio.proyectofinalhotelfx;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,14 +58,54 @@ public class PlataformaTest {
         assertDoesNotThrow(() -> plataforma.registrarCliente("Juan Perez", "12345678", "123456789", "correo@gmail.com", "Password1", "Password1"));
     }
 
-    @Test
-    public void crearAlojamientoTest(){
-        
-        
-    }
 
     @Test
-    public void registrarAlojamientoTest(){}
+    public void registrarAlojamientoTest() {
+
+        Ciudad ciudad = Ciudad.ARMENIA;
+        List<ServiciosIncluidos> servicios = List.of(ServiciosIncluidos.WIFI);
+        TipoAlojamiento tipo = TipoAlojamiento.APARTAMENTO;
+
+        // 1. Nombre nulo
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento(null, ciudad, "Bonito lugar", 100000, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 2. Nombre vacío
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("", ciudad, "Bonito lugar", 100000, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 3. Ciudad nula
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", null, "Bonito lugar", 100000, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 4. Descripción nula
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, null, 100000, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 5. Descripción vacía
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, "", 100000, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 6. Precio cero
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, "Bonito lugar", 0, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 7. Precio negativo
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, "Bonito lugar", -50000, "imagen.png", servicios, 2, 1, true, tipo));
+
+        // 8. Servicios nulos
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, "Bonito lugar", 100000, "imagen.png", null, 2, 1, true, tipo));
+
+        // 9. Tipo de alojamiento nulo
+        assertThrows(IllegalArgumentException.class, () ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, "Bonito lugar", 100000, "imagen.png", servicios, 2, 1, true, null));
+
+        // 10. Caso exitoso
+        assertDoesNotThrow(() ->
+                plataforma.registrarAlojamiento("Casa Linda", ciudad, "Bonito lugar", 100000, "imagen.png", servicios, 2, 1, true, tipo));
+    }
 
 
     @Test
