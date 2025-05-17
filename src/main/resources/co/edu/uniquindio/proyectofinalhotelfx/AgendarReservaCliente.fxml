@@ -15,50 +15,70 @@
             fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.AgendarReservaCliente"
             prefWidth="800" prefHeight="600">
 
-    <VBox alignment="TOP_CENTER" spacing="20">
-        <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/>
-        </padding>
+    <ScrollPane fitToWidth="true" fitToHeight="true" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <content>
+            <VBox alignment="TOP_CENTER" spacing="20">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
 
-        <Label text="Agendar Reserva" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                <Label text="Agendar Reserva" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-        <GridPane hgap="10" vgap="10">
-            <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" />
-                <ColumnConstraints halignment="LEFT" />
-            </columnConstraints>
+                <GridPane hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" />
+                        <ColumnConstraints halignment="LEFT" />
+                    </columnConstraints>
 
-            <!-- Info del alojamiento -->
-            <Label text="Nombre del Alojamiento:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <Label fx:id="nombreLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <!-- Información del Alojamiento -->
+                    <Label text="Nombre del Alojamiento:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <Label fx:id="nombreLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-            <Label text="Ciudad:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="ciudadLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="Ciudad:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <Label fx:id="ciudadLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-            <Label text="Capacidad Máxima:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="capacidadLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <Label text="Capacidad Máxima:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <Label fx:id="capacidadLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-            <Label text="Precio por Noche:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Label fx:id="precioLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <Label text="Precio por Noche:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <Label fx:id="precioLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-            <Label text="Descripción:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-            <TextArea fx:id="descripcionArea" editable="false" wrapText="true" prefRowCount="2" prefWidth="300" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                    <Label text="Descripción:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextArea fx:id="descripcionArea" editable="false" wrapText="true" prefRowCount="2" prefWidth="300" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-            <!-- Reserva -->
-            <Label text="Fecha Inicio:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-            <DatePicker fx:id="fechaInicioPicker" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                    <!-- Información de la Reserva -->
+                    <Label text="Fecha Inicio:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="fechaInicioPicker" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-            <Label text="Fecha Fin:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-            <DatePicker fx:id="fechaFinPicker" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                    <Label text="Fecha Fin:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="fechaFinPicker" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
 
-            <Label text="Número de Huéspedes:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-            <Spinner fx:id="huespedesSpinner" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+                    <Label text="Número de Huéspedes:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                    <Spinner fx:id="huespedesSpinner" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
 
-            <Label text="Total a Pagar:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
-            <Label fx:id="totalLabel" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
-        </GridPane>
+                    <Label text="Total a Pagar:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                    <Label fx:id="totalLabel" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
 
-        <!-- Botón confirmar -->
-        <Button text="Confirmar Reserva" fx:id="confirmarBtn" onAction="#confirmarReserva"/>
-    </VBox>
+                    <Label text="Saldo en Billetera:" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+                    <Label fx:id="saldoLabel" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <!-- Imagen del QR generado -->
+                <VBox spacing="10" alignment="CENTER">
+                    <Label text="Código QR de la Factura:" />
+                    <ImageView fx:id="qrImageView" fitWidth="150" fitHeight="150" />
+                </VBox>
+
+                <!-- Mensaje de confirmación -->
+                <Label fx:id="mensajeReservaLabel" text="¡Reserva realizada con éxito!" visible="false"
+                       textFill="green" style="-fx-font-size: 14px;" />
+
+                <!-- Botones -->
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="Confirmar Reserva" fx:id="confirmarBtn" onAction="#confirmarReserva"/>
+                    <Button text="Cancelar" onAction="#cancelarReserva"/>
+                </HBox>
+            </VBox>
+        </content>
+    </ScrollPane>
 </AnchorPane>

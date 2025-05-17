@@ -215,7 +215,7 @@ public class ServicioCliente {
         if (codigoInfo == null) {
             throw new Exception("No hay un código de verificación activo para este correo. Por favor, solicite uno nuevo.");
         }
-            codigosVerificacion.remove(correo);
+        codigosVerificacion.remove(correo);
 
         if (!codigoInfo.equals(codigoIngresado)) {
             throw new Exception("El código es incorrecto. Por favor, verifique e intente nuevamente.");
@@ -371,4 +371,3 @@ public class ServicioCliente {
 
 
 }
-
