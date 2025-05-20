@@ -25,6 +25,7 @@ public class Plataforma implements IPlataforma {
     private ServicioReserva servicioReserva;
     private ServicioAlojamiento serviciosAlojamiento;
     private ServicioOferta servicioOferta;
+    private ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     private AlojamientoRepository alojamientoRepository;
     private ClienteRepository clienteRepository;
@@ -71,6 +72,8 @@ public class Plataforma implements IPlataforma {
                 .servicioCliente(servicioCliente)
                 .servicioOferta(servicioOferta)
                 .build();
+
+        this.servicioBilleteraVirtual = new ServicioBilleteraVirtual(servicioCliente);
     }
 
     // ==============================
@@ -221,7 +224,11 @@ public class Plataforma implements IPlataforma {
     }
 
 
+    public void recargarBilletera(String cedula, double monto) {
+        servicioBilleteraVirtual.recargarBilletera(cedula, monto);
+    }
 
-
-
+    public double consultarSaldo(String cedula) {
+        return servicioBilleteraVirtual.consultarSaldo(cedula);
+    }
 }

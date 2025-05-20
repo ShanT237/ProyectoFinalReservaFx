@@ -2,9 +2,12 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Hotel;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -12,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,6 +23,7 @@ import java.io.File;
 
 public class InformacionImagenCliente {
 
+    public FlowPane habitacionesFlowPane;
     @FXML private ImageView imagenAlojamiento;
     @FXML private Label lblNombre;
     @FXML private Label lblCiudad;
@@ -64,6 +69,36 @@ public class InformacionImagenCliente {
             lblTipo.setText("Tipo: " + alojamiento.getTipoAlojamiento().name());
             lblPrecio.setText(String.format("Precio: %.2f COP por noche", alojamiento.getPrecioNoche()));
             lblDescripcion.setText("Descripción: " + alojamiento.getDescripcion());
+
+            if(alojamiento instanceof Hotel){
+
+                for (Habitacion habitacion : ((Hotel) alojamiento).getHabitaciones()) {
+                    VBox tarjeta = new VBox();
+                    tarjeta.setSpacing(5);
+                    tarjeta.setPadding(new Insets(10));
+                    tarjeta.setStyle("-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #f9f9f9;");
+
+
+                    ImageView imagenView = new ImageView();
+                    if (habitacion.getImagen() != null && !habitacion.getImagen().isEmpty()) {
+                        imagenView.setImage(new Image("file:" + habitacion.getImagen()));
+                    }
+                    imagenView.setFitWidth(150);
+                    imagenView.setFitHeight(100);
+                    imagenView.setPreserveRatio(true);
+
+
+                    Label nombreLabel = new Label("Nombre: " + habitacion.getNumero());
+                    Label tipoLabel = new Label("Tipo: " + habitacion.getTipoHabitacion());
+                    Label capacidadLabel = new Label("Capacidad: " + habitacion.getCapacidad() + " personas");
+                    Label precioLabel = new Label("Precio: $" + habitacion.getPrecioPorNoche());
+
+                    tarjeta.getChildren().addAll(imagenView, nombreLabel, tipoLabel, capacidadLabel, precioLabel);
+
+                    habitacionesFlowPane.getChildren().add(tarjeta);
+                }
+
+            }
         }
     }
 

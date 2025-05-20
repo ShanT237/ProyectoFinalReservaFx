@@ -1,14 +1,20 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-public class MiBilleteraCliente {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class MiBilleteraCliente implements Initializable {
 
     @FXML
     private TextField txtMontoRecarga;
@@ -22,25 +28,11 @@ public class MiBilleteraCliente {
     @FXML
     private Label lblMensajeError;
 
-    private ServicioBilleteraVirtual servicioBilleteraVirtual;
     private Usuario usuario;
 
-    /**
-     * Este método debe ser llamado desde el controlador principal (HomeCliente)
-     * inmediatamente después de cargar el FXML.
-     */
-    public void setServicioBilletera(ServicioBilleteraVirtual servicio, Usuario usuario) {
-        this.servicioBilleteraVirtual = servicio;
-        this.usuario = usuario;
-        System.out.println("setServicioBilletera llamado con usuario: " + usuario);
-        actualizarSaldo();
-    }
+    private SesionUsuario sesionUsuario = SesionUsuario.instancia();
 
-    @FXML
-    private void initialize() {
-        // No usar usuario ni servicio aquí porque aún no están inyectados
-        System.out.println("MiBilleteraCliente inicializado");
-    }
+    private ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
 
     @FXML
     private void recargarCuenta() {
@@ -64,7 +56,7 @@ public class MiBilleteraCliente {
                 return;
             }
 
-            servicioBilleteraVirtual.recargarBilletera(usuario.getCedula(), monto);
+            controladorPrincipal.getPlataforma().recargarBilletera(usuario.getCedula(), monto);
             actualizarSaldo();
             mostrarMensaje("✅ Recarga exitosa de $" + String.format("%.2f", monto));
             txtMontoRecarga.clear();
@@ -77,8 +69,8 @@ public class MiBilleteraCliente {
     }
 
     private void actualizarSaldo() {
-        if (usuario != null && servicioBilleteraVirtual != null) {
-            double saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
+        if (usuario != null ) {
+            double saldo = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             lblSaldo.setText("$" + String.format("%.2f", saldo));
         }
     }
@@ -91,5 +83,12 @@ public class MiBilleteraCliente {
     private void mostrarMensaje(String mensaje) {
         lblMensajeError.setTextFill(Color.GREEN);
         lblMensajeError.setText(mensaje);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.usuario = sesionUsuario.getUsuario();
+        System.out.println("setServicioBilletera llamado con usuario: " + usuario);
+        actualizarSaldo();
     }
 }

@@ -81,6 +81,7 @@ public class ServicioCliente {
 
     public Cliente crearCliente(String nombre, String cedula, String telefono, int codigo, String correo, String password, String confirmarPassword) {
         return Cliente.builder()
+                .nombre(nombre)
                 .correo(correo)
                 .password(password)
                 .cedula(cedula)
