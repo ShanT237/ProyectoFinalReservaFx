@@ -46,7 +46,6 @@ public class AlojamientoRepository {
                 if (alojamiento instanceof Hotel) {
                     Hotel hotel = (Hotel) alojamiento;
                     hotel.getHabitaciones().add(habitacion);
-                    guardarDatos();
                     return;
                 } else {
                     throw new Exception("El alojamiento con ID " + idHotel + " no es un hotel.");

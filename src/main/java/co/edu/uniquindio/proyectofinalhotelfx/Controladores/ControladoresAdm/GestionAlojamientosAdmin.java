@@ -184,7 +184,7 @@ public class GestionAlojamientosAdmin {
         }
     }
 
-    private void mostrarVentanaConHotel(ActionEvent event, String ruta, String titulo, String alojamientoHotel) {
+    private void mostrarVentanaConHotel(ActionEvent event, String ruta, String titulo, Alojamiento alojamientoHotel) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
@@ -233,7 +233,7 @@ public class GestionAlojamientosAdmin {
         if (alojamientoSeleccionado != null && alojamientoSeleccionado.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
             mostrarVentanaConHotel(event,
                     "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml",
-                    "Registrar Habitación Hotel", alojamientoSeleccionado.getId());
+                    "Registrar Habitación Hotel", alojamientoSeleccionado);
         }
     }
 }
