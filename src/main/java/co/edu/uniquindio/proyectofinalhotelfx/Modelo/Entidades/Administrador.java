@@ -8,4 +8,5 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 public class Administrador extends Usuario {
+
 }

@@ -2,16 +2,19 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
+import co.edu.uniquindio.proyectofinalhotelfx.vo.TipoAlojamientoGanancia;
 import lombok.Builder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -21,6 +24,7 @@ public class ServicioAdm {
     private final ServicioReserva servicioReserva;
     private final ServicioCliente servicioCliente;
     private final ServicioOferta servicioOferta;
+    private String codigoRecuperacion = null;
 
     public Administrador loginAdm(String correo, String password){
         System.out.println(leerDatos());
@@ -130,9 +134,59 @@ public class ServicioAdm {
     }
 
 
-    /*
-    Gestionar Reservas
-     */
+    public double calcularOcupacionAlojamiento(String idAlojamiento) {
+        int totalNoches = servicioReserva.obtenerTotalNochesReservadas(idAlojamiento);
+        int posiblesNoches = servicioReserva.obtenerTotalNochesDisponibles(idAlojamiento);
+        return posiblesNoches == 0 ? 0 : (totalNoches * 100.0 / posiblesNoches);
+    }
+
+    public double calcularGananciasTotales(String idAlojamiento) {
+        return servicioReserva.obtenerGananciasPorAlojamiento(idAlojamiento);
+    }
+
+    public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) {
+        List<Alojamiento> alojamientosCiudad = servicioAlojamiento.obtenerAlojamientosPorCiudad(ciudad);
+        alojamientosCiudad.sort((a1, a2) ->
+                Integer.compare(servicioReserva.contarReservasPorAlojamiento(a2.getId()),
+                        servicioReserva.contarReservasPorAlojamiento(a1.getId())));
+        return alojamientosCiudad;
+    }
+
+
+    public List<TipoAlojamientoGanancia> obtenerTiposAlojamientoMasRentables() {
+        List<TipoAlojamientoGanancia> resultado = new ArrayList<>();
+
+        for (TipoAlojamiento tipo : TipoAlojamiento.values()) {
+            List<Alojamiento> alojamientos = servicioAlojamiento.obtenerAlojamientosPorTipo(tipo);
+            double totalGanancias = 0;
+
+            for (Alojamiento a : alojamientos) {
+                totalGanancias += servicioReserva.obtenerGananciasPorAlojamiento(a.getId());
+            }
+
+            resultado.add(TipoAlojamientoGanancia.builder()
+            .tipo(tipo)
+                    .gananciaTotal(totalGanancias)
+                            .build()
+            );
+        }
+
+        // Ordenar de mayor a menor ganancia
+        for (int i = 0; i < resultado.size() - 1; i++) {
+            for (int j = i + 1; j < resultado.size(); j++) {
+                if (resultado.get(j).getGananciaTotal() > resultado.get(i).getGananciaTotal()) {
+                    TipoAlojamientoGanancia temp = resultado.get(i);
+                    resultado.set(i, resultado.get(j));
+                    resultado.set(j, temp);
+                }
+            }
+        }
+
+        return resultado;
+    }
+
+
+
 
 
 }
