@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0"
+<BorderPane prefHeight="600.0" prefWidth="900.0"
             style="-fx-background-color: #fffaf0;"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente">
-
+    <center>
     <!-- Contenedor principal (mismo estilo que PantallaPrincipal pero sin barra superior) -->
     <VBox spacing="25" alignment="TOP_CENTER"
           style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;"
@@ -62,4 +62,17 @@
                 text="Agendar Alojamiento"
                 style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 5; -fx-padding: 10 20;"/>
     </VBox>
-</AnchorPane>
+    </center>
+    <right>
+        <VBox alignment="TOP_CENTER" prefHeight="471.0" prefWidth="202.0" BorderPane.alignment="CENTER">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Habitaciones" />
+                <ScrollPane prefHeight="457.0" prefWidth="131.0">
+                    <content>
+                        <FlowPane fx:id="habitacionesFlowPane" prefHeight="426.0" prefWidth="202.0" />
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </right>
+</BorderPane>
