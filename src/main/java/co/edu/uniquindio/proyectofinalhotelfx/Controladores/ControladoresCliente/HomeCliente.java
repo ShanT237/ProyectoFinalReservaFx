@@ -50,16 +50,28 @@ public class HomeCliente {
         }
     }
 
-    // Carga un archivo FXML dentro del StackPane "contenidoDinamico"
     private void cargarContenido(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
+
+            // Inyección de datos después de cargar el FXML
+            Object controller = loader.getController();
+
+            // Verifica si el FXML cargado es MiBilleteraCliente
+            if (controller instanceof MiBilleteraCliente) {
+                MiBilleteraCliente billeteraController = (MiBilleteraCliente) controller;
+                billeteraController.setServicioBilletera(servicioBilleteraVirtual, usuario);
+            }
+            contenidoDinamico.getChildren().setAll(root);
+
+
             contenidoDinamico.getChildren().setAll(root); // Reemplaza el contenido actual
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     // Métodos conectados con los botones del menú lateral
     @FXML
@@ -74,8 +86,10 @@ public class HomeCliente {
 
     @FXML
     private void cargarBilletera() {
+        System.out.println("Cargando billetera, usuario: " + usuario);
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MiBilleteraCliente.fxml");
     }
+
 
     @FXML
     private void cargarResenas() {
@@ -90,4 +104,5 @@ public class HomeCliente {
 
     // Los siguientes métodos con ActionEvent ya no son necesarios si usas onAction en FXML
     // Puedes eliminarlos si no los usas
+
 }
