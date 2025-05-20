@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 @Getter
 @Setter
-public abstract class Oferta {
+public abstract class Oferta implements Serializable {
     private String id;
     private String nombre;
     private String descripcion;
