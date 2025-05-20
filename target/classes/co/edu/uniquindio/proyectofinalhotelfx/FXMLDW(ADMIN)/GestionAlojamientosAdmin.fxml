@@ -34,6 +34,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#eliminarAlojamiento" style="-fx-background-color: #d71414;" text="Eliminar" textFill="WHITE" />
             <Button mnemonicParsing="false" onAction="#acturalizarAlojamiento" style="-fx-background-color: #0787ff;" text="Actualizar" textFill="WHITE" />
+            <Button fx:id="buttonRegistrarHab" mnemonicParsing="false" onAction="#registrarHabitacionHotel" style="-fx-background-color: #45b260;" text="Registrar Habitación" textFill="WHITE" visible="false" />
          </children>
       </HBox>
    </bottom>
