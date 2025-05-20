@@ -3,10 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 import co.edu.uniquindio.proyectofinalhotelfx.vo.TipoAlojamientoGanancia;
@@ -121,16 +118,16 @@ public class ServicioAdm {
         return null;
     }
 
-    public void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) throws Exception {
-        servicioOferta.agregarOfertaEspecial(ciudad, tipoAlojamiento, id, nombre, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
+    public void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
+        servicioOferta.agregarOfertaEspecial(ciudad, tipoAlojamiento, id, nombre, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
     }
 
     public void eliminarOfertaEspecial(String idOferta) {
         servicioOferta.eliminarOfertaEspecial(idOferta);
     }
 
-    public void actualizarOfertaEspecial(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) throws Exception {
-        servicioOferta.actualizarOfertaEspecial(idOferta, nombre, ciudad, tipoAlojamiento, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
+    public void actualizarOfertaEspecial(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
+        servicioOferta.actualizarOfertaEspecial(idOferta, nombre, ciudad, tipoAlojamiento, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
     }
 
 
@@ -186,7 +183,8 @@ public class ServicioAdm {
     }
 
 
-
-
+    public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
+        servicioAlojamiento.registrarHabitacion(idhotel, numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
+    }
 
 }

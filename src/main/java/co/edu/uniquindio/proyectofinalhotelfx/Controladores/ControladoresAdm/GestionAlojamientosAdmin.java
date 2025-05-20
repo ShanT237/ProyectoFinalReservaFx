@@ -105,10 +105,15 @@ public class GestionAlojamientosAdmin {
         controladorPrincipal.getPlataforma().eliminarAlojamiento(id);
         actualizarTabla();
     }
-
     @FXML
     void acturalizarAlojamiento(ActionEvent event) {
-        mostrarVentana(event,"/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
+        Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
+
+        if (alojamientoSeleccionado != null) {
+            mostrarVentanaConAlojamiento(event,
+                    "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/ActualizarAlojamiento.fxml",
+                    "Actualizar Alojamiento", alojamientoSeleccionado);
+        }
     }
 
     @FXML
@@ -121,6 +126,9 @@ public class GestionAlojamientosAdmin {
 
             if (controller instanceof RegistrarAlojamientoAdmin) {
                 ((RegistrarAlojamientoAdmin) controller).setControladorAlojamientos(this);
+            }
+            if (controller instanceof ActualizarAlojamientoAdmin) {
+                ((ActualizarAlojamientoAdmin) controller).setControladorAlojamientos(this);
             }
 
             Stage stage = new Stage();
@@ -143,6 +151,71 @@ public class GestionAlojamientosAdmin {
         }
     }
 
+    private void mostrarVentanaConAlojamiento(ActionEvent event, String ruta, String titulo, Alojamiento alojamiento) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
+            Parent root = loader.load();
+
+            Object controller = loader.getController();
+
+            if (controller instanceof ActualizarAlojamientoAdmin actualizarController) {
+                actualizarController.setControladorAlojamientos(this);
+                actualizarController.setAlojamiento(alojamiento);
+            }
+
+            Stage stage = new Stage();
+            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+            Image icono = new Image(archivoImagen.toURI().toString());
+            stage.getIcons().add(icono);
+            stage.setResizable(false);
+            stage.setTitle(titulo);
+
+            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.initOwner(parentStage);
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            actualizarTabla();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void mostrarVentanaConHotel(ActionEvent event, String ruta, String titulo, String alojamientoHotel) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
+            Parent root = loader.load();
+
+            Object controller = loader.getController();
+
+            if (controller instanceof RegistrarHabitacionAdmin registrarController) {
+                registrarController.setAlojamiento(alojamientoHotel);
+            }
+
+            Stage stage = new Stage();
+            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+            Image icono = new Image(archivoImagen.toURI().toString());
+            stage.getIcons().add(icono);
+            stage.setResizable(false);
+            stage.setTitle(titulo);
+
+            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.initOwner(parentStage);
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            actualizarTabla(); // por si la habitación impacta la vista principal
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void configurarListenerSeleccion() {
         tblAlojamientos.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null && newSel.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
@@ -158,10 +231,9 @@ public class GestionAlojamientosAdmin {
         Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
 
         if (alojamientoSeleccionado != null && alojamientoSeleccionado.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
-            mostrarVentana(event, "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml", "Registrar Habitación Hotel");
-            actualizarTabla();
-
-
+            mostrarVentanaConHotel(event,
+                    "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml",
+                    "Registrar Habitación Hotel", alojamientoSeleccionado.getId());
         }
     }
 }

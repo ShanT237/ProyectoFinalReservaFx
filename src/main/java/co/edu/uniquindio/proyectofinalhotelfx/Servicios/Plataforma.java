@@ -5,10 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
 import javafx.scene.image.Image;
@@ -94,6 +91,8 @@ public class Plataforma implements IPlataforma {
         servicioAdm.verActividadesDeCliente(idUsuario);
     }
 
+
+
     // ==============================
     // MÉTODOS DEL CLIENTE
     // ==============================
@@ -128,7 +127,10 @@ public class Plataforma implements IPlataforma {
     // ==============================
     // GESTIÓN DE ALOJAMIENTOS
     // ==============================
-
+    @Override
+    public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
+       servicioAdm.registrarHabitacion(idhotel, numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
+    }
     @Override
     public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion,
                                      double precioPorNocheBase, String imagen,
@@ -161,13 +163,15 @@ public class Plataforma implements IPlataforma {
         return serviciosAlojamiento.obtenerTodosAlojamientos();
     }
 
+
+
     // ==============================
     // GESTIÓN DE RESERVAS
     // ==============================
 
     @Override
-    public void registrarReserva() {
-        // Por implementar
+    public void registrarReserva(String codigoReserva, LocalDateTime fechaReserva, LocalDateTime fechaInicio, LocalDateTime fechaFin, String idCliente, String idAlojamiento, String idOferta, String nombreCliente, String nombreAlojamiento, String nombreOferta, double precioTotal, String imagenAlojamiento) throws Exception {
+
     }
 
     // ==============================
@@ -178,9 +182,9 @@ public class Plataforma implements IPlataforma {
     public void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id,
                                 String nombre, String descripcion, LocalDateTime fechaInicio,
                                 LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
-                                int nochesMinimas, double porcentajeDescuento) throws Exception {
+                                int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
         servicioAdm.registrarOferta(ciudad, tipoAlojamiento, id, nombre, descripcion,
-                fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
+                fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
     }
 
     @Override
@@ -193,8 +197,13 @@ public class Plataforma implements IPlataforma {
                                  TipoAlojamiento tipoAlojamiento, String descripcion,
                                  LocalDateTime fechaInicio, LocalDateTime fechaFin,
                                  boolean esGlobal, OfertaTipo tipoOferta,
-                                 int nochesMinimas, double porcentajeDescuento) throws Exception {
+                                 int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
         servicioAdm.actualizarOfertaEspecial(idOferta, nombre, ciudad, tipoAlojamiento,
-                descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
+                descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
     }
+
+
+
+
+
 }

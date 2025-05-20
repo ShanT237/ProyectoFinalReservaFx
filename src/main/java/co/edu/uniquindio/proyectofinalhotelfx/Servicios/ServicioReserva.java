@@ -154,7 +154,9 @@ public class ServicioReserva {
                 .codigoQR("QR_" + reserva.getCodigo())
                 .build();
     }
-
+    /*
+    Implementar
+     */
     public int obtenerTotalNochesReservadas(String idAlojamiento) {
         return 0;
     }

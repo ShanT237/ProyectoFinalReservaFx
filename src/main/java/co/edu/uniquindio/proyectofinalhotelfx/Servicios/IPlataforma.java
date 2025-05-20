@@ -5,10 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import javafx.scene.image.Image;
 
 import java.time.LocalDateTime;
@@ -58,9 +55,12 @@ public interface IPlataforma {
     /**
      * Registra un nuevo alojamiento en el sistema.
      */
+    void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception;
+
     void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase,
                               String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas,
                               int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento);
+
 
     /**
      * Elimina un alojamiento según su ID.
@@ -76,6 +76,8 @@ public interface IPlataforma {
                                int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas,
                                TipoAlojamiento tipoAlojamiento);
 
+
+
     /**
      * Retorna la lista de alojamientos registrados.
      */
@@ -89,7 +91,9 @@ public interface IPlataforma {
     /**
      * Registra una nueva reserva (solo definición, falta parametrización).
      */
-    void registrarReserva();
+     void registrarReserva(String codigoReserva, LocalDateTime fechaReserva, LocalDateTime fechaInicio, LocalDateTime fechaFin,
+                           String idCliente, String idAlojamiento, String idOferta, String nombreCliente,
+                           String nombreAlojamiento, String nombreOferta, double precioTotal, String imagenAlojamiento) throws Exception;
 
 
     // -------------------------------
@@ -101,7 +105,7 @@ public interface IPlataforma {
      */
     void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre,
                          String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
-                         int nochesMinimas, double porcentajeDescuento) throws Exception;
+                         int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception;
 
     /**
      * Elimina una oferta del sistema por su ID.
@@ -113,7 +117,7 @@ public interface IPlataforma {
      */
     void actualizarOferta(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento tipoAlojamiento,
                           String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
-                          int nochesMinimas, double porcentajeDescuento) throws Exception;
+                          int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception;
 
 
     // -------------------------------
