@@ -168,9 +168,7 @@ public class RegistrarAlojamientoAdmin {
                 }
             }
 
-            // Guardar imagen si hay
             String rutaImagen = null;
-            Image imagen = null;
             if (imagenSeleccionada != null && !nombre.isEmpty()) {
                 String userDir = System.getProperty("user.dir");
                 File directorio = new File(userDir, "Img/ImagenesAlojamientos/");
@@ -179,12 +177,18 @@ public class RegistrarAlojamientoAdmin {
                 }
 
                 String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf('.'));
-                File destino = new File(directorio, nombre.replaceAll("\\s+", "_") + extension);
+                String nombreArchivo = nombre.replaceAll("\\s+", "_") + extension;
+                File destino = new File(directorio, nombreArchivo);
+
                 Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                rutaImagen = destino.getAbsolutePath();
-                imagen = new Image(new File(rutaImagen).toURI().toString());
-                System.out.println("Imagen guardada en: " + imagen.getUrl());
+                rutaImagen = "Img/ImagenesAlojamientos/" + nombreArchivo;
+
+                // ✔ Usa la ruta completa para cargar la imagen
+                File imagenFile = new File(System.getProperty("user.dir"), rutaImagen);
+                Image imagen = new Image(imagenFile.toURI().toString());
+
+                System.out.println("Imagen guardada en: " + imagenFile.getAbsolutePath());
             }
 
             controladorPrincipal.getPlataforma().registrarAlojamiento(nombre, ciudad, descripcion, precio, rutaImagen, serviciosSeleccionados, personas, habitaciones, permiteMascotas, tipo);
