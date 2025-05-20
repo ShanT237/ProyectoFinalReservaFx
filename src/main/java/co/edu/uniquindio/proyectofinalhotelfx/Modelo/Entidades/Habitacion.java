@@ -20,4 +20,6 @@ public class Habitacion {
     private List<ServiciosIncluidos> servicios;
     private Hotel hotel;
     private TipoHabitacionHotel tipoHabitacion;
+    private String imagen;
+
 }
