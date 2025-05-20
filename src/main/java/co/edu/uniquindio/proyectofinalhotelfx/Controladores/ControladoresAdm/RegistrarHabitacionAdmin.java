@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 
 public class RegistrarHabitacionAdmin {
 
@@ -28,6 +29,10 @@ public class RegistrarHabitacionAdmin {
 
     @FXML
     private ImageView imagenPreview;
+
+    @FXML
+    private FlowPane habitacionesFlowPane;
+
 
     @FXML
     private Label informacionLabel;
