@@ -1,40 +1,48 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.FlowPane;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class GestionOfertasAdmin {
 
     @FXML
-    private ComboBox<TipoAlojamiento> boxAlojamiento;
+    private TableView<?> tblOfertas;
 
     @FXML
-    private ComboBox<Ciudad> boxCiudad;
+    private TableColumn<?, ?> colCodigo, colDescripcion, colPorcentaje, colFechaInicio, colFechaFin;
 
     @FXML
-    private Button btnCrearOferta;
+    public void btnAgregarOferta(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarOfertas.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Registrar Nueva Oferta");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
-    private CheckBox esGlobal;
-
-    @FXML
-    private FlowPane flowPaneOferfas;
-
-
-    @FXML
-    void initialize() {
-
+    public void eliminarOferta(ActionEvent event) {
+        System.out.println("Eliminar oferta");
     }
 
     @FXML
-    void buscarOferta(ActionEvent event) {
-
+    public void actualizarOferta(ActionEvent event) {
+        System.out.println("Actualizar oferta");
     }
-
 }
