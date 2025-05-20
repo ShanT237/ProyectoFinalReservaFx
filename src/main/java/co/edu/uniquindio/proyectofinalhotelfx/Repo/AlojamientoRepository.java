@@ -45,6 +45,14 @@ public class AlojamientoRepository {
             if (alojamiento.getId().equals(idHotel)) {
                 if (alojamiento instanceof Hotel) {
                     Hotel hotel = (Hotel) alojamiento;
+
+                    for (Habitacion habExistente : hotel.getHabitaciones()) {
+                        if (habExistente.getNumero() == habitacion.getNumero()) {
+                            throw new Exception("Ya existe una habitación con el número " + habitacion.getNumero() + " en este hotel.");
+                        }
+                    }
+
+
                     hotel.getHabitaciones().add(habitacion);
                     guardarDatos();
                     return;
@@ -54,6 +62,21 @@ public class AlojamientoRepository {
             }
         }
         throw new Exception("No se encontró alojamiento con ID " + idHotel);
+    }
+
+    public void eliminarHabitacionHotel(String idHotel, int numeroHabitacion) throws Exception {
+        for (Alojamiento alojamiento : alojamientos) {
+            if (alojamiento.getId().equals(idHotel)) {
+                if (alojamiento instanceof Hotel) {
+                    Hotel hotel = (Hotel) alojamiento;
+                    hotel.getHabitaciones().removeIf(h -> h.getNumero() == numeroHabitacion);
+                    guardarDatos();
+                    return;
+                } else {
+                    throw new Exception("El alojamiento con ID " + idHotel + " no es un hotel.");
+                }
+            }
+        }
     }
 
     /**

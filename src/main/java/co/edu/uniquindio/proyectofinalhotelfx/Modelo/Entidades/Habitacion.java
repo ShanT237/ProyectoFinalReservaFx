@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
-@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,4 +23,13 @@ public class Habitacion implements Serializable {
     private TipoHabitacionHotel tipoHabitacion;
     private String imagen;
 
+    public Habitacion(int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacion, String imagen) {
+        this.numero = numero;
+        this.capacidad = capacidad;
+        this.precioPorNoche = precioPorNoche;
+        this.disponible = true;
+        this.serviciosIncluidos = serviciosIncluidos;
+        this.tipoHabitacion = tipoHabitacion;
+        this.imagen = imagen;
+    }
 }

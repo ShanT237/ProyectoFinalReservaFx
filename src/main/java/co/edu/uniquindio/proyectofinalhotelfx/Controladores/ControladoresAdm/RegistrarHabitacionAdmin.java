@@ -93,7 +93,6 @@ public class RegistrarHabitacionAdmin {
             int capacidad = (int) numPersonas.getValue();
             TipoHabitacionHotel tipo = tipoHabitacionBox.getValue();
 
-            serviciosIncluidos.getChildren().clear();
 
             List<ServiciosIncluidos> serviciosSeleccionados = new ArrayList<>();
             for (Node node : serviciosIncluidos.getChildren()) {
@@ -276,18 +275,39 @@ public class RegistrarHabitacionAdmin {
         numPersonas.setValue(habitacion.getCapacidad());
         tipoHabitacionBox.setValue(habitacion.getTipoHabitacion());
 
-        imagenSeleccionada = new File(habitacion.getImagen());
         if (habitacion.getImagen() != null && !habitacion.getImagen().isEmpty()) {
+            imagenSeleccionada = new File(habitacion.getImagen());
             imagenPreview.setImage(new Image("file:" + habitacion.getImagen()));
+        } else {
+            imagenSeleccionada = null;
+            imagenPreview.setImage(null);
         }
+
+
+        List<ServiciosIncluidos> serviciosHabitacion = habitacion.getServiciosIncluidos();
+        System.out.println("Servicios de la habitación: " + serviciosHabitacion);
 
         for (Node node : serviciosIncluidos.getChildren()) {
             if (node instanceof CheckBox) {
                 CheckBox cb = (CheckBox) node;
                 ServiciosIncluidos servicio = (ServiciosIncluidos) cb.getUserData();
-                cb.setSelected(habitacion.getServiciosIncluidos().contains(servicio));
+                boolean estaMarcado = serviciosHabitacion.contains(servicio);
+                System.out.println("CheckBox: " + servicio + " | marcado: " + estaMarcado);
+                cb.setSelected(estaMarcado);
             }
         }
+    }
+
+    @FXML
+    void eliminarHabitacion(ActionEvent event) throws Exception {
+        int numero = Integer.parseInt(fieldNumero.getText());
+        String id = alojamientoHotel.getId();
+
+        controladorPrincipal.getPlataforma().eliminarHabitacion(id, numero);
+        mostrarHabitaciones();
+        informacionLabel.setText("¡Habitación eliminada!");
+        informacionLabel.setStyle("-fx-text-fill: green");
+
     }
 
 

@@ -121,6 +121,7 @@ public class ServicioAlojamiento {
     }
 
     public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
+
         validarDatosHabitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
         Habitacion habitacion = crearHabitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
         alojamientoRepository.registrarHabitacionHotel(idhotel, habitacion);
@@ -147,14 +148,11 @@ public class ServicioAlojamiento {
     }
 
     public Habitacion crearHabitacion(int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen){
-        return Habitacion.builder()
-                .numero(numero)
-                .capacidad(capacidad)
-                .precioPorNoche(precioPorNoche)
-                .serviciosIncluidos(serviciosIncluidos)
-                .tipoHabitacion(tipoHabitacionHotel)
-                .imagen(imagen)
-                .disponible(true)
-                .build();
+        System.out.println(serviciosIncluidos.toString());
+        return new Habitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
+    }
+
+    public void eliminarHabitacion(String idAlojamiento, int numeroHabitacion) throws Exception {
+        alojamientoRepository.eliminarHabitacionHotel(idAlojamiento, numeroHabitacion);
     }
 }

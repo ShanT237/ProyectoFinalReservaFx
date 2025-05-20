@@ -12,14 +12,15 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="471.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.RegistrarHabitacionAdmin">
+<BorderPane prefHeight="471.0" prefWidth="589.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.RegistrarHabitacionAdmin">
    <center>
-      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="354.0" spacing="20.0">
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="326.0" spacing="20.0">
          <children>
             <Label contentDisplay="CENTER" text="Registrar Habitacion" textAlignment="CENTER">
                <font>
@@ -60,7 +61,12 @@
             </GridPane>
             <ImageView fx:id="imagenPreview" fitHeight="61.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="informacionLabel" text="Label" visible="false" />
-            <Button mnemonicParsing="false" onAction="#registrarAlojamiento" text="Registrar" />
+            <HBox spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#registrarAlojamiento" text="Registrar" />
+                  <Button mnemonicParsing="false" onAction="#eliminarHabitacion" text="Eliminar" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -68,10 +74,14 @@
       </VBox>
    </center>
    <right>
-      <VBox alignment="TOP_CENTER" prefHeight="448.0" prefWidth="131.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="471.0" prefWidth="202.0" BorderPane.alignment="CENTER">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Habitaciones" />
-            <FlowPane fx:id="habitacionesFlowPane" prefHeight="363.0" prefWidth="155.0" />
+            <ScrollPane prefHeight="457.0" prefWidth="131.0">
+               <content>
+                  <FlowPane fx:id="habitacionesFlowPane" prefHeight="426.0" prefWidth="202.0" />
+               </content>
+            </ScrollPane>
          </children>
       </VBox>
    </right>
