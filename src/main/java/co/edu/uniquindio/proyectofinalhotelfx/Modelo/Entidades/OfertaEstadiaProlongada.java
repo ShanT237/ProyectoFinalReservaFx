@@ -12,18 +12,23 @@ import java.util.List;
 
 @Getter
 @Setter
-@SuperBuilder
 public class OfertaEstadiaProlongada extends Oferta {
 
     private int nochesMinimas;
     private double porcentajeDescuento;
 
+    public OfertaEstadiaProlongada(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo, int nochesMinimas, double porcentajeDescuento) {
+        super(id, nombre, descripcion, fechaInicio, fechaFin, alojamientosAplicables, esGlobal, activa, tipo);
+        this.nochesMinimas = nochesMinimas;
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+
     @Override
     public boolean estaVigente(LocalDateTime fechaReserva) {
         return isActiva()
                 && fechaReserva != null
-                && !fechaReserva.isBefore(getFechaInicio().atStartOfDay())
-                && !fechaReserva.isAfter(getFechaFin().atStartOfDay());
+                && !fechaReserva.isBefore(getFechaInicio())
+                && !fechaReserva.isAfter(getFechaFin());
     }
 
     @Override

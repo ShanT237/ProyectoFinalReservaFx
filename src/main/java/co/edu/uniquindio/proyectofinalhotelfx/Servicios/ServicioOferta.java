@@ -11,4 +11,8 @@ import lombok.Setter;
 public class ServicioOferta {
     private ServicioAlojamiento servicioAlojamiento;
     private OfertaRepository ofertaRepository;
+
+    public void agregarOfertaEspecial(String idAlojamiento, String idOferta){
+
+    }
 }

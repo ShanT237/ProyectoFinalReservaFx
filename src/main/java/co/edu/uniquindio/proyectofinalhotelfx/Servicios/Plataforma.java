@@ -6,6 +6,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
@@ -14,6 +15,7 @@ import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -123,9 +125,21 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void registrarOferta() {
+    public void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientos, boolean esGlobal, boolean activa, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) {
+
 
     }
+
+    @Override
+    public void eliminarOferta(String idOferta) {
+
+    }
+
+    @Override
+    public void actualizarOferta(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientos, boolean esGlobal, boolean activa, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) {
+
+    }
+
 
     @Override
     public void registrarCliente(String nombre, String cedula, String telefono, String  correo, String password, String confirmarPassword) throws Exception {

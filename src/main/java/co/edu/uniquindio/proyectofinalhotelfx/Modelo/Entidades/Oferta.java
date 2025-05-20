@@ -14,14 +14,24 @@ public abstract class Oferta {
     private String id;
     private String nombre;
     private String descripcion;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
+    private LocalDateTime fechaInicio;
+    private LocalDateTime fechaFin;
     private List<Alojamiento> alojamientosAplicables;
     private boolean esGlobal;
     private boolean activa;
     private OfertaTipo tipo;
 
-
+    public Oferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.alojamientosAplicables = alojamientosAplicables;
+        this.esGlobal = esGlobal;
+        this.activa = activa;
+        this.tipo = tipo;
+    }
 
     public boolean aplicaA(Alojamiento alojamiento) {
         return esGlobal || (alojamientosAplicables != null && alojamientosAplicables.contains(alojamiento));

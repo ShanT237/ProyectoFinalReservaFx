@@ -2,17 +2,14 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Constantes;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 import lombok.Builder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -100,7 +97,7 @@ public class ServicioAdm {
 
     private void guardarDatos(Administrador adm) {
         try {
-            Persistencia.serializarObjeto(Constantes.RUTA_ADM, adm);
+            Persistencia.serializarObjeto(Ruta.RUTA_ADM, adm);
         } catch (IOException e) {
             System.err.println("Error guardando adm: " + e.getMessage());
         }
@@ -108,7 +105,7 @@ public class ServicioAdm {
 
     private Administrador leerDatos() {
         try {
-            Object datos = Persistencia.deserializarObjeto(Constantes.RUTA_ADM);
+            Object datos = Persistencia.deserializarObjeto(Ruta.RUTA_ADM);
             if (datos instanceof Administrador) {
                 return (Administrador) datos;
             }
@@ -118,20 +115,7 @@ public class ServicioAdm {
         return null;
     }
 
-    public void agregarOfertaEspecial(String idAlojamiento, Oferta oferta){
 
-
-    }
-    public void agregarOfertaEspecialGlobal(Ciudad ciudad, Oferta oferta){
-
-
-    }
-    public void actualizarOfertaEspecial(String idAlojamiento, Oferta nuevaOferta){
-
-    }
-    public void eliminarOfertaEspecial(String idAlojamiento, String idOferta){
-
-    }
     /*
     Gestionar Reservas
      */

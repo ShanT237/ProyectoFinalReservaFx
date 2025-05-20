@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Constantes;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 
 import java.io.IOException;
@@ -98,7 +98,7 @@ public class ClienteRepository   {
 
     private void guardarDatos() {
         try {
-            Persistencia.serializarObjeto(Constantes.RUTA_CLIENTE, clientes);
+            Persistencia.serializarObjeto(Ruta.RUTA_CLIENTE, clientes);
         } catch (IOException e) {
             System.err.println("Error guardando clientes: " + e.getMessage());
         }
@@ -106,7 +106,7 @@ public class ClienteRepository   {
 
     private List<Cliente> leerDatos() {
         try {
-            Object datos = Persistencia.deserializarObjeto(Constantes.RUTA_CLIENTE);
+            Object datos = Persistencia.deserializarObjeto(Ruta.RUTA_CLIENTE);
             if (datos != null) {
                 return (List<Cliente>) datos;
             }
