@@ -1,6 +1,10 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
@@ -14,6 +18,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
 public class RegistrarOfertasAdmin {
@@ -23,6 +30,9 @@ public class RegistrarOfertasAdmin {
 
     @FXML
     private URL location;
+
+    @FXML
+    private ImageView imagenView;
 
     @FXML
     private ComboBox<TipoAlojamiento> alojamientoBox;
@@ -57,6 +67,8 @@ public class RegistrarOfertasAdmin {
     @FXML
     private ComboBox<OfertaTipo> tipoOferta;
 
+    private File imagenSeleccionada;
+
     @FXML
     void guardarOferta(ActionEvent event) {
         try {
@@ -68,8 +80,31 @@ public class RegistrarOfertasAdmin {
             double descuento = descuentoField.getValue();
             OfertaTipo oferta = tipoOferta.getValue();
             int nochesMinimas = (int) sliderNochesMin.getValue();
+            String nombre = nombreField.getText().trim();
 
 
+            String rutaImagen = null;
+            if (imagenSeleccionada != null) {
+                String userDir = System.getProperty("user.dir");
+                File directorio = new File(userDir, "Img/ImagenesOfertas/");
+                if (!directorio.exists()) {
+                    directorio.mkdirs();
+                }
+
+                String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf('.'));
+                String nombreArchivo = "habitacion_" + nombre + "_" + System.currentTimeMillis() + extension;
+                File destino = new File(directorio, nombreArchivo);
+
+                try {
+                    Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    rutaImagen = "Img/ImagenesOfertas/" + nombreArchivo;
+                    System.out.println("Imagen de habitación guardada en: " + destino.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    mostrarError("Error al guardar la imagen: " + e.getMessage() + "");
+                    return;
+                }
+            }
 
 
             mostrarMensaje("¡Oferta registrada exitosamente!");
@@ -89,6 +124,22 @@ public class RegistrarOfertasAdmin {
         condicionEsGlobal();
         agregarTooltipSlider(sliderNochesMin);
 
+    }
+
+    @FXML
+    void seleccionarImagen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleccionar imagen de habitación");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File archivo = fileChooser.showOpenDialog(null);
+        if (archivo != null) {
+            imagenSeleccionada = archivo;
+            Image imagen = new Image(archivo.toURI().toString());
+            imagenView.setImage(imagen);
+        }
     }
 
     private void configurarComboDescuentos() {
@@ -270,6 +321,11 @@ public class RegistrarOfertasAdmin {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    @FXML
+    void btnSeleccionarImagen(ActionEvent event) {
+
     }
 
 
