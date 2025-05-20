@@ -63,22 +63,23 @@ public class Login {
                 controladorPrincipal.guardarSesion(usuario1);
                 mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
                 redirigirAHomeAdm();
+                limpiarCampos(); // SOLO si fue exitoso
             } else {
                 try {
                     Usuario usuario2 = controladorPrincipal.getPlataforma().loginCliente(correo, password);
                     controladorPrincipal.guardarSesion(usuario2);
                     mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
                     redirigirAHomeCliente();
+                    limpiarCampos(); // SOLO si fue exitoso
                 } catch (Exception ex) {
                     if (ex.getMessage().contains("Debe validar su estado de cuenta")) {
                         mostrarMensaje("Cuenta inactiva. Redirigiendo a validación...");
 
-                        // Abrir la ventana de verificación con el correo
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/CodigoVerificacion.fxml"));
                         Parent root = loader.load();
 
                         CodigoVerificacion codigoVerificacion = loader.getController();
-                        codigoVerificacion.setCorreo(correo); // Asegúrate de tener este método en el controlador de verificación
+                        codigoVerificacion.setCorreo(correo);
 
                         Stage stage = new Stage();
                         File archivoImagen = new File("Img/ImagenesApp/icon.png");
@@ -89,7 +90,6 @@ public class Login {
                         stage.setResizable(false);
                         stage.show();
 
-                        // Cerrar la ventana actual
                         ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
                     } else {
                         mostrarError("Error al iniciar sesión: " + ex.getMessage());
@@ -97,13 +97,12 @@ public class Login {
                 }
             }
 
-            limpiarCampos();
-
         } catch (Exception e) {
             mostrarError("Error al iniciar sesión: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
 
 
