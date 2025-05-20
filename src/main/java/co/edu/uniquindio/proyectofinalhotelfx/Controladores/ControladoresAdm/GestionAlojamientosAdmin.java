@@ -108,7 +108,7 @@ public class GestionAlojamientosAdmin {
 
     @FXML
     void acturalizarAlojamiento(ActionEvent event) {
-        mostrarVentana(event,"/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
+        mostrarVentana(event,"/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/ActualizarAlojamiento.fxml", "Registrar Alojamiento");
     }
 
     @FXML

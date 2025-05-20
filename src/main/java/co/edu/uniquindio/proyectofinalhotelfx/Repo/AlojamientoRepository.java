@@ -1,6 +1,10 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Hotel;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoHabitacionHotel;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 
@@ -34,6 +38,22 @@ public class AlojamientoRepository {
     public void guardar(Alojamiento alojamiento) {
         alojamientos.add(alojamiento);
         guardarDatos();
+    }
+
+    public void registrarHabitacionHotel(String idHotel, Habitacion habitacion) throws Exception {
+        for (Alojamiento alojamiento : alojamientos) {
+            if (alojamiento.getId().equals(idHotel)) {
+                if (alojamiento instanceof Hotel) {
+                    Hotel hotel = (Hotel) alojamiento;
+                    hotel.getHabitaciones().add(habitacion);
+                    guardarDatos();
+                    return;
+                } else {
+                    throw new Exception("El alojamiento con ID " + idHotel + " no es un hotel.");
+                }
+            }
+        }
+        throw new Exception("No se encontró alojamiento con ID " + idHotel);
     }
 
     /**

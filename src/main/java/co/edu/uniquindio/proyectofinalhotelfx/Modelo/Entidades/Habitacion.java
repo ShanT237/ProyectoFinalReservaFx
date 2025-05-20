@@ -17,8 +17,7 @@ public class Habitacion {
     private int capacidad;
     private double precioPorNoche;
     private boolean disponible;
-    private List<ServiciosIncluidos> servicios;
-    private Hotel hotel;
+    private List<ServiciosIncluidos> serviciosIncluidos;
     private TipoHabitacionHotel tipoHabitacion;
     private String imagen;
 

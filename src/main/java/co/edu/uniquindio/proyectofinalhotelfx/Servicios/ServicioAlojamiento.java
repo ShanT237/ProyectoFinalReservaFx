@@ -2,9 +2,11 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Factory.AlojamientoFactory.AlojamientoFactory;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoHabitacionHotel;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.AlojamientoRepository;
 import javafx.scene.image.Image;
 import lombok.Builder;
@@ -116,5 +118,43 @@ public class ServicioAlojamiento {
         return alojamientoRepository.obtenerTodos()
                 .stream()
                 .filter(a -> a.getTipoAlojamiento() == tipoAlojamiento).toList();
+    }
+
+    public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
+        validarDatosHabitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
+        Habitacion habitacion = crearHabitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
+        alojamientoRepository.registrarHabitacionHotel(idhotel, habitacion);
+    }
+    public void validarDatosHabitacion(int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
+        if (numero <= 0) {
+            throw new Exception("El número de habitación debe ser mayor a 0.");
+        }
+        if (capacidad <= 0) {
+            throw new Exception("La capacidad debe ser mayor a 0.");
+        }
+        if (precioPorNoche <= 0) {
+            throw new Exception("El precio por noche debe ser mayor a 0.");
+        }
+        if (serviciosIncluidos == null) {
+            throw new Exception("La lista de servicios no puede ser nula.");
+        }
+        if (tipoHabitacionHotel == null) {
+            throw new Exception("El tipo de habitación no puede ser nulo.");
+        }
+        if (imagen == null || imagen.isBlank()) {
+            throw new Exception("La imagen no puede estar vacía.");
+        }
+    }
+
+    public Habitacion crearHabitacion(int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen){
+        return Habitacion.builder()
+                .numero(numero)
+                .capacidad(capacidad)
+                .precioPorNoche(precioPorNoche)
+                .serviciosIncluidos(serviciosIncluidos)
+                .tipoHabitacion(tipoHabitacionHotel)
+                .imagen(imagen)
+                .disponible(true)
+                .build();
     }
 }
