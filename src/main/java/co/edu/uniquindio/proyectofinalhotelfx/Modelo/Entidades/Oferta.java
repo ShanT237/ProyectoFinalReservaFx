@@ -20,8 +20,10 @@ public abstract class Oferta {
     private boolean esGlobal;
     private boolean activa;
     private OfertaTipo tipo;
+    private int vecesAplicada;
+    private String imagen;
 
-    public Oferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo) {
+    public Oferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -31,6 +33,8 @@ public abstract class Oferta {
         this.esGlobal = esGlobal;
         this.activa = activa;
         this.tipo = tipo;
+        this.vecesAplicada = 0;
+        this.imagen = imagen;
     }
 
     public boolean aplicaA(Alojamiento alojamiento) {

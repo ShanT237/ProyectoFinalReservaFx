@@ -24,16 +24,16 @@ public class ServicioOferta {
 
     public void agregarOfertaEspecial(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String
                                               descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-                                      boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
+                                      boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
         verificarDatos(id, nombre,
-                descripcion, fechaInicio, fechaFin, tipoOferta, nochesMinimas, porcentajeDescuento);
+                descripcion, fechaInicio, fechaFin, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
 
         if (ofertaRepository.buscarPorId(id) != null) {
             throw new Exception("Ya existe una oferta con ese id.");
 
         }
         List<Alojamiento> alojamientos = obtenerListaAlojamientos(ciudad, tipoAlojamiento, esGlobal);
-        Oferta oferta = crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento);
+        Oferta oferta = crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
         ofertaRepository.guardar(oferta);
     }
 
@@ -45,8 +45,8 @@ public class ServicioOferta {
     public void actualizarOfertaEspecial(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento
                                                  tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime
                                                  fechaFin,boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas,
-                                         double porcentajeDescuento) throws Exception {
-        Oferta oferta = crearOferta(idOferta, nombre, descripcion, fechaInicio, fechaFin, obtenerListaAlojamientos(ciudad, tipoAlojamiento, esGlobal), esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento);
+                                         double porcentajeDescuento, String imagen) throws Exception {
+        Oferta oferta = crearOferta(idOferta, nombre, descripcion, fechaInicio, fechaFin, obtenerListaAlojamientos(ciudad, tipoAlojamiento, esGlobal), esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
         ofertaRepository.actualizarOferta(oferta);
     }
 
@@ -55,7 +55,7 @@ public class ServicioOferta {
     }
 
     public void verificarDatos(String id, String nombre, String
-            descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
+            descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
         if (id == null || id.isBlank()) {
             throw new Exception("El id de la oferta no puede ser nulo o vacío.");
         }
@@ -80,10 +80,13 @@ public class ServicioOferta {
         if (porcentajeDescuento < 0 || porcentajeDescuento > 100) {
             throw new Exception("El porcentaje de descuento debe estar entre 0 y 100.");
         }
+        if (imagen == null || imagen.isBlank()) {
+            throw new Exception("La imagen de la oferta no puede ser nula o vacía.");
+        }
     }
 
-    public Oferta crearOferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientos, boolean esGlobal, boolean activa, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) throws Exception {
-        return OfertaFactory.crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, activa, tipoOferta, nochesMinimas, porcentajeDescuento);
+    public Oferta crearOferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientos, boolean esGlobal, boolean activa, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
+        return OfertaFactory.crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, activa, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
     }
 
     public List<Alojamiento> obtenerListaAlojamientos(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, boolean esGlobal) throws Exception {

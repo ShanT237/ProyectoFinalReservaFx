@@ -193,7 +193,7 @@ public class RegistrarAlojamientoAdmin {
 
             controladorPrincipal.getPlataforma().registrarAlojamiento(nombre, ciudad, descripcion, precio, rutaImagen, serviciosSeleccionados, personas, habitaciones, permiteMascotas, tipo);
 
-            limpiarCampos(); // Limpia todos los campos
+            limpiarCampos();
 
             informacionLabel.setText("¡Alojamiento registrado exitosamente!");
             informacionLabel.setStyle("-fx-text-fill: green;");

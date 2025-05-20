@@ -16,8 +16,8 @@ public class OfertaTemporada extends Oferta {
 
     private double porcentajeDescuento;
 
-    public OfertaTemporada(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo, double porcentajeDescuento) {
-        super(id, nombre, descripcion, fechaInicio, fechaFin, alojamientosAplicables, esGlobal, activa, tipo);
+    public OfertaTemporada(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo, double porcentajeDescuento, String imagen) {
+        super(id, nombre, descripcion, fechaInicio, fechaFin, alojamientosAplicables, esGlobal, activa, tipo, imagen);
         this.porcentajeDescuento = porcentajeDescuento;
     }
 
