@@ -101,7 +101,7 @@ public interface IPlataforma {
      */
     void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre,
                          String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
-                         int nochesMinimas, double porcentajeDescuento);
+                         int nochesMinimas, double porcentajeDescuento) throws Exception;
 
     /**
      * Elimina una oferta del sistema por su ID.
@@ -113,7 +113,7 @@ public interface IPlataforma {
      */
     void actualizarOferta(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento tipoAlojamiento,
                           String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
-                          int nochesMinimas, double porcentajeDescuento);
+                          int nochesMinimas, double porcentajeDescuento) throws Exception;
 
 
     // -------------------------------

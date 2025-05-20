@@ -38,10 +38,16 @@ public class ServicioOferta {
     }
 
     public void eliminarOfertaEspecial(String idOferta){
+        ofertaRepository.eliminarOferta(idOferta);
 
     }
 
-    public void actualizarOfertaEspecial(String idOferta, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
+    public void actualizarOfertaEspecial(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento
+                                                 tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime
+                                                 fechaFin,boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas,
+                                         double porcentajeDescuento) throws Exception {
+        Oferta oferta = crearOferta(idOferta, nombre, descripcion, fechaInicio, fechaFin, obtenerListaAlojamientos(ciudad, tipoAlojamiento, esGlobal), esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento);
+        ofertaRepository.actualizarOferta(oferta);
     }
 
     public boolean existeOfertaEspecial(String idOferta){

@@ -211,8 +211,8 @@ public class Plataforma implements IPlataforma {
         @Override
         public void registrarOferta (Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String
         descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-        boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento){
-            // Por implementar
+        boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
+            servicioAdm.registrarOferta(ciudad, tipoAlojamiento, id, nombre, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
         }
 
 /**
@@ -220,7 +220,7 @@ public class Plataforma implements IPlataforma {
  */
         @Override
         public void eliminarOferta (String idOferta){
-            // Por implementar
+            servicioAdm.eliminarOfertaEspecial(idOferta);
         }
 
 /**
@@ -230,7 +230,7 @@ public class Plataforma implements IPlataforma {
         public void actualizarOferta (String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento
         tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime
         fechaFin,boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas,
-        double porcentajeDescuento){
-            // Por implementar
+        double porcentajeDescuento) throws Exception {
+            servicioAdm.actualizarOfertaEspecial(idOferta, nombre, ciudad, tipoAlojamiento, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
         }
     }
