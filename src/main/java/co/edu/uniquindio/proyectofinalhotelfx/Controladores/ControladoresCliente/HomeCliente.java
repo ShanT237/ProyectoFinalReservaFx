@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -37,5 +38,20 @@ public class HomeCliente {
                 lblSaldo.setText("$" + String.format("%.2f", saldo));
             }
         }
+    }
+
+    public void cargarBuscarAlojamientos(ActionEvent actionEvent) {
+    }
+
+    public void cargarMisReservas(ActionEvent actionEvent) {
+    }
+
+    public void cargarBilletera(ActionEvent actionEvent) {
+    }
+
+    public void cargarResenas(ActionEvent actionEvent) {
+    }
+
+    public void cerrarSesion(ActionEvent actionEvent) {
     }
 }
