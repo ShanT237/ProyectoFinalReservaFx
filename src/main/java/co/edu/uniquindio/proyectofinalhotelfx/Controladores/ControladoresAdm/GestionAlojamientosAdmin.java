@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
@@ -36,6 +37,11 @@ public class GestionAlojamientosAdmin {
 
     @FXML
     private URL location;
+
+
+    @FXML
+    private Button buttonRegistrarHab;
+
 
     @FXML
     private TableColumn<Alojamiento, ImageView> colImagen;
@@ -62,6 +68,7 @@ public class GestionAlojamientosAdmin {
     void initialize() {
         configurarColumnas();
         actualizarTabla();
+        configurarListenerSeleccion();
 
     }
     public void configurarColumnas() {
@@ -133,6 +140,28 @@ public class GestionAlojamientosAdmin {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void configurarListenerSeleccion() {
+        tblAlojamientos.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            if (newSel != null && newSel.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
+                buttonRegistrarHab.setVisible(true);
+            } else {
+                buttonRegistrarHab.setVisible(false);
+            }
+        });
+    }
+
+    @FXML
+    void registrarHabitacionHotel(ActionEvent event) {
+        Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
+
+        if (alojamientoSeleccionado != null && alojamientoSeleccionado.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
+                mostrarVentana(event, "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml", "Registrar Habitación Hotel");
+                actualizarTabla();
+
+
         }
     }
 }

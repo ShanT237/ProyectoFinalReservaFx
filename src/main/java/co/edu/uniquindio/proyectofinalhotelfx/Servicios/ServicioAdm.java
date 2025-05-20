@@ -2,13 +2,17 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Constantes;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 import lombok.Builder;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -19,17 +23,13 @@ public class ServicioAdm {
     private final ServicioCliente servicioCliente;
 
     public Administrador loginAdm(String correo, String password){
-        if(correo.equals("shanrt@gmail.com") &&  password.equals("1234password") ){
-            return Administrador.builder()
-                    .nombre("Santiago")
-                    .cedula("12323")
-                    .telefono("3216549870")
-                    .correo("shanrt@gmail.com")
-                    .password("1234password")
-                    .build();
+        System.out.println(leerDatos());
+        Administrador adm = leerDatos();
+        if (adm != null && adm.getCorreo().equals(correo) && adm.getPassword().equals(password)){
+            return adm;
+        }else{
+            return null;
         }
-
-        return null;
     }
 
     /*
@@ -95,6 +95,26 @@ public class ServicioAdm {
 
         servicioAlojamiento.eliminarAlojamiento(idAlojamiento);
 
+    }
+
+    private void guardarDatos(Administrador adm) {
+        try {
+            Persistencia.serializarObjeto(Constantes.RUTA_ADM, adm);
+        } catch (IOException e) {
+            System.err.println("Error guardando adm: " + e.getMessage());
+        }
+    }
+
+    private Administrador leerDatos() {
+        try {
+            Object datos = Persistencia.deserializarObjeto(Constantes.RUTA_ADM);
+            if (datos instanceof Administrador) {
+                return (Administrador) datos;
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando admin: " + e.getMessage());
+        }
+        return null;
     }
 
     public void agregarOfertaEspecial(String idAlojamiento, Oferta oferta){

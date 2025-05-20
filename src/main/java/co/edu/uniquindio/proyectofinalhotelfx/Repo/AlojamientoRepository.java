@@ -45,9 +45,11 @@ public class AlojamientoRepository {
         for (Alojamiento alojamiento : alojamientos) {
             if (alojamiento.getId().equals(idAlojamiento)) {
                 alojamientos.remove(alojamiento);
+                guardarDatos();
                 return;
             }
         }
+
     }
 
     /**
