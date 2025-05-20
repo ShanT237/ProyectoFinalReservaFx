@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoHabitacionHotel;
 import javafx.event.ActionEvent;
@@ -43,6 +44,11 @@ public class RegistrarHabitacionAdmin {
     @FXML
     private ComboBox<TipoHabitacionHotel> tipoHabitacionBox;
 
+    private String alojamientoHotel;
+
+    public void setAlojamiento(String alojamientoHotel) {
+        this.alojamientoHotel = alojamientoHotel;
+    }
     @FXML
     void registrarAlojamiento(ActionEvent event) {
 

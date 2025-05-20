@@ -44,6 +44,7 @@ public class OfertaRepository {
         for (int i = 0; i < ofertas.size(); i++) {
             if (ofertas.get(i).getId().equals(oferta.getId())) {
                 ofertas.set(i, oferta);
+                guardarDatos();
                 return;
             }
         }

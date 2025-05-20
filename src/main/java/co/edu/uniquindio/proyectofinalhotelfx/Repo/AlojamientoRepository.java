@@ -85,6 +85,7 @@ public class AlojamientoRepository {
         for (int i = 0; i < alojamientos.size(); i++) {
             if (alojamientos.get(i).getId().equals(idBuscado)) {
                 alojamientos.set(i, alojamientoActualizado);
+                guardarDatos();
                 return;
             }
         }
