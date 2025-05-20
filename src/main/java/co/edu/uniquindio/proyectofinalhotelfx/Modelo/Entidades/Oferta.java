@@ -56,5 +56,6 @@ public abstract class Oferta {
     }
 
     public void setValorDescuento(float descuento) {
+
     }
 }
