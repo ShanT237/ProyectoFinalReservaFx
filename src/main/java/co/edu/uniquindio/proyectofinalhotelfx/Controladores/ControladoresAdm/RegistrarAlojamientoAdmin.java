@@ -27,6 +27,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -45,7 +46,7 @@ public class RegistrarAlojamientoAdmin {
     @FXML private Slider numHabitaciones;
     @FXML private Slider numPersonas;
     @FXML private TextField precioField;
-    @FXML private ListView<ServiciosIncluidos> serviciosIncluidos;
+    @FXML private VBox serviciosIncluidos;
     @FXML private ComboBox<TipoAlojamiento> tipoAlojamientoBox;
 
     // --- Variables auxiliares ---
@@ -69,6 +70,7 @@ public class RegistrarAlojamientoAdmin {
         cargarTiposAlojamiento();
         cargarServiciosIncluidos();
         configurarSliders();
+        configurarCampoPrecio();
         agregarTooltipSlider(numHabitaciones);
         agregarTooltipSlider(numPersonas);
     }
@@ -86,16 +88,13 @@ public class RegistrarAlojamientoAdmin {
     }
 
     private void cargarServiciosIncluidos() {
-        ObservableList<ServiciosIncluidos> servicios = FXCollections.observableArrayList(ServiciosIncluidos.values());
-        serviciosIncluidos.setItems(servicios);
+        serviciosIncluidos.getChildren().clear();
 
-        serviciosIncluidos.setCellFactory(CheckBoxListCell.forListView(servicio -> {
-            BooleanProperty observable = new SimpleBooleanProperty();
-            observable.addListener((obs, wasSelected, isNowSelected) -> {
-                System.out.println(servicio + " seleccionado: " + isNowSelected);
-            });
-            return observable;
-        }));
+        for (ServiciosIncluidos servicio : ServiciosIncluidos.values()) {
+            CheckBox checkBox = new CheckBox(servicio.toString());
+            checkBox.setUserData(servicio);
+            serviciosIncluidos.getChildren().add(checkBox);
+        }
     }
 
     private void configurarSliders() {
@@ -161,10 +160,12 @@ public class RegistrarAlojamientoAdmin {
 
             // Servicios seleccionados
             List<ServiciosIncluidos> serviciosSeleccionados = new ArrayList<>();
-            for (ServiciosIncluidos servicio : serviciosIncluidos.getItems()) {
-                CheckBoxListCell<ServiciosIncluidos> cell = (CheckBoxListCell<ServiciosIncluidos>) serviciosIncluidos.lookup("#" + servicio.name());
-                if (cell != null && cell.isSelected()) {
-                    serviciosSeleccionados.add(servicio);
+            for (Node node : serviciosIncluidos.getChildren()) {
+                if (node instanceof CheckBox) {
+                    CheckBox cb = (CheckBox) node;
+                    if (cb.isSelected()) {
+                        serviciosSeleccionados.add((ServiciosIncluidos) cb.getUserData());
+                    }
                 }
             }
 
@@ -231,10 +232,25 @@ public class RegistrarAlojamientoAdmin {
         imagenSeleccionada = null;
         informacionLabel.setVisible(false); // por si estaba visible de antes
 
-        serviciosIncluidos.setCellFactory(CheckBoxListCell.forListView(servicio -> {
-            BooleanProperty observable = new SimpleBooleanProperty(false);
-            return observable;
-        }));
-        serviciosIncluidos.refresh();
+        for (Node node : serviciosIncluidos.getChildren()) {
+            if (node instanceof CheckBox) {
+                ((CheckBox) node).setSelected(false);
+            }
+        }
     }
+
+    private void configurarCampoPrecio() {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*\\.?\\d*")) {
+                return change;
+            }
+            return null;
+        });
+
+        precioField.setTextFormatter(textFormatter);
+
+    }
+
+
 }

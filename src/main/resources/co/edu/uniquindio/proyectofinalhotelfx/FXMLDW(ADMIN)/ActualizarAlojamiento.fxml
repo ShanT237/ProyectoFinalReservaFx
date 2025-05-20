@@ -5,7 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -17,7 +17,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.ActualizarAlojamientoAdmin">
    <center>
@@ -63,9 +62,13 @@
                   <Slider fx:id="numHabitaciones" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <ComboBox fx:id="ciudadBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <ListView fx:id="serviciosIncluidos" prefHeight="33.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <ComboBox fx:id="tipoAlojamientoBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <Button mnemonicParsing="false" onAction="#seleccionarImagen" text="Selecionar Imagen" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                  <ScrollPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <content>
+                        <VBox fx:id="serviciosIncluidos" prefHeight="48.0" prefWidth="234.0" />
+                     </content>
+                  </ScrollPane>
                </children>
             </GridPane>
             <ImageView fx:id="imagenPreview" fitHeight="61.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true" />

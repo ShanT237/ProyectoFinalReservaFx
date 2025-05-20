@@ -177,6 +177,7 @@ public class RegistrarHabitacionAdmin {
         }
         configurarSliders();
         agregarTooltipSlider(numPersonas);
+        configurarCampoPrecio();
 
         fieldNumero.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -307,6 +308,19 @@ public class RegistrarHabitacionAdmin {
         mostrarHabitaciones();
         informacionLabel.setText("¡Habitación eliminada!");
         informacionLabel.setStyle("-fx-text-fill: green");
+
+    }
+
+    private void configurarCampoPrecio() {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*\\.?\\d*")) {
+                return change;
+            }
+            return null;
+        });
+
+        precioField.setTextFormatter(textFormatter);
 
     }
 

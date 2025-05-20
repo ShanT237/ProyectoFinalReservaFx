@@ -33,8 +33,7 @@ public class ServicioAlojamiento {
     }
 
     public Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id){
-        AlojamientoFactory alojamientoFactory = new AlojamientoFactory();
-        Alojamiento alojamiento = alojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
+        Alojamiento alojamiento = AlojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
         return alojamiento;
 
     }
