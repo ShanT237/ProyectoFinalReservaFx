@@ -16,6 +16,8 @@ public class OfertaRepository {
         this.ofertas = leerDatos();
     }
 
+
+
     public List<Oferta> obtenerTodos() {
         return new ArrayList<>(ofertas);
     }

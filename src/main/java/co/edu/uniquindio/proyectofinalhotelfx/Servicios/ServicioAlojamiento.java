@@ -100,5 +100,21 @@ public class ServicioAlojamiento {
     }
 
 
+    public List<Alojamiento> obtenerAlojamientosPorCiudadYTipo(Ciudad ciudad, TipoAlojamiento tipoAlojamiento) {
+        return alojamientoRepository.obtenerTodos()
+                .stream()
+                .filter(a -> a.getCiudad() == ciudad && a.getTipoAlojamiento() == tipoAlojamiento).toList();
+    }
 
+    public List<Alojamiento> obtenerAlojamientosPorCiudad(Ciudad ciudad) {
+        return alojamientoRepository.obtenerTodos()
+                .stream()
+                .filter(a -> a.getCiudad() == ciudad).toList();
+    }
+
+    public List<Alojamiento> obtenerAlojamientosPorTipo(TipoAlojamiento tipoAlojamiento) {
+        return alojamientoRepository.obtenerTodos()
+                .stream()
+                .filter(a -> a.getTipoAlojamiento() == tipoAlojamiento).toList();
+    }
 }

@@ -210,7 +210,7 @@ public class Plataforma implements IPlataforma {
  */
         @Override
         public void registrarOferta (Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String
-        descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List < Alojamiento > alojamientos,
+        descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
         boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento){
             // Por implementar
         }
@@ -229,7 +229,7 @@ public class Plataforma implements IPlataforma {
         @Override
         public void actualizarOferta (String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento
         tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime
-        fechaFin, List < Alojamiento > alojamientos,boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas,
+        fechaFin,boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas,
         double porcentajeDescuento){
             // Por implementar
         }

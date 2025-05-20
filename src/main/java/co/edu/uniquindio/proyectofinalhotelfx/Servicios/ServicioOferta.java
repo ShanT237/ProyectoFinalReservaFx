@@ -22,9 +22,19 @@ public class ServicioOferta {
     private ServicioAlojamiento servicioAlojamiento;
     private OfertaRepository ofertaRepository;
 
-    public void agregarOfertaEspecial(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
-        verificarDatos(nombre, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones);
+    public void agregarOfertaEspecial(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String
+                                              descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
+                                      boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
+        verificarDatos(id, nombre,
+                descripcion, fechaInicio, fechaFin, tipoOferta, nochesMinimas, porcentajeDescuento);
+
+        if (ofertaRepository.buscarPorId(id) != null) {
+            throw new Exception("Ya existe una oferta con ese id.");
+
+        }
         List<Alojamiento> alojamientos = obtenerListaAlojamientos(ciudad, tipoAlojamiento, esGlobal);
+        Oferta oferta = crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento);
+        ofertaRepository.guardar(oferta);
     }
 
     public void eliminarOfertaEspecial(String idOferta){
@@ -38,39 +48,41 @@ public class ServicioOferta {
         return ofertaRepository.buscarPorId(idOferta) != null;
     }
 
-    public void verificarDatos(String nombre, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones
-    ){
+   public void verificarDatos(String id, String nombre, String
+                                      descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
+        if (id == null || id.isBlank()) {
+            throw new Exception("El id de la oferta no puede ser nulo o vacío.");
+        }
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+            throw new Exception("El nombre de la oferta no puede ser nulo o vacío.");
         }
-
         if (descripcion == null || descripcion.isBlank()) {
-            throw new IllegalArgumentException("La descripción no puede estar vacía.");
+            throw new Exception("La descripción de la oferta no puede ser nula o vacía.");
         }
-        if (precioPorNocheBase <= 0) {
-            throw new IllegalArgumentException("El precio debe ser mayor a 0.");
+        if (fechaInicio == null) {
+            throw new Exception("La fecha de inicio de la oferta no puede ser nula.");
         }
-        if (serviciosIncluidos == null) {
-            throw new IllegalArgumentException("La lista de servicios no puede ser nula.");
+        if (fechaFin == null) {
+            throw new Exception("La fecha de fin de la oferta no puede ser nula.");
         }
-        if (capacidadPersonas <= 0) {
-            throw new IllegalArgumentException("La capacidad de personas debe ser mayor a 0.");
+        if (tipoOferta == null) {
+            throw new Exception("El tipo de oferta no puede ser nulo.");
         }
-        if (numeroHabitaciones <= 0) {
-            throw new IllegalArgumentException("El número de habitaciones debe ser mayor a 0.");
+        if (nochesMinimas < 1) {
+            throw new Exception("La cantidad mínima de noches debe ser mayor a 0.");
         }
-        if (imagen == null || imagen.isBlank()) {
-            throw new IllegalArgumentException("La imagen no puede estar vacía.");
+        if (porcentajeDescuento < 0 || porcentajeDescuento > 100) {
+            throw new Exception("El porcentaje de descuento debe estar entre 0 y 100.");
         }
-    }
+   }
 
     public Oferta crearOferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientos, boolean esGlobal, boolean activa, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) throws Exception {
        return OfertaFactory.crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, activa, tipoOferta, nochesMinimas, porcentajeDescuento);
     }
 
-    public List<Alojamiento> obtenerListaAlojamientos(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, boolean esGlobal) {
+    public List<Alojamiento> obtenerListaAlojamientos(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, boolean esGlobal) throws Exception {
         if (esGlobal) {
-            return servicioAlojamiento.obtenerTodos();
+            return servicioAlojamiento.getAlojamientoRepository().obtenerTodos();
         }
 
         if (ciudad != null && tipoAlojamiento != null) {
@@ -80,7 +92,7 @@ public class ServicioOferta {
         } else if (tipoAlojamiento != null) {
             return servicioAlojamiento.obtenerAlojamientosPorTipo(tipoAlojamiento);
         } else {
-            throw new IllegalArgumentException("Debe especificar al menos una ciudad o un tipo de alojamiento, o marcar como global.");
+            throw new Exception("Debe especificar al menos una ciudad o un tipo de alojamiento, o marcar como global.");
         }
 
     }

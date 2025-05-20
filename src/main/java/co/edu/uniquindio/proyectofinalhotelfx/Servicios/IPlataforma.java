@@ -100,8 +100,7 @@ public interface IPlataforma {
      * Registra una nueva oferta con base en parámetros personalizados.
      */
     void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre,
-                         String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-                         List<Alojamiento> alojamientos, boolean esGlobal, OfertaTipo tipoOferta,
+                         String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
                          int nochesMinimas, double porcentajeDescuento);
 
     /**
@@ -113,8 +112,7 @@ public interface IPlataforma {
      * Actualiza una oferta existente.
      */
     void actualizarOferta(String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento tipoAlojamiento,
-                          String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-                          List<Alojamiento> alojamientos, boolean esGlobal, OfertaTipo tipoOferta,
+                          String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
                           int nochesMinimas, double porcentajeDescuento);
 
 
