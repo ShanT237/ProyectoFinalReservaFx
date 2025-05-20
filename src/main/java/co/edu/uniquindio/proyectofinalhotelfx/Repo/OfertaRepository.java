@@ -16,6 +16,47 @@ public class OfertaRepository {
         this.ofertas = leerDatos();
     }
 
+    public List<Oferta> obtenerTodos() {
+        return new ArrayList<>(ofertas);
+    }
+    /**
+     * Guarda una nueva oferta en el repositorio
+     * @param oferta La oferta a guardar
+     */
+    public void guardar(Oferta oferta) {
+        ofertas.add(oferta);
+        guardarDatos();
+    }
+
+    public void eliminarOferta(String idOferta) {
+        for (Oferta oferta : ofertas) {
+            if (oferta.getId().equals(idOferta)) {
+                ofertas.remove(oferta);
+                guardarDatos();
+                return;
+            }
+        }
+    }
+
+    public void actualizarOferta(Oferta oferta) throws Exception {
+        for (int i = 0; i < ofertas.size(); i++) {
+            if (ofertas.get(i).getId().equals(oferta.getId())) {
+                ofertas.set(i, oferta);
+                return;
+            }
+        }
+        throw new Exception("No existe una oferta con el ID: " + oferta.getId());
+    }
+
+    public Oferta buscarPorId(String idOferta) {
+        for (Oferta oferta : ofertas) {
+            if (oferta.getId().equals(idOferta)) {
+                return oferta;
+            }
+        }
+        return null;
+    }
+
     private void guardarDatos() {
         try {
             Persistencia.serializarObjeto(Ruta.RUTA_OFERTA, ofertas);
