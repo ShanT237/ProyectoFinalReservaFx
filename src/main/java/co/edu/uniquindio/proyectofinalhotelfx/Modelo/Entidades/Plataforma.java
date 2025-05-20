@@ -19,5 +19,4 @@ public class Plataforma {
         return reservaRepository;
     }
 
-    // ... otros getters
 }
