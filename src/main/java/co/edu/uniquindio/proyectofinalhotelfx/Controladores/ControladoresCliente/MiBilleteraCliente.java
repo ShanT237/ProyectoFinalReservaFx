@@ -25,49 +25,54 @@ public class MiBilleteraCliente {
     private ServicioBilleteraVirtual servicioBilleteraVirtual;
     private Usuario usuario;
 
-    // Método llamado desde HomeCliente para inyectar servicio y usuario
+    /**
+     * Este método debe ser llamado desde el controlador principal (HomeCliente)
+     * inmediatamente después de cargar el FXML.
+     */
     public void setServicioBilletera(ServicioBilleteraVirtual servicio, Usuario usuario) {
         this.servicioBilleteraVirtual = servicio;
         this.usuario = usuario;
+        System.out.println("setServicioBilletera llamado con usuario: " + usuario);
         actualizarSaldo();
     }
 
     @FXML
-    void initialize() {
-        // Espera a que se llame setServicioBilletera antes de mostrar el saldo
+    private void initialize() {
+        // No usar usuario ni servicio aquí porque aún no están inyectados
+        System.out.println("MiBilleteraCliente inicializado");
     }
 
     @FXML
     private void recargarCuenta() {
+        System.out.println("Usuario en recargarCuenta: " + usuario);
         if (usuario == null) {
-            mostrarError("Error: usuario no cargado. Reinicie la aplicación.");
+            mostrarError("⚠ Error: usuario no cargado. Por favor, regrese al menú y reintente.");
             return;
         }
 
         String montoTexto = txtMontoRecarga.getText().trim();
 
         if (montoTexto.isEmpty()) {
-            mostrarError("El monto es obligatorio.");
+            mostrarError("⚠ El monto es obligatorio.");
             return;
         }
 
         try {
             double monto = Double.parseDouble(montoTexto);
             if (monto <= 0) {
-                mostrarError("Ingrese un monto mayor a 0.");
+                mostrarError("⚠ Ingrese un monto mayor a 0.");
                 return;
             }
 
             servicioBilleteraVirtual.recargarBilletera(usuario.getCedula(), monto);
-
             actualizarSaldo();
-            mostrarMensaje("Recarga exitosa de $" + monto);
+            mostrarMensaje("✅ Recarga exitosa de $" + String.format("%.2f", monto));
             txtMontoRecarga.clear();
 
         } catch (NumberFormatException e) {
-            mostrarError("Monto inválido. Ingrese un número.");
+            mostrarError("⚠ Monto inválido. Ingrese un número.");
         } catch (IllegalArgumentException e) {
-            mostrarError(e.getMessage());
+            mostrarError("⚠ " + e.getMessage());
         }
     }
 
