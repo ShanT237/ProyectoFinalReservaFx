@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 @Getter
@@ -44,4 +45,16 @@ public abstract class Oferta {
     public abstract boolean estaVigente(LocalDateTime fecha);
 
     public abstract double aplicarDescuento(double precioOriginal, Reserva reserva);
+
+    public void setHuespedes(int cantidadhuespedes) {
+    }
+
+    public void setFechasdescuento(ArrayList<LocalDate> fechas) {
+    }
+
+    public void setDiasReserva(int diasReserva) {
+    }
+
+    public void setValorDescuento(float descuento) {
+    }
 }

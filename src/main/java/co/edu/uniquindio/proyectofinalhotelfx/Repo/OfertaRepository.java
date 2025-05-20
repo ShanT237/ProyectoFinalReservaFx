@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,14 @@ public class OfertaRepository {
         this.ofertas = leerDatos();
     }
 
+    public ArrayList<LocalDate> guardarFechas(LocalDate fechaInicial, int dias){
+        ArrayList<LocalDate> fechas = new ArrayList<>();
+        for (int i = 0; i < dias; i++) {
+            fechas.add(fechaInicial);
+            fechaInicial = fechaInicial.plusDays(1);
+        }
+        return fechas;
+    }
 
 
     public List<Oferta> obtenerTodos() {
@@ -77,5 +86,34 @@ public class OfertaRepository {
             System.err.println("Error cargando ofertas: " + e.getMessage());
         }
         return new ArrayList<>();
+    }
+
+    public static ArrayList<Oferta> listarOfertas() {
+        return OfertaRepository.listarOfertas();
+    }
+
+    public void editarOferta(Oferta oferta, String nombre, LocalDate fechainicial, int diasOferta, int cantidadhuespedes, String valorDescuento, int diasReserva) throws Exception {
+        StringBuilder e =  new StringBuilder();
+        if (oferta == null) e.append("Seleccione una oferta para editarla - ");
+        if (nombre.isEmpty()) e.append("El nombre no puede estar vacio - ");
+        if (valorDescuento.isEmpty()) e.append("Rellene el descuento - ");
+        if (!e.isEmpty())throw new Exception(e + "Verifique los datos y rellene");
+        float descuento;
+        try{
+            descuento = Float.parseFloat(valorDescuento);
+        }catch (NumberFormatException ex){
+            throw new Exception("Valor de descuento invalido");
+        }
+        if (descuento <= 0.0f || descuento > 100.0f) throw new Exception("Valor de descuento no valido");
+        ArrayList<LocalDate> fechas = new ArrayList<>();
+        if (fechainicial != null && diasOferta > 0) {
+            if (fechainicial.isBefore(LocalDate.now())) throw new Exception("Fecha inicial no valida");
+            fechas = guardarFechas(fechainicial, diasOferta);
+        }
+        oferta.setNombre(nombre);
+        oferta.setFechasdescuento(fechas);
+        oferta.setDiasReserva(diasReserva);
+        oferta.setValorDescuento(descuento);
+        oferta.setHuespedes(cantidadhuespedes);
     }
 }
