@@ -139,6 +139,7 @@ public class RegistrarHabitacionAdmin {
             );
 
             mostrarHabitaciones();
+            limpiarCampos();
             informacionLabel.setText("¡Habitación registrada!");
             informacionLabel.setStyle("-fx-text-fill: green");
 
@@ -195,7 +196,7 @@ public class RegistrarHabitacionAdmin {
             tarjeta.setPadding(new Insets(10));
             tarjeta.setStyle("-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #f9f9f9;");
 
-            // Imagen
+
             ImageView imagenView = new ImageView();
             if (habitacion.getImagen() != null && !habitacion.getImagen().isEmpty()) {
                 imagenView.setImage(new Image("file:" + habitacion.getImagen()));
@@ -204,13 +205,16 @@ public class RegistrarHabitacionAdmin {
             imagenView.setFitHeight(100);
             imagenView.setPreserveRatio(true);
 
-            // Info
+
             Label nombreLabel = new Label("Nombre: " + habitacion.getNumero());
             Label tipoLabel = new Label("Tipo: " + habitacion.getTipoHabitacion());
             Label capacidadLabel = new Label("Capacidad: " + habitacion.getCapacidad() + " personas");
             Label precioLabel = new Label("Precio: $" + habitacion.getPrecioPorNoche());
 
             tarjeta.getChildren().addAll(imagenView, nombreLabel, tipoLabel, capacidadLabel, precioLabel);
+
+            tarjeta.setOnMouseClicked(e -> llenarCamposDesdeHabitacion(habitacion));
+
             habitacionesFlowPane.getChildren().add(tarjeta);
         }
     }
@@ -249,6 +253,41 @@ public class RegistrarHabitacionAdmin {
         numPersonas.setMin(1);
         numPersonas.setMax(20);
         numPersonas.setMajorTickUnit(1);
+    }
+
+    private void limpiarCampos() {
+        fieldNumero.clear();
+        precioField.clear();
+        numPersonas.setValue(1);
+        tipoHabitacionBox.getSelectionModel().clearSelection();
+        imagenPreview.setImage(null);
+        imagenSeleccionada = null;
+
+        for (Node node : serviciosIncluidos.getChildren()) {
+            if (node instanceof CheckBox) {
+                ((CheckBox) node).setSelected(false);
+            }
+        }
+    }
+
+    private void llenarCamposDesdeHabitacion(Habitacion habitacion) {
+        fieldNumero.setText(String.valueOf(habitacion.getNumero()));
+        precioField.setText(String.valueOf(habitacion.getPrecioPorNoche()));
+        numPersonas.setValue(habitacion.getCapacidad());
+        tipoHabitacionBox.setValue(habitacion.getTipoHabitacion());
+
+        imagenSeleccionada = new File(habitacion.getImagen());
+        if (habitacion.getImagen() != null && !habitacion.getImagen().isEmpty()) {
+            imagenPreview.setImage(new Image("file:" + habitacion.getImagen()));
+        }
+
+        for (Node node : serviciosIncluidos.getChildren()) {
+            if (node instanceof CheckBox) {
+                CheckBox cb = (CheckBox) node;
+                ServiciosIncluidos servicio = (ServiciosIncluidos) cb.getUserData();
+                cb.setSelected(habitacion.getServiciosIncluidos().contains(servicio));
+            }
+        }
     }
 
 
