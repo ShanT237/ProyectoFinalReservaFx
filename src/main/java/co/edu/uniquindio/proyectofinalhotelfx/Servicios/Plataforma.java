@@ -21,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Plataforma implements IPlataforma {
+
     private ServicioAdm servicioAdm;
     private ServicioCliente servicioCliente;
     private ServicioReserva servicioReserva;
@@ -33,18 +34,20 @@ public class Plataforma implements IPlataforma {
     private OfertaRepository ofertaRepository;
 
     public Plataforma() {
-
         // ==============================
-// INSTANCIAS DE REPOSITORIOS
-// ==============================
+        // INSTANCIAS DE REPOSITORIOS
+        // ==============================
         this.alojamientoRepository = new AlojamientoRepository();
         this.clienteRepository = new ClienteRepository();
         this.reservaRepository = new ReservaRepository();
         this.ofertaRepository = new OfertaRepository();
 
-// ==============================
-// INSTANCIAS DE SERVICIOS
-// ==============================
+        // ==============================
+        // INSTANCIAS DE SERVICIOS
+        // ==============================
+        this.serviciosAlojamiento = ServicioAlojamiento.builder()
+                .alojamientoRepository(alojamientoRepository)
+                .build();
 
         this.servicioCliente = ServicioCliente.builder()
                 .clienteRepository(clienteRepository)
@@ -53,10 +56,6 @@ public class Plataforma implements IPlataforma {
 
         ServicioBilleteraVirtual servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
                 .servicioCliente(servicioCliente)
-                .build();
-
-        this.serviciosAlojamiento = ServicioAlojamiento.builder()
-                .alojamientoRepository(alojamientoRepository)
                 .build();
 
         this.servicioReserva = ServicioReserva.builder()
@@ -74,163 +73,128 @@ public class Plataforma implements IPlataforma {
                 .servicioCliente(servicioCliente)
                 .servicioOferta(servicioOferta)
                 .build();
-
     }
-// ==============================
-// MÉTODOS DEL ADMINISTRADOR
-// ==============================
 
-/**
- * Inicia sesión como administrador.
- */
-        public Administrador loginAdm (String correo, String contrasena){
-            return servicioAdm.loginAdm(correo, contrasena);
-        }
+    // ==============================
+    // MÉTODOS DEL ADMINISTRADOR
+    // ==============================
 
-/**
- * Bloquea la cuenta de un cliente según su ID.
- */
-        @Override
-        public void bloquearCliente (String idUsuario) throws Exception {
-            servicioAdm.bloquearCuentaCliente(idUsuario);
-        }
-
-/**
- * Muestra las actividades de un cliente específico.
- */
-        @Override
-        public void verActividadesCliente (String idUsuario){
-            servicioAdm.verActividadesDeCliente(idUsuario);
-        }
-
-// ==============================
-// MÉTODOS DEL CLIENTE
-// ==============================
-
-/**
- * Inicia sesión como cliente.
- */
-        @Override
-        public Cliente loginCliente (String correo, String password) throws Exception {
-            return servicioCliente.iniciarSesion(correo, password);
-        }
-
-/**
- * Registra un nuevo cliente en el sistema.
- */
-        @Override
-        public void registrarCliente (String nombre, String cedula, String telefono, String correo, String
-        password, String confirmarPassword) throws Exception {
-            servicioCliente.registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
-        }
-
-/**
- * Valida el código de verificación enviado por correo.
- */
-        @Override
-        public boolean validarCodigoVerificacion (String correo, String codigoIngresado){
-            return servicioCliente.validarCodigoVerificacion(correo, codigoIngresado);
-        }
-
-/**
- * Solicita recuperación de contraseña para un cliente.
- */
-        @Override
-        public void recuperarContrasena (String correo) throws Exception {
-            servicioCliente.recuperarContrasena(correo);
-        }
-
-/**
- * Actualiza la contraseña de un cliente después de la recuperación.
- */
-        @Override
-        public void actualizarContrasena (String correo, String nuevaContrasena, String confirmarPassword, String
-        codigoIngresado) throws Exception {
-            servicioCliente.actualizarContrasena(correo, nuevaContrasena, confirmarPassword, codigoIngresado);
-        }
-
-// ==============================
-// GESTIÓN DE ALOJAMIENTOS
-// ==============================
-
-/**
- * Registra un nuevo alojamiento.
- */
-        @Override
-        public void registrarAlojamiento (String nombre, Ciudad ciudad, String descripcion,
-        double precioPorNocheBase, String imagen, List < ServiciosIncluidos > serviciosIncluidos,int capacidadPersonas,
-        int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
-            servicioAdm.registrarAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento);
-        }
-
-/**
- * Elimina un alojamiento según su ID.
- */
-        @Override
-        public void eliminarAlojamiento (String idAlojamiento){
-            servicioAdm.eliminarAlojamiento(idAlojamiento);
-        }
-
-/**
- * Actualiza la información de un alojamiento.
- */
-        @Override
-        public void actualizarAlojamiento (String idAlojamiento, String nombre, Ciudad ciudad, String descripcion,
-        double precioPorNocheBase, String imagen, List < ServiciosIncluidos > serviciosIncluidos,int capacidadPersonas,
-        int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
-            servicioAdm.actualizarAlojamiento(idAlojamiento, nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento);
-        }
-
-/**
- * Devuelve la lista de todos los alojamientos registrados.
- */
-        @Override
-        public List<Alojamiento> obtenerListaAlojamientos () {
-            return serviciosAlojamiento.obtenerTodosAlojamientos();
-        }
-
-// ==============================
-// GESTIÓN DE RESERVAS
-// ==============================
-
-/**
- * Registra una nueva reserva. (A implementar)
- */
-        @Override
-        public void registrarReserva () {
-            // Por implementar
-        }
-
-// ==============================
-// GESTIÓN DE OFERTAS
-// ==============================
-
-/**
- * Registra una nueva oferta.
- */
-        @Override
-        public void registrarOferta (Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String
-        descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-        boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
-            servicioAdm.registrarOferta(ciudad, tipoAlojamiento, id, nombre, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
-        }
-
-/**
- * Elimina una oferta según su ID.
- */
-        @Override
-        public void eliminarOferta (String idOferta){
-            servicioAdm.eliminarOfertaEspecial(idOferta);
-        }
-
-/**
- * Actualiza la información de una oferta existente.
- */
-        @Override
-        public void actualizarOferta (String idOferta, String nombre, Ciudad ciudad, TipoAlojamiento
-        tipoAlojamiento, String descripcion, LocalDateTime fechaInicio, LocalDateTime
-        fechaFin,boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas,
-        double porcentajeDescuento) throws Exception {
-            servicioAdm.actualizarOfertaEspecial(idOferta, nombre, ciudad, tipoAlojamiento, descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
-        }
+    @Override
+    public Administrador loginAdm(String correo, String contrasena) {
+        return servicioAdm.loginAdm(correo, contrasena);
     }
+
+    @Override
+    public void bloquearCliente(String idUsuario) throws Exception {
+        servicioAdm.bloquearCuentaCliente(idUsuario);
+    }
+
+    @Override
+    public void verActividadesCliente(String idUsuario) {
+        servicioAdm.verActividadesDeCliente(idUsuario);
+    }
+
+    // ==============================
+    // MÉTODOS DEL CLIENTE
+    // ==============================
+
+    @Override
+    public Cliente loginCliente(String correo, String password) throws Exception {
+        return servicioCliente.iniciarSesion(correo, password);
+    }
+
+    @Override
+    public void registrarCliente(String nombre, String cedula, String telefono, String correo,
+                                 String password, String confirmarPassword) throws Exception {
+        servicioCliente.registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
+    }
+
+    @Override
+    public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
+        return servicioCliente.validarCodigoVerificacion(correo, codigoIngresado);
+    }
+
+    @Override
+    public void recuperarContrasena(String correo) throws Exception {
+        servicioCliente.recuperarContrasena(correo);
+    }
+
+    @Override
+    public void actualizarContrasena(String correo, String nuevaContrasena,
+                                     String confirmarPassword, String codigoIngresado) throws Exception {
+        servicioCliente.actualizarContrasena(correo, nuevaContrasena, confirmarPassword, codigoIngresado);
+    }
+
+    // ==============================
+    // GESTIÓN DE ALOJAMIENTOS
+    // ==============================
+
+    @Override
+    public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion,
+                                     double precioPorNocheBase, String imagen,
+                                     List<ServiciosIncluidos> serviciosIncluidos,
+                                     int capacidadPersonas, int numeroHabitaciones,
+                                     boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
+        servicioAdm.registrarAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase,
+                imagen, serviciosIncluidos, capacidadPersonas,
+                numeroHabitaciones, admiteMascotas, tipoAlojamiento);
+    }
+
+    @Override
+    public void eliminarAlojamiento(String idAlojamiento) {
+        servicioAdm.eliminarAlojamiento(idAlojamiento);
+    }
+
+    @Override
+    public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad,
+                                      String descripcion, double precioPorNocheBase, String imagen,
+                                      List<ServiciosIncluidos> serviciosIncluidos,
+                                      int capacidadPersonas, int numeroHabitaciones,
+                                      boolean admiteMascotas, TipoAlojamiento tipoAlojamiento) {
+        servicioAdm.actualizarAlojamiento(idAlojamiento, nombre, ciudad, descripcion, precioPorNocheBase,
+                imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones,
+                admiteMascotas, tipoAlojamiento);
+    }
+
+    @Override
+    public List<Alojamiento> obtenerListaAlojamientos() {
+        return serviciosAlojamiento.obtenerTodosAlojamientos();
+    }
+
+    // ==============================
+    // GESTIÓN DE RESERVAS
+    // ==============================
+
+    @Override
+    public void registrarReserva() {
+        // Por implementar
+    }
+
+    // ==============================
+    // GESTIÓN DE OFERTAS
+    // ==============================
+
+    @Override
+    public void registrarOferta(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id,
+                                String nombre, String descripcion, LocalDateTime fechaInicio,
+                                LocalDateTime fechaFin, boolean esGlobal, OfertaTipo tipoOferta,
+                                int nochesMinimas, double porcentajeDescuento) throws Exception {
+        servicioAdm.registrarOferta(ciudad, tipoAlojamiento, id, nombre, descripcion,
+                fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
+    }
+
+    @Override
+    public void eliminarOferta(String idOferta) {
+        servicioAdm.eliminarOfertaEspecial(idOferta);
+    }
+
+    @Override
+    public void actualizarOferta(String idOferta, String nombre, Ciudad ciudad,
+                                 TipoAlojamiento tipoAlojamiento, String descripcion,
+                                 LocalDateTime fechaInicio, LocalDateTime fechaFin,
+                                 boolean esGlobal, OfertaTipo tipoOferta,
+                                 int nochesMinimas, double porcentajeDescuento) throws Exception {
+        servicioAdm.actualizarOfertaEspecial(idOferta, nombre, ciudad, tipoAlojamiento,
+                descripcion, fechaInicio, fechaFin, esGlobal, tipoOferta, nochesMinimas, porcentajeDescuento);
+    }
+}

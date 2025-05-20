@@ -1,52 +1,41 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
+
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
+import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 
-public class HomeCliente{
-    @FXML private Label lblNombreUsuario;
-    @FXML private Label lblSaldo;
-    @FXML private StackPane contenidoDinamico;
+public class HomeCliente {
 
-    @FXML
-    public void initialize() {
-        // Configuración
-    }
+    private Usuario usuario;
+    private ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     @FXML
-    private void cargarBuscarAlojamientos() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/BuscarAlojamientosCliente.fxml");
-    }
+    private Label lblNombreUsuario;
 
     @FXML
-    private void cargarMisReservas() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MisReservasCliente.fxml");
+    private Label lblSaldo;
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        if (lblNombreUsuario != null) {
+            lblNombreUsuario.setText(usuario.getNombre());
+        }
+        actualizarSaldo();
     }
 
-    @FXML
-    private void cargarBilletera() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MiBilleteraCliente.fxml");
+    public void setServicioBilleteraVirtual(ServicioBilleteraVirtual servicio) {
+        this.servicioBilleteraVirtual = servicio;
+        actualizarSaldo();
     }
 
-    @FXML
-    private void cargarResenas() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/ResenasCliente.fxml");
-    }
-
-    @FXML
-    private void cerrarSesion() {
-
-    }
-
-    private void cargarContenido(String fxmlPath) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            contenidoDinamico.getChildren().setAll(root);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void actualizarSaldo() {
+        if (usuario != null && servicioBilleteraVirtual != null) {
+            double saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
+            if (lblSaldo != null) {
+                lblSaldo.setText("$" + String.format("%.2f", saldo));
+            }
         }
     }
 }
