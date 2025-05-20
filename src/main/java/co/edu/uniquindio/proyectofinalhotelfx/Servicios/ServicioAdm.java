@@ -187,4 +187,8 @@ public class ServicioAdm {
         servicioAlojamiento.registrarHabitacion(idhotel, numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
     }
 
+    public void eliminarHabitacionHotel(String idHotel, int idHabitacion) throws Exception {
+        servicioAlojamiento.eliminarHabitacion(idHotel, idHabitacion);
+    }
+
 }

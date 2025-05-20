@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import javafx.scene.image.Image;
 
@@ -56,6 +57,9 @@ public interface IPlataforma {
      * Registra un nuevo alojamiento en el sistema.
      */
     void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception;
+    void eliminarHabitacion(String idHotel, int idHabitacion) throws Exception;
+    void actualizarHabitacion(String idHabitacion, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen);
+    List<Habitacion> obtenerListaHabitaciones();
 
     void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase,
                               String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas,
