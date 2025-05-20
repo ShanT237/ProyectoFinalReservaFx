@@ -4,20 +4,30 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 @Getter
 @Setter
 public abstract class Oferta {
-    private UUID id;
-    private OfertaTipo tipoOferta;
+    private String id;
+    private String nombre;
     private String descripcion;
-    private LocalDateTime fechaInicio;
-    private LocalDateTime fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private List<Alojamiento> alojamientosAplicables;
+    private boolean esGlobal;
     private boolean activa;
-    private double descuento;
+    private OfertaTipo tipo;
 
-    abstract boolean esValida();
-    abstract double aplicarDescuento(double precioOriginal);
 
+
+    public boolean aplicaA(Alojamiento alojamiento) {
+        return esGlobal || (alojamientosAplicables != null && alojamientosAplicables.contains(alojamiento));
+    }
+
+    public abstract boolean estaVigente(LocalDateTime fecha);
+
+    public abstract double aplicarDescuento(double precioOriginal, Reserva reserva);
 }

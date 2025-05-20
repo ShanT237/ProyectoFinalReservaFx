@@ -21,6 +21,7 @@ public class ServicioAdm {
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioReserva servicioReserva;
     private final ServicioCliente servicioCliente;
+    private final ServicioOferta servicioOferta;
 
     public Administrador loginAdm(String correo, String password){
         System.out.println(leerDatos());

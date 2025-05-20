@@ -13,6 +13,12 @@ import javafx.scene.image.Image;
 import java.util.List;
 
 public abstract class OfertaFactory {
+    public static OfertaFactory crearOferta(){
+
+        return switch (tipoOferta) {
+
+        }
+    }
 
 
 }

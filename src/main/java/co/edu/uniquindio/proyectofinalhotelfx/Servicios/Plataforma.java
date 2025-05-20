@@ -23,10 +23,12 @@ public class Plataforma implements IPlataforma {
     private ServicioCliente servicioCliente;
     private ServicioReserva servicioReserva;
     private ServicioAlojamiento serviciosAlojamiento;
+    private ServicioOferta servicioOferta;
 
     private AlojamientoRepository alojamientoRepository;
     private ClienteRepository clienteRepository;
     private ReservaRepository reservaRepository;
+    private OfertaRepository ofertaRepository;
 
     public Plataforma() {
 
@@ -36,6 +38,8 @@ public class Plataforma implements IPlataforma {
         this.alojamientoRepository = new AlojamientoRepository() ;
         this.clienteRepository = new ClienteRepository();
         this.reservaRepository = new ReservaRepository();
+        this.ofertaRepository = new OfertaRepository();
+
 
         /*
         Intancias de Servicios
@@ -57,11 +61,16 @@ public class Plataforma implements IPlataforma {
                 .reservaRepository(reservaRepository)
                 .build();
 
+        this.servicioOferta = ServicioOferta.builder()
+                .ofertaRepository(ofertaRepository)
+                .servicioAlojamiento(serviciosAlojamiento)
+                .build();
 
         this.servicioAdm = ServicioAdm.builder()
                 .servicioAlojamiento(serviciosAlojamiento)
                 .servicioReserva(servicioReserva)
                 .servicioCliente(servicioCliente)
+                .servicioOferta(servicioOferta)
                 .build();
 
 
