@@ -78,4 +78,3 @@ public class OfertaRepository {
         return new ArrayList<>();
     }
 }
-

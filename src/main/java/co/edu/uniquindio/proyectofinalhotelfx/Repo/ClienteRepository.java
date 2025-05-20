@@ -73,10 +73,10 @@ public class ClienteRepository   {
                 if (!actual.getPassword().equals(clienteActualizado.getPassword())) {
                     throw new IllegalArgumentException("La contraseña no puede ser modificada de manera no autorizada.");
                 }
-                    clientes.set(i, clienteActualizado);
-                    System.out.println(clientes);
-                    guardarDatos();
-                    return true; // Hubo cambios
+                clientes.set(i, clienteActualizado);
+                System.out.println(clientes);
+                guardarDatos();
+                return true; // Hubo cambios
             }
         }
         return false;

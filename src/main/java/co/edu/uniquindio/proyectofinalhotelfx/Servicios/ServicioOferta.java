@@ -54,8 +54,8 @@ public class ServicioOferta {
         return ofertaRepository.buscarPorId(idOferta) != null;
     }
 
-   public void verificarDatos(String id, String nombre, String
-                                      descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
+    public void verificarDatos(String id, String nombre, String
+            descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento) throws Exception {
         if (id == null || id.isBlank()) {
             throw new Exception("El id de la oferta no puede ser nulo o vacío.");
         }
@@ -80,10 +80,10 @@ public class ServicioOferta {
         if (porcentajeDescuento < 0 || porcentajeDescuento > 100) {
             throw new Exception("El porcentaje de descuento debe estar entre 0 y 100.");
         }
-   }
+    }
 
     public Oferta crearOferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientos, boolean esGlobal, boolean activa, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento) throws Exception {
-       return OfertaFactory.crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, activa, tipoOferta, nochesMinimas, porcentajeDescuento);
+        return OfertaFactory.crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, activa, tipoOferta, nochesMinimas, porcentajeDescuento);
     }
 
     public List<Alojamiento> obtenerListaAlojamientos(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, boolean esGlobal) throws Exception {
@@ -103,4 +103,3 @@ public class ServicioOferta {
 
     }
 }
-

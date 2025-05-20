@@ -158,8 +158,8 @@ public class GestionAlojamientosAdmin {
         Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
 
         if (alojamientoSeleccionado != null && alojamientoSeleccionado.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
-                mostrarVentana(event, "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml", "Registrar Habitación Hotel");
-                actualizarTabla();
+            mostrarVentana(event, "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml", "Registrar Habitación Hotel");
+            actualizarTabla();
 
 
         }

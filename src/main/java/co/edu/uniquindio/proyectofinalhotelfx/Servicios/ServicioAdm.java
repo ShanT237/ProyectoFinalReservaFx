@@ -41,7 +41,7 @@ public class ServicioAdm {
      */
 
     public void bloquearCuentaCliente(String idUsuario) throws Exception {
-       servicioCliente.bloquearUsuario(idUsuario);
+        servicioCliente.bloquearUsuario(idUsuario);
     }
     public void verActividadesDeCliente(String idUsuario){
         servicioReserva.obtenerReservasPorCliente(idUsuario);
@@ -85,11 +85,11 @@ public class ServicioAdm {
         }
     }
     public void actualizarAlojamiento(String idAlojamiento, String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento){
-       verificarDatosAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos,
-               capacidadPersonas, numeroHabitaciones, admiteMascotas,
-               tipoAlojamiento);
+        verificarDatosAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos,
+                capacidadPersonas, numeroHabitaciones, admiteMascotas,
+                tipoAlojamiento);
 
-       servicioAlojamiento.actualizarAlojamiento( idAlojamiento, nombre,  ciudad,  descripcion,  precioPorNocheBase, imagen, serviciosIncluidos,  capacidadPersonas,  numeroHabitaciones, admiteMascotas, tipoAlojamiento);
+        servicioAlojamiento.actualizarAlojamiento( idAlojamiento, nombre,  ciudad,  descripcion,  precioPorNocheBase, imagen, serviciosIncluidos,  capacidadPersonas,  numeroHabitaciones, admiteMascotas, tipoAlojamiento);
 
     }
     public void eliminarAlojamiento(String idAlojamiento){
@@ -165,9 +165,9 @@ public class ServicioAdm {
             }
 
             resultado.add(TipoAlojamientoGanancia.builder()
-            .tipo(tipo)
+                    .tipo(tipo)
                     .gananciaTotal(totalGanancias)
-                            .build()
+                    .build()
             );
         }
 
