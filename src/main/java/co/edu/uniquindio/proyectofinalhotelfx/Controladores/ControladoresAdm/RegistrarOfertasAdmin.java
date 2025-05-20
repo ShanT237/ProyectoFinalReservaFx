@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
@@ -69,11 +72,12 @@ public class RegistrarOfertasAdmin {
 
     private File imagenSeleccionada;
 
+    private ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
     @FXML
     void guardarOferta(ActionEvent event) {
         try {
 
-            // Obtener valores
             boolean global = esGlobal.isSelected();
             Ciudad ciudad = global ? null : ciudadBox.getValue();
             TipoAlojamiento tipoAlojamiento = global ? null : alojamientoBox.getValue();
@@ -81,6 +85,11 @@ public class RegistrarOfertasAdmin {
             OfertaTipo oferta = tipoOferta.getValue();
             int nochesMinimas = (int) sliderNochesMin.getValue();
             String nombre = nombreField.getText().trim();
+            String id = idField.getText().trim();
+            String descripcion = descripcionField.getText().trim();
+            LocalDateTime inicio = fechaInicio.getValue().atStartOfDay();
+            LocalDateTime fin = fechaFin.getValue().atStartOfDay();
+
 
 
             String rutaImagen = null;
@@ -106,8 +115,12 @@ public class RegistrarOfertasAdmin {
                 }
             }
 
+            controladorPrincipal.getPlataforma().registrarOferta(ciudad, tipoAlojamiento, id,
+                    nombre, descripcion, inicio,
+                    fin, global, oferta, nochesMinimas, descuento, rutaImagen);
 
             mostrarMensaje("¡Oferta registrada exitosamente!");
+            limpiarCampos();
 
         } catch (Exception e) {
             mostrarError("Error al guardar la oferta: " + e.getMessage());
@@ -126,21 +139,6 @@ public class RegistrarOfertasAdmin {
 
     }
 
-    @FXML
-    void seleccionarImagen(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar imagen de habitación");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
-        );
-
-        File archivo = fileChooser.showOpenDialog(null);
-        if (archivo != null) {
-            imagenSeleccionada = archivo;
-            Image imagen = new Image(archivo.toURI().toString());
-            imagenView.setImage(imagen);
-        }
-    }
 
     private void configurarComboDescuentos() {
         ObservableList<Double> descuentos = FXCollections.observableArrayList(
@@ -325,9 +323,34 @@ public class RegistrarOfertasAdmin {
 
     @FXML
     void btnSeleccionarImagen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleccionar imagen de habitación");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File archivo = fileChooser.showOpenDialog(null);
+        if (archivo != null) {
+            imagenSeleccionada = archivo;
+            Image imagen = new Image(archivo.toURI().toString());
+            imagenView.setImage(imagen);
+        }
 
     }
-
-
+    private void limpiarCampos() {
+        idField.clear();
+        nombreField.clear();
+        descripcionField.clear();
+        descuentoField.setValue(0.10);
+        ciudadBox.getSelectionModel().selectFirst();
+        alojamientoBox.getSelectionModel().selectFirst();
+        tipoOferta.getSelectionModel().selectFirst();
+        esGlobal.setSelected(false);
+        fechaInicio.setValue(null);
+        fechaFin.setValue(null);
+        sliderNochesMin.setValue(sliderNochesMin.getMin());
+        imagenView.setImage(null);
+        imagenSeleccionada = null;
+    }
 
 }
