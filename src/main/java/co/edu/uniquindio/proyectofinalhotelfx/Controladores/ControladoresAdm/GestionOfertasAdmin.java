@@ -1,48 +1,50 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.FlowPane;
 
 public class GestionOfertasAdmin {
 
     @FXML
-    private TableView<?> tblOfertas;
+    private ResourceBundle resources;
 
     @FXML
-    private TableColumn<?, ?> colCodigo, colDescripcion, colPorcentaje, colFechaInicio, colFechaFin;
+    private URL location;
 
     @FXML
-    public void btnAgregarOferta(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarOfertas.fxml"));
-            Parent root = loader.load();
+    private ComboBox<?> boxAlojamiento;
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Registrar Nueva Oferta");
-            stage.show();
+    @FXML
+    private ComboBox<?> boxCiudad;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @FXML
+    private Button btnCrearOferta;
+
+    @FXML
+    private CheckBox esGlobal;
+
+    @FXML
+    private FlowPane flowPaneOferfas;
+
+    @FXML
+    void buscarOferta(ActionEvent event) {
+
     }
 
-
     @FXML
-    public void eliminarOferta(ActionEvent event) {
-        System.out.println("Eliminar oferta");
+    void initialize() {
+        assert boxAlojamiento != null : "fx:id=\"boxAlojamiento\" was not injected: check your FXML file 'GestionOfertasAdmin.fxml'.";
+        assert boxCiudad != null : "fx:id=\"boxCiudad\" was not injected: check your FXML file 'GestionOfertasAdmin.fxml'.";
+        assert btnCrearOferta != null : "fx:id=\"btnCrearOferta\" was not injected: check your FXML file 'GestionOfertasAdmin.fxml'.";
+        assert esGlobal != null : "fx:id=\"esGlobal\" was not injected: check your FXML file 'GestionOfertasAdmin.fxml'.";
+        assert flowPaneOferfas != null : "fx:id=\"flowPaneOferfas\" was not injected: check your FXML file 'GestionOfertasAdmin.fxml'.";
+
     }
 
-    @FXML
-    public void actualizarOferta(ActionEvent event) {
-        System.out.println("Actualizar oferta");
-    }
 }
