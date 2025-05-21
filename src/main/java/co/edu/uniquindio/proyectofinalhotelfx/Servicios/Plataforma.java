@@ -231,4 +231,10 @@ public class Plataforma implements IPlataforma {
     public double consultarSaldo(String cedula) {
         return servicioBilleteraVirtual.consultarSaldo(cedula);
     }
+
+    public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
+        servicioReserva.agendarAlojamiento(cliente, alojamiento);
+    }
+
+
 }

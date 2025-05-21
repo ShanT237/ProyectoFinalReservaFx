@@ -172,4 +172,7 @@ public class ServicioReserva {
     public int contarReservasPorAlojamiento(String id) {
         return 0;
     }
+
+    public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
+    }
 }
