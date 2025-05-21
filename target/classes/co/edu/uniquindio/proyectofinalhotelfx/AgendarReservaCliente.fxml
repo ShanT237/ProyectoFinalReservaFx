@@ -3,7 +3,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.image.ImageView?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.AgendarReservaCliente"
@@ -55,12 +54,6 @@
                 <Label text="Saldo en Billetera:" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
                 <Label fx:id="saldoLabel" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
             </GridPane>
-
-            <!-- Imagen del QR generado -->
-            <VBox spacing="10" alignment="CENTER">
-                <Label text="Código QR de la Factura:" />
-                <ImageView fx:id="qrImageView" fitWidth="150" fitHeight="150" />
-            </VBox>
 
             <!-- Mensaje de confirmación -->
             <Label fx:id="mensajeReservaLabel" text="¡Reserva realizada con éxito!" visible="false"

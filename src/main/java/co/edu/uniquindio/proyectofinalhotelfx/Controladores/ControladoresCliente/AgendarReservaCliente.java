@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
@@ -41,15 +42,31 @@ public class AgendarReservaCliente implements Initializable {
         this.usuario = (Cliente) sesionUsuario.getUsuario();
         System.out.println("Usuario cargado en AgendarReservaCliente: " + usuario);
 
-        // Inicializar spinner con valores
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1);
         huespedesSpinner.setValueFactory(valueFactory);
 
-        // Agregar listeners para recalcular total al cambiar fechas
-        fechaInicioPicker.valueProperty().addListener((obs, oldValue, newValue) -> calcularYMostrarTotal());
-        fechaFinPicker.valueProperty().addListener((obs, oldValue, newValue) -> calcularYMostrarTotal());
-    }
+        // Restringir selección de fechas pasadas en los DatePicker
+        fechaInicioPicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()));
+            }
+        });
 
+        fechaFinPicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()));
+            }
+        });
+
+        fechaInicioPicker.valueProperty().addListener((obs, oldVal, newVal) -> calcularYMostrarTotal());
+        fechaFinPicker.valueProperty().addListener((obs, oldVal, newVal) -> calcularYMostrarTotal());
+
+        actualizarSaldo();
+    }
 
     public void setDatos(Alojamiento alojamiento) {
         this.alojamiento = alojamiento;
@@ -62,25 +79,30 @@ public class AgendarReservaCliente implements Initializable {
             descripcionArea.setText(alojamiento.getDescripcion());
         }
 
-        if (usuario != null && usuario.getBilletera() != null) {
-            saldoLabel.setText("$" + usuario.getBilletera().getSaldo());
-        } else {
-            saldoLabel.setText("No disponible");
-        }
-
+        actualizarSaldo();
         calcularYMostrarTotal();
     }
 
-
     private void calcularYMostrarTotal() {
         if (fechaInicioPicker.getValue() != null && fechaFinPicker.getValue() != null && alojamiento != null) {
-            long dias = ChronoUnit.DAYS.between(fechaInicioPicker.getValue(), fechaFinPicker.getValue());
+            LocalDate hoy = LocalDate.now();
+            LocalDate inicio = fechaInicioPicker.getValue();
+            LocalDate fin = fechaFinPicker.getValue();
+
+            if (inicio.isBefore(hoy) || fin.isBefore(hoy)) {
+                totalLabel.setText("$0");
+                return;
+            }
+
+            long dias = ChronoUnit.DAYS.between(inicio, fin);
             if (dias <= 0) {
                 totalLabel.setText("$0");
             } else {
                 double total = dias * alojamiento.getPrecioNoche();
                 totalLabel.setText("$" + total);
             }
+        } else {
+            totalLabel.setText("$0");
         }
     }
 
@@ -91,10 +113,50 @@ public class AgendarReservaCliente implements Initializable {
             return;
         }
 
+        int huespedesSeleccionados = huespedesSpinner.getValue();
+        if (huespedesSeleccionados > alojamiento.getCapacidadHuespedes()) {
+            mostrarError("⚠ La cantidad de huéspedes supera la capacidad del alojamiento.");
+            return;
+        }
+
+        if (fechaInicioPicker.getValue() == null || fechaFinPicker.getValue() == null) {
+            mostrarError("⚠ Debe seleccionar fecha de inicio y fin.");
+            return;
+        }
+
+        LocalDate hoy = LocalDate.now();
+        LocalDate inicio = fechaInicioPicker.getValue();
+        LocalDate fin = fechaFinPicker.getValue();
+
+        if (inicio.isBefore(hoy) || fin.isBefore(hoy)) {
+            mostrarError("⚠ Las fechas no pueden estar en el pasado.");
+            return;
+        }
+
+        long dias = ChronoUnit.DAYS.between(inicio, fin);
+        if (dias <= 0) {
+            mostrarError("⚠ La fecha fin debe ser posterior a la fecha inicio.");
+            return;
+        }
+
+        double totalReserva = dias * alojamiento.getPrecioNoche();
+
+        double saldoActual = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
+
+        if (saldoActual < totalReserva) {
+            mostrarError("⚠ Saldo insuficiente. Recargue su billetera.");
+            return;
+        }
+
         try {
+            // Descontar el saldo
+            controladorPrincipal.getPlataforma().descontarSaldo(usuario.getCedula(), totalReserva);
+
+            // Registrar la reserva
             controladorPrincipal.getPlataforma().reservarAlojamiento(usuario, alojamiento);
-            mostrarMensaje("✅ Reserva confirmada.");
-            mensajeReservaLabel.setVisible(true);
+
+            mostrarMensaje("✅ Reserva confirmada. Se descontó $" + String.format("%.2f", totalReserva));
+            actualizarSaldo();
         } catch (Exception e) {
             mostrarError("❌ Error al realizar la reserva: " + e.getMessage());
         }
@@ -116,4 +178,14 @@ public class AgendarReservaCliente implements Initializable {
         mensajeReservaLabel.setText(mensaje);
         mensajeReservaLabel.setVisible(true);
     }
+
+    private void actualizarSaldo() {
+        if (usuario != null) {
+            double saldoActualizado = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
+            saldoLabel.setText("$" + String.format("%.2f", saldoActualizado));
+        } else {
+            saldoLabel.setText("No disponible");
+        }
+    }
 }
+
