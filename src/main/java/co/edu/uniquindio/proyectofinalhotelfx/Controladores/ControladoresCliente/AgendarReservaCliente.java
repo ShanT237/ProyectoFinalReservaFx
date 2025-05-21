@@ -1,58 +1,119 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
-
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
-public class AgendarReservaCliente{
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.ResourceBundle;
 
-    private SesionUsuario sesionUsuario =  SesionUsuario.instancia();
+public class AgendarReservaCliente implements Initializable {
+
+    @FXML private Label nombreLabel;
+    @FXML private Label ciudadLabel;
+    @FXML private Label capacidadLabel;
+    @FXML private Label precioLabel;
+    @FXML private TextArea descripcionArea;
+    @FXML private DatePicker fechaInicioPicker;
+    @FXML private DatePicker fechaFinPicker;
+    @FXML private Spinner<Integer> huespedesSpinner;
+    @FXML private Label totalLabel;
+    @FXML private Label saldoLabel;
+    @FXML private ImageView qrImageView;
+    @FXML private Label mensajeReservaLabel;
+
+    private Cliente usuario;
     private Alojamiento alojamiento;
+
+    private final SesionUsuario sesionUsuario = SesionUsuario.instancia();
+    private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.usuario = (Cliente) sesionUsuario.getUsuario();
+        System.out.println("Usuario cargado en AgendarReservaCliente: " + usuario);
+
+        // Inicializar spinner con valores
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1);
+        huespedesSpinner.setValueFactory(valueFactory);
+
+        // Agregar listeners para recalcular total al cambiar fechas
+        fechaInicioPicker.valueProperty().addListener((obs, oldValue, newValue) -> calcularYMostrarTotal());
+        fechaFinPicker.valueProperty().addListener((obs, oldValue, newValue) -> calcularYMostrarTotal());
+    }
+
 
     public void setDatos(Alojamiento alojamiento) {
         this.alojamiento = alojamiento;
-        // Puedes usar esto para mostrar datos y procesar reserva
-    }
-    public void confirmarReserva(ActionEvent actionEvent) {
-    }
-    private void mostrarAlerta(String mensaje, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle("Alerta");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
-    }
-    @FXML
-    private void agendarReserva() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/co/edu/uniquindio/proyectofinalhotelfx/AgendarReservaCliente.fxml"));
-            Parent root = loader.load();
 
-            AgendarReservaCliente controller = loader.getController();
-            controller.setDatos(alojamiento);  // <--- Asegúrate que clienteActual y alojamiento no son null
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Agendar Reserva");
-            stage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            mostrarAlerta("No se pudo cargar la ventana de agendar reserva", Alert.AlertType.ERROR);
+        if (alojamiento != null) {
+            nombreLabel.setText(alojamiento.getNombre());
+            ciudadLabel.setText(alojamiento.getCiudad().toString());
+            capacidadLabel.setText(String.valueOf(alojamiento.getCapacidadHuespedes()));
+            precioLabel.setText("$" + alojamiento.getPrecioNoche());
+            descripcionArea.setText(alojamiento.getDescripcion());
         }
 
+        if (usuario != null && usuario.getBilletera() != null) {
+            saldoLabel.setText("$" + usuario.getBilletera().getSaldo());
+        } else {
+            saldoLabel.setText("No disponible");
+        }
+
+        calcularYMostrarTotal();
     }
 
-    public void cancelarReserva(ActionEvent actionEvent) {
+
+    private void calcularYMostrarTotal() {
+        if (fechaInicioPicker.getValue() != null && fechaFinPicker.getValue() != null && alojamiento != null) {
+            long dias = ChronoUnit.DAYS.between(fechaInicioPicker.getValue(), fechaFinPicker.getValue());
+            if (dias <= 0) {
+                totalLabel.setText("$0");
+            } else {
+                double total = dias * alojamiento.getPrecioNoche();
+                totalLabel.setText("$" + total);
+            }
+        }
+    }
+
+    @FXML
+    private void confirmarReserva(ActionEvent actionEvent) {
+        if (usuario == null || alojamiento == null) {
+            mostrarError("⚠ Usuario o alojamiento no cargado correctamente.");
+            return;
+        }
+
+        try {
+            controladorPrincipal.getPlataforma().reservarAlojamiento(usuario, alojamiento);
+            mostrarMensaje("✅ Reserva confirmada.");
+            mensajeReservaLabel.setVisible(true);
+        } catch (Exception e) {
+            mostrarError("❌ Error al realizar la reserva: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void cancelarReserva(ActionEvent actionEvent) {
+        mostrarMensaje("Reserva cancelada.");
+    }
+
+    private void mostrarError(String mensaje) {
+        mensajeReservaLabel.setTextFill(Color.RED);
+        mensajeReservaLabel.setText(mensaje);
+        mensajeReservaLabel.setVisible(true);
+    }
+
+    private void mostrarMensaje(String mensaje) {
+        mensajeReservaLabel.setTextFill(Color.GREEN);
+        mensajeReservaLabel.setText(mensaje);
+        mensajeReservaLabel.setVisible(true);
     }
 }
-
