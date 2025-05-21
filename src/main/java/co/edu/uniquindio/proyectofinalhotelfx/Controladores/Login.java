@@ -139,6 +139,7 @@ public class Login {
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.setTitle(tituloVentana);
         stage.setResizable(true);
         stage.show();
