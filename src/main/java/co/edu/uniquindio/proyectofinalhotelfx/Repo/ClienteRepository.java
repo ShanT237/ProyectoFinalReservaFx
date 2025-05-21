@@ -88,7 +88,7 @@ public class ClienteRepository   {
     }
 
     public List<Cliente> obtenerTodos() {
-        return new ArrayList<>(clientes);
+        return clientes;
     }
 
     public void agregarUsuarioBloqueado(Cliente clienteBloqueado) {

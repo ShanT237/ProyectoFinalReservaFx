@@ -23,9 +23,9 @@
     <center>
         <VBox alignment="TOP_CENTER" prefHeight="354.0" prefWidth="745.0" BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="TOP_CENTER" onDragDetected="#actualizar" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#buscarOferta" style="-fx-background-color: #4a7c91;" text="Actualizar" textFill="WHITE" />
+                        <Button mnemonicParsing="false" onAction="#actualizar" style="-fx-background-color: #4a7c91;" text="Actualizar" textFill="WHITE" />
                   <Button mnemonicParsing="false" onAction="#eliminarOferta" style="-fx-background-color: #c31212;" text="Eliminar" textFill="WHITE" />
                     </children>
                 </HBox>
