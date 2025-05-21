@@ -45,7 +45,7 @@ public class HomeAdmin {
 
     @FXML
     private void cargarReportes() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/ReportesAdmin.fxml");
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/ReportesAdmin.fxml");
     }
     @FXML
     public void cargarGestionUsuarios() {
