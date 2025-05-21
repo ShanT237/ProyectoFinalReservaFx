@@ -8,13 +8,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 
-public class Hotel extends Alojamiento{
+public class Hotel extends Alojamiento implements Serializable {
     private int numeroEstrellas;
     private List<Habitacion> habitaciones;
 

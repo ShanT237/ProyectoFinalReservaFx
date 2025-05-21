@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
@@ -24,6 +25,7 @@ public class Plataforma implements IPlataforma {
     private ServicioReserva servicioReserva;
     private ServicioAlojamiento serviciosAlojamiento;
     private ServicioOferta servicioOferta;
+    private ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     private AlojamientoRepository alojamientoRepository;
     private ClienteRepository clienteRepository;
@@ -70,6 +72,8 @@ public class Plataforma implements IPlataforma {
                 .servicioCliente(servicioCliente)
                 .servicioOferta(servicioOferta)
                 .build();
+
+        this.servicioBilleteraVirtual = new ServicioBilleteraVirtual(servicioCliente);
     }
 
     // ==============================
@@ -131,6 +135,23 @@ public class Plataforma implements IPlataforma {
     public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
        servicioAdm.registrarHabitacion(idhotel, numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
     }
+
+    @Override
+    public void eliminarHabitacion(String idHotel, int idHabitacion) throws Exception {
+        servicioAdm.eliminarHabitacionHotel(idHotel, idHabitacion);
+
+    }
+
+    @Override
+    public void actualizarHabitacion(String idHabitacion, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) {
+
+    }
+
+    @Override
+    public List<Habitacion> obtenerListaHabitaciones() {
+        return List.of();
+    }
+
     @Override
     public void registrarAlojamiento(String nombre, Ciudad ciudad, String descripcion,
                                      double precioPorNocheBase, String imagen,
@@ -203,7 +224,11 @@ public class Plataforma implements IPlataforma {
     }
 
 
+    public void recargarBilletera(String cedula, double monto) {
+        servicioBilleteraVirtual.recargarBilletera(cedula, monto);
+    }
 
-
-
+    public double consultarSaldo(String cedula) {
+        return servicioBilleteraVirtual.consultarSaldo(cedula);
+    }
 }

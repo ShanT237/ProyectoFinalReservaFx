@@ -1,17 +1,22 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class HomeCliente {
+public class HomeCliente implements Initializable {
 
     private Usuario usuario;
     private ServicioBilleteraVirtual servicioBilleteraVirtual;
@@ -25,14 +30,7 @@ public class HomeCliente {
     @FXML
     private StackPane contenidoDinamico;
 
-    // Establece el usuario y actualiza la etiqueta con su nombre
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        if (lblNombreUsuario != null) {
-            lblNombreUsuario.setText(usuario.getNombre());
-        }
-        actualizarSaldo();
-    }
+
 
     // Establece el servicio de billetera y actualiza el saldo mostrado
     public void setServicioBilleteraVirtual(ServicioBilleteraVirtual servicio) {
@@ -54,18 +52,7 @@ public class HomeCliente {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
-
-            // Inyección de datos después de cargar el FXML
-            Object controller = loader.getController();
-
-            // Verifica si el FXML cargado es MiBilleteraCliente
-            if (controller instanceof MiBilleteraCliente) {
-                MiBilleteraCliente billeteraController = (MiBilleteraCliente) controller;
-                billeteraController.setServicioBilletera(servicioBilleteraVirtual, usuario);
-            }
             contenidoDinamico.getChildren().setAll(root);
-
-
             contenidoDinamico.getChildren().setAll(root); // Reemplaza el contenido actual
         } catch (IOException e) {
             e.printStackTrace();
@@ -93,6 +80,7 @@ public class HomeCliente {
 
     @FXML
     private void cargarResenas() {
+        System.out.println("Cargando reseñas, usuario: " + usuario);
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/ResenasCliente.fxml");
     }
 
@@ -102,7 +90,17 @@ public class HomeCliente {
         System.out.println("Cerrando sesión...");
     }
 
-    // Los siguientes métodos con ActionEvent ya no son necesarios si usas onAction en FXML
-    // Puedes eliminarlos si no los usas
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        SesionUsuario sesionUsuario = SesionUsuario.instancia();
+        this.usuario = sesionUsuario.getUsuario();
+
+        if(usuario != null) {
+            System.out.println("Usuario no es null");
+            lblNombreUsuario.setText(usuario.getCorreo());
+        }
+
+    }
 }

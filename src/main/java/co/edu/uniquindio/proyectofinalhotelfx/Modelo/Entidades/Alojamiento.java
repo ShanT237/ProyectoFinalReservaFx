@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 public abstract class Alojamiento implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String nombre;
     private Ciudad ciudad;
     private String descripcion;

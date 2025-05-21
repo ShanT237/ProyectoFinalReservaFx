@@ -5,22 +5,22 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.ActualizarAlojamientoAdmin">
-   <children>
-      <VBox alignment="CENTER" fillWidth="false" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" spacing="20.0">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.ActualizarAlojamientoAdmin">
+   <center>
+      <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="573.0" spacing="20.0">
          <children>
             <Label contentDisplay="CENTER" text="Actualizar Alojamiento" textAlignment="CENTER">
                <font>
@@ -62,9 +62,13 @@
                   <Slider fx:id="numHabitaciones" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <ComboBox fx:id="ciudadBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <ListView fx:id="serviciosIncluidos" prefHeight="33.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <ComboBox fx:id="tipoAlojamientoBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <Button mnemonicParsing="false" onAction="#seleccionarImagen" text="Selecionar Imagen" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                  <ScrollPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <content>
+                        <VBox fx:id="serviciosIncluidos" prefHeight="48.0" prefWidth="234.0" />
+                     </content>
+                  </ScrollPane>
                </children>
             </GridPane>
             <ImageView fx:id="imagenPreview" fitHeight="61.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true" />
@@ -75,5 +79,8 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-   </children>
-</AnchorPane>
+   </center>
+   <right>
+      <FlowPane fx:id="habitacionesFlowPane" prefHeight="557.0" prefWidth="303.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

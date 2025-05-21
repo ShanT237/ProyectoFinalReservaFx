@@ -20,15 +20,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 public class ActualizarAlojamientoAdmin {
@@ -45,7 +43,7 @@ public class ActualizarAlojamientoAdmin {
     @FXML private Slider numHabitaciones;
     @FXML private Slider numPersonas;
     @FXML private TextField precioField;
-    @FXML private ListView<ServiciosIncluidos> serviciosIncluidos;
+    @FXML private VBox serviciosIncluidos;
     @FXML private ComboBox<TipoAlojamiento> tipoAlojamientoBox;
 
     private File imagenSeleccionada;
@@ -67,11 +65,13 @@ public class ActualizarAlojamientoAdmin {
             numPersonas.setValue(alojamiento.getCapacidadHuespedes());
             numHabitaciones.setValue(alojamiento.getNumeroHabitaciones());
 
-            serviciosIncluidos.getItems().setAll(ServiciosIncluidos.values());
-            serviciosIncluidos.setCellFactory(CheckBoxListCell.forListView(servicio -> {
-                BooleanProperty selected = new SimpleBooleanProperty(alojamiento.getServiciosIncluidos().contains(servicio));
-                return selected;
-            }));
+            serviciosIncluidos.getChildren().clear(); // Limpiar VBox existente
+
+            for (ServiciosIncluidos servicio : ServiciosIncluidos.values()) {
+                CheckBox checkBox = new CheckBox(servicio.toString());
+                checkBox.setSelected(alojamiento.getServiciosIncluidos().contains(servicio)); // Marcar si está en la lista
+                serviciosIncluidos.getChildren().add(checkBox);
+            }
 
             if (alojamiento.getImagen() != null) {
                 File file = new File(alojamiento.getImagen());
@@ -87,6 +87,9 @@ public class ActualizarAlojamientoAdmin {
         cargarCiudades();
         cargarTiposAlojamiento();
         configurarSliders();
+        configurarCampoPrecio();
+        agregarTooltipSlider(numHabitaciones);
+        agregarTooltipSlider(numPersonas);
     }
 
     private void cargarCiudades() {
@@ -138,10 +141,15 @@ public class ActualizarAlojamientoAdmin {
             String id = alojamiento.getId();
 
             List<ServiciosIncluidos> serviciosSeleccionados = new ArrayList<>();
-            for (ServiciosIncluidos servicio : serviciosIncluidos.getItems()) {
-                CheckBoxListCell<ServiciosIncluidos> cell = (CheckBoxListCell<ServiciosIncluidos>) serviciosIncluidos.lookup("#" + servicio.name());
-                if (cell != null && cell.isSelected()) {
-                    serviciosSeleccionados.add(servicio);
+
+            for (Node node : serviciosIncluidos.getChildren()) {
+                if (node instanceof CheckBox) {
+                    CheckBox cb = (CheckBox) node;
+                    if (cb.isSelected()) {
+                        // Convertir el texto del CheckBox al enum correspondiente
+                        ServiciosIncluidos servicio = ServiciosIncluidos.valueOf(cb.getText());
+                        serviciosSeleccionados.add(servicio);
+                    }
                 }
             }
 
@@ -176,4 +184,41 @@ public class ActualizarAlojamientoAdmin {
     public void setControladorAlojamientos(GestionAlojamientosAdmin gestionAlojamientosAdmin) {
         this.controladorAlojamientos = gestionAlojamientosAdmin;
     }
+
+    private void agregarTooltipSlider(Slider slider) {
+        Tooltip tooltip = new Tooltip();
+        tooltip.setAutoHide(false);
+
+        slider.setOnMousePressed(event -> {
+            tooltip.setText(String.valueOf((int) slider.getValue()));
+            Node node = (Node) event.getSource();
+            Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+            tooltip.show(slider, bounds.getMinX() + event.getX(), bounds.getMinY() - 30);
+        });
+
+        slider.setOnMouseDragged(event -> {
+            tooltip.setText(String.valueOf((int) slider.getValue()));
+            Node node = (Node) event.getSource();
+            Bounds bounds = node.localToScreen(node.getBoundsInLocal());
+            tooltip.setX(bounds.getMinX() + event.getX());
+            tooltip.setY(bounds.getMinY() - 30);
+        });
+
+        slider.setOnMouseReleased(event -> tooltip.hide());
+    }
+
+    private void configurarCampoPrecio() {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*\\.?\\d*")) {
+                return change;
+            }
+            return null;
+        });
+
+        precioField.setTextFormatter(textFormatter);
+
+    }
+
+
 }

@@ -33,8 +33,7 @@ public class ServicioAlojamiento {
     }
 
     public Alojamiento crearAlojamiento(String nombre, Ciudad ciudad, String descripcion, double precioPorNocheBase, String imagen, List<ServiciosIncluidos> serviciosIncluidos, int capacidadPersonas, int numeroHabitaciones, boolean admiteMascotas, TipoAlojamiento tipoAlojamiento, String id){
-        AlojamientoFactory alojamientoFactory = new AlojamientoFactory();
-        Alojamiento alojamiento = alojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
+        Alojamiento alojamiento = AlojamientoFactory.crearAlojamiento(nombre, ciudad, descripcion, precioPorNocheBase, imagen, serviciosIncluidos, capacidadPersonas, numeroHabitaciones, admiteMascotas, tipoAlojamiento, id);
         return alojamiento;
 
     }
@@ -121,6 +120,7 @@ public class ServicioAlojamiento {
     }
 
     public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
+
         validarDatosHabitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
         Habitacion habitacion = crearHabitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
         alojamientoRepository.registrarHabitacionHotel(idhotel, habitacion);
@@ -147,14 +147,11 @@ public class ServicioAlojamiento {
     }
 
     public Habitacion crearHabitacion(int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen){
-        return Habitacion.builder()
-                .numero(numero)
-                .capacidad(capacidad)
-                .precioPorNoche(precioPorNoche)
-                .serviciosIncluidos(serviciosIncluidos)
-                .tipoHabitacion(tipoHabitacionHotel)
-                .imagen(imagen)
-                .disponible(true)
-                .build();
+        System.out.println(serviciosIncluidos.toString());
+        return new Habitacion(numero, capacidad, precioPorNoche, serviciosIncluidos, tipoHabitacionHotel, imagen);
+    }
+
+    public void eliminarHabitacion(String idAlojamiento, int numeroHabitacion) throws Exception {
+        alojamientoRepository.eliminarHabitacionHotel(idAlojamiento, numeroHabitacion);
     }
 }

@@ -16,6 +16,8 @@ public class ReservaRepository {
     // Lista que almacena todas las reservas registradas
     private final List<Reserva> reservas = new ArrayList<>();
 
+
+
     /**
      * Busca una reserva por su identificador único (UUID).
      * @param id UUID de la reserva a buscar
@@ -63,5 +65,13 @@ public class ReservaRepository {
      */
     public List<Reserva> obtenerTodos() {
         return new ArrayList<>(reservas); // Devuelve una copia para evitar modificaciones externas
+    }
+
+    public void agregarReserva(Reserva reserva) {
+        reservas.add(reserva);
+    }
+
+    public void eliminarReserva(Reserva reserva) {
+        reservas.remove(reserva);
     }
 }
