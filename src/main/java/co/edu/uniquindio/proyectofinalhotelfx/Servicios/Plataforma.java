@@ -236,5 +236,8 @@ public class Plataforma implements IPlataforma {
         servicioReserva.agendarAlojamiento(cliente, alojamiento);
     }
 
-
+    @Override
+    public void descontarSaldo(String cedula, double monto) {
+        servicioBilleteraVirtual.descontar(cedula, monto);
+    }
 }

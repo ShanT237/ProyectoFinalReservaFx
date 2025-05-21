@@ -83,4 +83,6 @@ public interface IPlataforma {
 
     void actualizarContrasena(String correo, String nuevaContrasena,
                               String confirmarPassword, String codigoIngresado) throws Exception;
+
+    void descontarSaldo(String cedula, double totalReserva);
 }
