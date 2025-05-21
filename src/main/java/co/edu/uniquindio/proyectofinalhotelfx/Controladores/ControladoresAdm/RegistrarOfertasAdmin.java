@@ -73,6 +73,7 @@ public class RegistrarOfertasAdmin {
     private File imagenSeleccionada;
 
     private ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+    private GestionOfertasAdmin gestionOfertasAdmin;
 
     @FXML
     void guardarOferta(ActionEvent event) {
@@ -353,4 +354,7 @@ public class RegistrarOfertasAdmin {
         imagenSeleccionada = null;
     }
 
+    public void setGestionarOfertasAdmin(GestionOfertasAdmin gestionOfertasAdmin) {
+        this.gestionOfertasAdmin = gestionOfertasAdmin;
+    }
 }
