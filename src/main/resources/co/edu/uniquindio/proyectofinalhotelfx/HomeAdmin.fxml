@@ -1,49 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f5f7fa;"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.HomeAdmin">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f5f7fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.HomeAdmin">
 
     <!-- Menu lateral izquierdo -->
     <left>
         <VBox minWidth="200" spacing="15" style="-fx-background-color: #2c3e50; -fx-padding: 20;">
             <!-- Encabezado -->
-            <Label text="ADMINISTRADOR"
-                   style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" />
+            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" text="ADMINISTRADOR" />
 
             <!-- Botones planos de navegación -->
-            <Button text="Gestión Alojamientos"
-                    onAction="#cargarGestionAlojamientos"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" />
+            <Button onAction="#cargarGestionAlojamientos" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Alojamientos" />
 
-            <Button text="Gestión Ofertas"
-                    onAction="#cargarGestionOfertas"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" />
+            <Button onAction="#cargarGestionOfertas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Ofertas" />
 
-            <Button text="Estadísticas"
-                    onAction="#cargarEstadisticas"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" />
-
-            <Button text="Reportes"
-                    onAction="#cargarReportes"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" />
+            <Button onAction="#cargarEstadisticas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Estadísticas" />
 
             <!-- Botón adicional sugerido -->
-            <Button text="Gestión Usuarios"
-                    onAction="#cargarGestionUsuarios"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" />
+            <Button onAction="#cargarGestionUsuarios" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Usuarios" />
 
             <!-- Espaciador -->
             <Region VBox.vgrow="ALWAYS" />
 
             <!-- Botón cerrar sesión -->
-            <Button text="Cerrar Sesión"
-                    onAction="#cerrarSesion"
-                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+            <Button onAction="#cerrarSesion" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Cerrar Sesión" />
         </VBox>
     </left>
 
@@ -54,10 +43,8 @@
                 <ImageView fitHeight="150" fitWidth="150">
                     <Image url="@../../../../../../../../../../../../Downloads/expediav2-703354-2927a7-654387.png" />
                 </ImageView>
-                <Label text="Panel de Administración"
-                       style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-                <Label text="Bienvenido, [Nombre Admin]"
-                       style="-fx-font-size: 18px;" />
+                <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Panel de Administración" />
+                <Label style="-fx-font-size: 18px;" text="Bienvenido, [Nombre Admin]" />
             </VBox>
         </StackPane>
     </center>
@@ -65,11 +52,9 @@
     <!-- Barra superior -->
     <top>
         <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #34495e; -fx-padding: 15;">
-            <Label text="BOOKYOURSTAY - ADMIN"
-                   style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+            <Label style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text="BOOKYOURSTAY - ADMIN" />
             <Region HBox.hgrow="ALWAYS" />
-            <Label fx:id="lblFecha" text="Fecha: [fecha actual]"
-                   style="-fx-text-fill: white;" />
+            <Label fx:id="lblFecha" style="-fx-text-fill: white;" text="Fecha: [fecha actual]" />
         </HBox>
     </top>
 </BorderPane>

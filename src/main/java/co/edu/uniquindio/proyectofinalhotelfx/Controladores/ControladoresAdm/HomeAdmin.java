@@ -23,7 +23,6 @@ public class HomeAdmin {
 
     @FXML
     public void initialize() {
-        // Configurar fecha actual
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         lblFecha.setText("Fecha: " + LocalDate.now().format(formatter));
     }
@@ -43,10 +42,6 @@ public class HomeAdmin {
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/EstadisticasAdmin.fxml");
     }
 
-    @FXML
-    private void cargarReportes() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/ReportesAdmin.fxml");
-    }
     @FXML
     public void cargarGestionUsuarios() {
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/GestionUsuariosAdmin.fxml");
