@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
-import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ObservadorSaldo;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
