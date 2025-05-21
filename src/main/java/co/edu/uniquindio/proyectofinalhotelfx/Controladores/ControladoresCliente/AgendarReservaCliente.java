@@ -48,6 +48,8 @@ public class AgendarReservaCliente implements Initializable {
         // Agregar listeners para recalcular total al cambiar fechas
         fechaInicioPicker.valueProperty().addListener((obs, oldValue, newValue) -> calcularYMostrarTotal());
         fechaFinPicker.valueProperty().addListener((obs, oldValue, newValue) -> calcularYMostrarTotal());
+
+        actualizarSaldo(); // Mostrar saldo actualizado al cargar la vista
     }
 
 
@@ -62,12 +64,7 @@ public class AgendarReservaCliente implements Initializable {
             descripcionArea.setText(alojamiento.getDescripcion());
         }
 
-        if (usuario != null && usuario.getBilletera() != null) {
-            saldoLabel.setText("$" + usuario.getBilletera().getSaldo());
-        } else {
-            saldoLabel.setText("No disponible");
-        }
-
+        actualizarSaldo(); // Actualizar saldo siempre que se cambien datos del alojamiento
         calcularYMostrarTotal();
     }
 
@@ -115,5 +112,14 @@ public class AgendarReservaCliente implements Initializable {
         mensajeReservaLabel.setTextFill(Color.GREEN);
         mensajeReservaLabel.setText(mensaje);
         mensajeReservaLabel.setVisible(true);
+    }
+
+    private void actualizarSaldo() {
+        if (usuario != null) {
+            double saldoActualizado = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
+            saldoLabel.setText("$" + String.format("%.2f", saldoActualizado));
+        } else {
+            saldoLabel.setText("No disponible");
+        }
     }
 }
