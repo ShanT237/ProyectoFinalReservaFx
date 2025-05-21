@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,21 +25,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GestionOfertasAdmin {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private ComboBox<?> boxAlojamiento;
-
-    @FXML
-    private ComboBox<?> boxCiudad;
-
-    @FXML
-    private CheckBox esGlobal;
 
     @FXML
     private FlowPane flowPaneOferfas;
