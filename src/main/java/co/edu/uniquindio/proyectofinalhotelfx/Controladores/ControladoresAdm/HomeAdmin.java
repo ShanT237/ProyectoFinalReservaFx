@@ -23,7 +23,6 @@ public class HomeAdmin {
 
     @FXML
     public void initialize() {
-        // Configurar fecha actual
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         lblFecha.setText("Fecha: " + LocalDate.now().format(formatter));
     }

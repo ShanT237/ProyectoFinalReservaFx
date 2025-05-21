@@ -139,13 +139,6 @@ public class Login {
         Scene scene = new Scene(root);
         Stage stage = (Stage) txtCorreo.getScene().getWindow();
         stage.setScene(scene);
-        stage.setFullScreen(true);
-        stage.setFullScreenExitHint("Presiona ESC para salir de pantalla completa");
-        stage.fullScreenProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) {
-                stage.centerOnScreen();
-            }
-        });
         stage.setTitle(tituloVentana);
         stage.setResizable(true);
         stage.show();

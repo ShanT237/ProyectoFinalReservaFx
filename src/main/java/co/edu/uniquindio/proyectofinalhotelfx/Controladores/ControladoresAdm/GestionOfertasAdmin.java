@@ -39,7 +39,8 @@ public class GestionOfertasAdmin {
 
 
     @FXML
-    void buscarOferta(ActionEvent event) {
+    void actualizar(ActionEvent event) {
+        cargarOfertas();
 
     }
 
@@ -49,9 +50,12 @@ public class GestionOfertasAdmin {
 
     }
 
+    private String idOferta;
 
     @FXML
     void eliminarOferta(ActionEvent event) {
+        controladorPrincipal.getPlataforma().eliminarOferta(idOferta);
+        cargarOfertas();
 
     }
 
@@ -134,7 +138,12 @@ public class GestionOfertasAdmin {
         );
 
         tarjeta.getChildren().addAll(imagenView, detalles);
+        tarjeta.setOnMouseClicked(e -> llenarCamposDesdeOferta(oferta));
         return tarjeta;
+    }
+
+    public void llenarCamposDesdeOferta(Oferta oferta) {
+        idOferta = oferta.getId();
     }
 
 }
