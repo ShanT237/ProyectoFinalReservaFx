@@ -59,10 +59,9 @@
             <Label fx:id="mensajeReservaLabel" text="¡Reserva realizada con éxito!" visible="false"
                    textFill="green" style="-fx-font-size: 14px;" />
 
-            <!-- Botones -->
+            <!-- Botón Confirmar únicamente -->
             <HBox spacing="20" alignment="CENTER">
                 <Button text="Confirmar Reserva" fx:id="confirmarBtn" onAction="#confirmarReserva"/>
-                <Button text="Cancelar" onAction="#cancelarReserva"/>
             </HBox>
         </VBox>
     </ScrollPane>

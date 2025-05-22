@@ -5,11 +5,14 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MisReservasCliente {
 
@@ -30,7 +33,7 @@ public class MisReservasCliente {
 
     @FXML
     public void initialize() {
-        // Configurar columnas
+        // Configurar columnas para mostrar datos correctos
         colAlojamiento.setCellValueFactory(reserva -> {
             Alojamiento a = reserva.getValue().getAlojamiento();
             return new SimpleStringProperty(a != null ? a.getNombre() : "Sin nombre");
@@ -46,9 +49,25 @@ public class MisReservasCliente {
 
         colFechaFin.setCellValueFactory(reserva ->
                 new SimpleObjectProperty<>(reserva.getValue().getFechaFin().toLocalDate()));
+    }
 
-        // ASIGNAR la lista global observable
+    /**
+     * Carga las reservas de un cliente dado su cédula.
+     * @param cedulaCliente La cédula del cliente cuyas reservas se quieren mostrar.
+     */
+    public void cargarReservas(String cedulaCliente) {
         ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-        tblReservas.setItems(controladorPrincipal.getListaReservas());
+
+        // Obtener todas las reservas
+        ObservableList<Reserva> todasReservas = controladorPrincipal.getListaReservas();
+
+        // Filtrar solo las reservas del cliente
+        List<Reserva> reservasCliente = todasReservas.stream()
+                .filter(reserva -> reserva.getCliente() != null &&
+                        cedulaCliente.equals(reserva.getCliente().getCedula()))
+                .collect(Collectors.toList());
+
+        // Mostrar en tabla
+        tblReservas.getItems().setAll(reservasCliente);
     }
 }
