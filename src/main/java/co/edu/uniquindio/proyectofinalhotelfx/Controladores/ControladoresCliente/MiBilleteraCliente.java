@@ -74,6 +74,7 @@ public class MiBilleteraCliente implements Initializable {
         if (usuario != null) {
             double saldo = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             lblSaldo.setText("$" + String.format("%.2f", saldo));
+
         } else {
             lblSaldo.setText("No disponible");
         }

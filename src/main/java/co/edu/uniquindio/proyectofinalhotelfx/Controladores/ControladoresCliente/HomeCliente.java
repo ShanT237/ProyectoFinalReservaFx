@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
@@ -28,6 +29,8 @@ public class HomeCliente implements Initializable {
     @FXML
     private StackPane contenidoDinamico;
 
+    private ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
     public void setServicioBilleteraVirtual(ServicioBilleteraVirtual servicio) {
         this.servicioBilleteraVirtual = servicio;
 
@@ -36,7 +39,7 @@ public class HomeCliente implements Initializable {
     // Consulta y muestra el saldo del usuario
     private void actualizarSaldo() throws Exception {
         if (usuario != null && servicioBilleteraVirtual != null) {
-            float saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
+            float saldo = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             if (lblSaldo != null) {
                 lblSaldo.setText("Saldo: $" + String.format("%.2f", saldo));
             }
@@ -48,11 +51,13 @@ public class HomeCliente implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
+            actualizarSaldo();
             contenidoDinamico.getChildren().setAll(root); // Reemplaza el contenido actual
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     // Métodos conectados con botones del menú
     @FXML

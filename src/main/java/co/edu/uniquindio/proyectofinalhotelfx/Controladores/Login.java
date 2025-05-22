@@ -61,6 +61,7 @@ public class Login {
 
             if (usuario1 != null) {
                 controladorPrincipal.guardarSesion(usuario1);
+                lblMensajeError.setTextFill(Color.BLACK);
                 mostrarMensaje("¡Inicio de sesión exitoso como administrador!");
                 redirigirAHomeAdm();
                 limpiarCampos(); // SOLO si fue exitoso
@@ -68,11 +69,14 @@ public class Login {
                 try {
                     Usuario usuario2 = controladorPrincipal.getPlataforma().loginCliente(correo, password);
                     controladorPrincipal.guardarSesion(usuario2);
+                    lblMensajeError.setTextFill(Color.BLACK);
                     mostrarMensaje("¡Inicio de sesión exitoso como cliente!");
+
                     redirigirAHomeCliente();
                     limpiarCampos(); // SOLO si fue exitoso
                 } catch (Exception ex) {
                     if (ex.getMessage().contains("Debe validar su estado de cuenta")) {
+                        lblMensajeError.setTextFill(Color.RED);
                         mostrarMensaje("Cuenta inactiva. Redirigiendo a validación...");
 
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/CodigoVerificacion.fxml"));
@@ -98,6 +102,7 @@ public class Login {
             }
 
         } catch (Exception e) {
+            lblMensajeError.setTextFill(Color.RED);
             mostrarError("Error al iniciar sesión: " + e.getMessage());
             e.printStackTrace();
         }
@@ -147,7 +152,6 @@ public class Login {
 
     // Método para mostrar mensajes de error
     private void mostrarError(String mensaje) {
-        lblMensajeError.setTextFill(Color.RED);
         lblMensajeError.setText(mensaje);
     }
 

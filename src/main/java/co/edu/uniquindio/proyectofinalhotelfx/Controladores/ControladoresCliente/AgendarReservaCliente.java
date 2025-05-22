@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.BilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.event.ActionEvent;
@@ -176,6 +177,7 @@ public class AgendarReservaCliente implements Initializable {
                     LocalDateTime.now()
             );
 
+            controladorPrincipal.getPlataforma().getServicioBilleteraVirtual().descontarSaldo(usuario.getCedula(), (float) totalReserva);
             mostrarMensaje("✅ Reserva confirmada exitosamente. Se descontó $" + String.format("%.2f", totalReserva));
             actualizarSaldo();
 
