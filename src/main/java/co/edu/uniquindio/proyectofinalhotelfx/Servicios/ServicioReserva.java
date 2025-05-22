@@ -39,6 +39,7 @@ public class ServicioReserva{
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
+        double descuento = aplicarDescuento();
 
         Factura factura = crearFactura();
         Reserva reserva = crearReserva();
@@ -119,6 +120,12 @@ public class ServicioReserva{
         reserva.setReview(nuevaReview);
         reserva.getAlojamiento().getReviews().add(nuevaReview);
         reservaRepository.actualizar(reserva);
+    }
+
+    public double aplicarDescuento() {
+        for(Oferta oferta : servicioOferta) {}
+
+        return
     }
 
 
