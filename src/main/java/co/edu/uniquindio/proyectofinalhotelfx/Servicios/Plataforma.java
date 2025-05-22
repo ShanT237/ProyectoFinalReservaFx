@@ -52,18 +52,19 @@ public class Plataforma implements IPlataforma {
                 .servicioBilleteraVirtual(servicioBilleteraVirtual)
                 .build();
 
-        ServicioBilleteraVirtual servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
-                .clienteRepository(clienteRepository)
-                .build();
-
-        this.servicioReserva = ServicioReserva.builder()
-                .reservaRepository(reservaRepository)
-                .build();
 
         this.servicioOferta = ServicioOferta.builder()
                 .ofertaRepository(ofertaRepository)
                 .servicioAlojamiento(serviciosAlojamiento)
                 .build();
+
+        this.servicioReserva = ServicioReserva.builder()
+                .reservaRepository(reservaRepository)
+                .servicioCliente(servicioCliente)
+                .servicioAlojamiento(serviciosAlojamiento)
+                .servicioOferta(servicioOferta)
+                .build();
+
 
         this.servicioAdm = ServicioAdm.builder()
                 .servicioAlojamiento(serviciosAlojamiento)
