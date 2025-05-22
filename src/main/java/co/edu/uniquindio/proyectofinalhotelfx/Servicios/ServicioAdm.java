@@ -22,15 +22,15 @@ public class ServicioAdm {
     private final ServicioReserva servicioReserva;
     private final ServicioCliente servicioCliente;
     private final ServicioOferta servicioOferta;
-    private String codigoRecuperacion = null;
+    private final Administrador adm = leerDatos();
 
     public Administrador loginAdm(String correo, String password){
-        Administrador adm = leerDatos();
         if (adm != null && adm.getCorreo().equals(correo) && adm.getPassword().equals(password)){
             return adm;
         }else{
             return null;
         }
+
     }
 
     /*
@@ -184,6 +184,8 @@ public class ServicioAdm {
 
         return resultado;
     }
+
+
 
 
     public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
