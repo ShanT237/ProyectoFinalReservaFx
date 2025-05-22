@@ -121,6 +121,9 @@ public class AgendarReservaCliente implements Initializable {
 
     @FXML
     private void confirmarReserva(ActionEvent actionEvent) throws Exception {
+        mostrarMensaje("");
+        mostrarError("");
+
         if (usuario == null || alojamiento == null) {
             mostrarError("⚠ Usuario o alojamiento no cargado correctamente.");
             return;
@@ -146,9 +149,9 @@ public class AgendarReservaCliente implements Initializable {
             return;
         }
 
-        long dias = ChronoUnit.DAYS.between(inicio, fin);
+        long dias = ChronoUnit.DAYS.between(inicio, fin) + 1; // +1 si quieres incluir el día fin
         if (dias <= 0) {
-            mostrarError("⚠ La fecha fin debe ser posterior a la fecha inicio.");
+            mostrarError("⚠ La fecha fin debe ser posterior o igual a la fecha inicio.");
             return;
         }
 
@@ -162,18 +165,22 @@ public class AgendarReservaCliente implements Initializable {
         }
 
         try {
-            // Descontar el saldo
-            controladorPrincipal.getPlataforma().descontarSaldo(usuario.getCedula(), totalReserva);
+            controladorPrincipal.getPlataforma().getServicioBilleteraVirtual().descontarSaldo(usuario.getCedula(), (float) totalReserva);
+        } catch (Exception e) {
+            mostrarError("Error al descontar saldo: " + e.getMessage());
+            return;
+        }
 
-            // Registrar la reserva
+        try {
             controladorPrincipal.getPlataforma().reservarAlojamiento(usuario, alojamiento);
-
             mostrarMensaje("✅ Reserva confirmada. Se descontó $" + String.format("%.2f", totalReserva));
             actualizarSaldo();
         } catch (Exception e) {
-            mostrarError(" Error al realizar la reserva: " + e.getMessage());
+            // Aquí podrías intentar devolver el saldo descontado si tienes la lógica para eso
+            mostrarError("Error al registrar la reserva: " + e.getMessage());
         }
     }
+
 
     @FXML
     private void cancelarReserva(ActionEvent actionEvent) {
