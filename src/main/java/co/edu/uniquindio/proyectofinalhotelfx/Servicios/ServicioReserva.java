@@ -51,8 +51,10 @@ public class ServicioReserva{
             throw new Exception("La fecha inicial no puede ser anterior a hoy.");
         }
 
+        // Guardar fechas de reserva
         ArrayList<LocalDate> fechas = guardarFechasAgregadas(fechainicial, diasReserva);
 
+        // Verificar disponibilidad
         boolean disponible = verificarDisponibilidadReservas(alojamiento, fechas);
         if (!disponible) {
             throw new Exception("Este alojamiento no está disponible en el rango de fechas seleccionado.");
@@ -62,19 +64,30 @@ public class ServicioReserva{
             throw new Exception("Este alojamiento no tiene capacidad para tantas personas.");
         }
 
+        // Calcular precios
         float precioBase = alojamiento.calcularPrecioTotal(diasReserva);
         float precioFinal = verificarDescuento(alojamiento, precioBase, numeroHuespedes, diasReserva, fechas, ofertas);
 
+        // Verificar saldo y descontar
+        if (!clienteTieneSaldoSuficiente(cliente, precioFinal)) {
+            throw new Exception("Saldo insuficiente para realizar la reserva.");
+        }
         cliente.cobrarBilletera(precioFinal);
 
+        // Crear fecha de inicio y fin en LocalDateTime
+        LocalDateTime fechaInicio = fechainicial.atStartOfDay();
+        LocalDateTime fechaFin = fechainicial.plusDays(diasReserva - 1).atTime(23, 59);
 
+        // Crear factura
+        Factura factura = crearFactura(LocalDateTime.now(), precioBase, precioFinal, UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
 
-        Reserva reserva = crearReserva( cliente,  alojamiento,  numeroHuespedes,  fechainicial,  fechafin,  factura,  precioFinal);
-        // Guardar la reserva
+        // Crear reserva
+        Reserva reserva = crearReserva(cliente, alojamiento, numeroHuespedes, fechaInicio, fechaFin, factura, precioFinal);
+
+        // Guardar reserva
         reservaRepository.agregarReserva(reserva);
         cliente.agregarReserva(reserva);
 
-        Factura factura = crearFactura( fecha,  precioBase,  precioFinal, UUID , UUID , UUID );
         // Generar QR y enviar notificación
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
@@ -86,6 +99,7 @@ public class ServicioReserva{
                 ds
         );
     }
+
 
     public ArrayList<LocalDate> guardarFechasAgregadas(LocalDate fechaInicial,int dias){
         ArrayList<LocalDate> fechas = new ArrayList<>();
