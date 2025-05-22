@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
@@ -110,8 +111,12 @@ public class Plataforma implements IPlataforma {
     @Override
     public void registrarCliente(String nombre, String cedula, String telefono, String correo,
                                  String password, String confirmarPassword) throws Exception {
-        servicioCliente.registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
+        try {
+            servicioCliente.registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
+        } catch (Exception e) {
+        }
     }
+
 
     @Override
     public boolean validarCodigoVerificacion(String correo, String codigoIngresado) {
