@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +44,11 @@ public class HomeAdmin {
     @FXML
     private void cargarEstadisticas() {
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/EstadisticasAdmin.fxml");
-        sesionUsuario.cerrarSesion();
+    }
+
+    @FXML
+    void perfilAdm() {
+
     }
 
     @FXML
@@ -58,8 +63,19 @@ public class HomeAdmin {
     @FXML
     private void cerrarSesion() {
         irAPantallaPrincipal("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml", "BookYourStay - Inicio");
+        sesionUsuario.cerrarSesion();
 
 
+    }
+
+
+    private void cargarContenido(String fxmlPath) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            contenidoDinamico.getChildren().setAll(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -69,8 +85,11 @@ public class HomeAdmin {
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/Img/ImagenesApp/icon.png"))));
+            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+            Image icono = new Image(archivoImagen.toURI().toString());
+            stage.getIcons().add(icono);
             stage.setResizable(true);
+            stage.centerOnScreen();
             stage.setTitle(titulo);
             stage.setScene(new Scene(root));
             stage.show();
@@ -79,17 +98,6 @@ public class HomeAdmin {
             ventanaActual.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    private void cargarContenido(String fxmlPath) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            contenidoDinamico.getChildren().setAll(root);
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }

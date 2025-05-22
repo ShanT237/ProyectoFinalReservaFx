@@ -102,8 +102,6 @@ public class HomeCliente implements Initializable {
 
     @FXML
     private void cerrarSesion() {
-        System.out.println("Cerrando sesión...");
-        // Lógica para cerrar sesión o volver al login
     }
 
     // Inicializa usuario desde sesión

@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Hotel;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoHabitacionHotel;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
@@ -128,6 +129,16 @@ public class AlojamientoRepository {
             }
         }
         return null;
+    }
+
+    public int obtenerCapacidadReservablePorAlojamiento(String id) throws Exception {
+        for (Alojamiento alojamiento : alojamientos) {
+            if (alojamiento.getId().equals(id)) {
+                return alojamiento.getCapacidadHuespedes();
+            }
+        }
+
+        throw new Exception("No se pudo obtener la capacidad reservable del alojamiento con id: " + id);
     }
 
     private void guardarDatos() {
