@@ -381,4 +381,8 @@ public class ServicioCliente {
     public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
         servicioReserva.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
     }
+
+    public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception {
+        servicioReserva.agregarReview(reservaId, comentario, valoracion);
+    }
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -242,6 +243,11 @@ public class Plataforma implements IPlataforma {
     @Override
     public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
         servicioCliente.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
+    }
+
+    @Override
+    public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception {
+        servicioCliente.agregarReview(reservaId, comentario, valoracion);
     }
 
 
