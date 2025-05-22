@@ -123,7 +123,9 @@ public class ServicioReserva{
     }
 
     public double aplicarDescuento() {
-        for(Oferta oferta : servicioOferta.obtenerTodasOfertas()) {}
+        for(Oferta oferta : servicioOferta.getOfertaRepository().obtenerTodos()) {
+
+        }
 
         return
     }
