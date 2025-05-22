@@ -21,7 +21,8 @@ public class ResenasCliente {
     @FXML private TableColumn<ReviewData, String> colResena;
     @FXML private Button btnEliminarResena;
 
-    private Plataforma plataforma = ControladorPrincipal.INSTANCIA_PLATAFORMA;
+    // ✅ Corrección: Obtener correctamente la instancia de Plataforma
+    private Plataforma plataforma = ControladorPrincipal.getInstancia().getPlataforma();
     private ObservableList<ReviewData> listaResenas = FXCollections.observableArrayList();
 
     @FXML
@@ -32,15 +33,11 @@ public class ResenasCliente {
     }
 
     private void configurarTabla() {
-        // Configurar la columna para mostrar información completa de la reseña
         colResena.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getDescripcionCompleta())
         );
 
-        // Hacer que la tabla sea de selección única
         tblResenas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-        // Asignar los datos a la tabla
         tblResenas.setItems(listaResenas);
     }
 
@@ -52,27 +49,25 @@ public class ResenasCliente {
         try {
             listaResenas.clear();
 
-            // Obtener el cliente actual desde la sesión
-            String cedulaCliente = ControladorPrincipal.INSTANCIA_CLIENTE_ACTUAL.getCedula();
+            // ✅ Corrección: Obtener cédula del cliente actual desde la sesión
+            String cedulaCliente = ControladorPrincipal.getInstancia().obtenerSesion().getCedula();
 
-            // Obtener todas las reservas del cliente
             List<Reserva> reservasCliente = plataforma.obtenerReservasPorCliente(cedulaCliente);
 
-            // Filtrar solo las reservas que tienen reseña
             for (Reserva reserva : reservasCliente) {
-                if (reserva.getReview() != null) {
+                Review review = reserva.getReview();
+                if (review != null) {
                     ReviewData reviewData = new ReviewData(
-                            reserva.getReview().getCodigo(),
+                            review.getCodigo(),
                             reserva.getAlojamiento().getNombre(),
-                            reserva.getReview().getValoracion(),
-                            reserva.getReview().getComentario(),
-                            reserva.getReview().getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                            review.getValoracion(),
+                            review.getComentario(),
+                            review.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
                     );
                     listaResenas.add(reviewData);
                 }
             }
 
-            // Si no hay reseñas, mostrar mensaje
             if (listaResenas.isEmpty()) {
                 mostrarMensaje("Información", "No tienes reseñas registradas.", Alert.AlertType.INFORMATION);
             }
@@ -91,7 +86,6 @@ public class ResenasCliente {
             return;
         }
 
-        // Confirmar eliminación
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Estás seguro de eliminar esta reseña?");
@@ -99,23 +93,15 @@ public class ResenasCliente {
 
         if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             try {
-                // Eliminar la reseña usando el servicio
                 plataforma.eliminarResena(resenaSeleccionada.getIdReview());
-
-                // Recargar la tabla
                 cargarResenas();
-
                 mostrarMensaje("Éxito", "Reseña eliminada correctamente.", Alert.AlertType.INFORMATION);
-
             } catch (Exception e) {
                 mostrarMensaje("Error", "Error al eliminar la reseña: " + e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
 
-    /**
-     * Método público para refrescar las reseñas desde otros controladores
-     */
     public void refrescarResenas() {
         cargarResenas();
     }
@@ -128,9 +114,6 @@ public class ResenasCliente {
         alert.showAndWait();
     }
 
-    /**
-     * Clase interna para manejar los datos de las reseñas en la tabla
-     */
     public static class ReviewData {
         private UUID idReview;
         private String nombreAlojamiento;
@@ -147,15 +130,11 @@ public class ResenasCliente {
         }
 
         public String getDescripcionCompleta() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(nombreAlojamiento).append(" - ");
-            sb.append(valoracion).append(" estrella").append(valoracion != 1 ? "s" : "").append(" - ");
-            sb.append(comentario);
-            sb.append(" (").append(fecha).append(")");
-            return sb.toString();
+            return nombreAlojamiento + " - " +
+                    valoracion + " estrella" + (valoracion != 1 ? "s" : "") + " - " +
+                    comentario + " (" + fecha + ")";
         }
 
-        // Getters
         public UUID getIdReview() { return idReview; }
         public String getNombreAlojamiento() { return nombreAlojamiento; }
         public int getValoracion() { return valoracion; }
