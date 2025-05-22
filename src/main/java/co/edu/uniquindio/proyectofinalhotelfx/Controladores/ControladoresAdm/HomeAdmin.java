@@ -48,6 +48,7 @@ public class HomeAdmin {
 
     @FXML
     void perfilAdm() {
+        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/Perfil.fxml");
 
     }
 

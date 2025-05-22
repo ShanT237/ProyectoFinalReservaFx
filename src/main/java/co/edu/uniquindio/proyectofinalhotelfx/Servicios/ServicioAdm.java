@@ -5,12 +5,14 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
+import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
 import co.edu.uniquindio.proyectofinalhotelfx.vo.TipoAlojamientoGanancia;
 import lombok.Builder;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,37 @@ public class ServicioAdm {
 
     }
 
+    public void cambiarContrasena(String correo) throws Exception {
+        if (correo == null || correo.isEmpty()) {
+            throw new Exception("El correo no puede estar vacío");
+        }
+
+        if (adm == null) {
+            throw new Exception("No se encontró un administrador con el correo proporcionado.");
+        }
+
+
+        int codigo = crearCodigo();
+
+
+        adm.setCodigoActivacion(codigo);
+
+
+        try {
+            Notificacion.enviarNotificacion(
+                    correo,
+                    "Su código es: " + codigo,
+                    "Código para cambiar la contraseña ADM"
+            );
+        } catch (Exception e) {
+            throw new Exception("Error al enviar el código de verificación: " + e.getMessage());
+        }
+    }
+
+    public int crearCodigo() {
+        SecureRandom random = new SecureRandom();
+        return 1000 + random.nextInt(9000); // Entre 1000 y 9999
+    }
     /*
     Metodos gestionar usuario
      */
