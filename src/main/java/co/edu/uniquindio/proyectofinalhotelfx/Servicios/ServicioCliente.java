@@ -385,4 +385,8 @@ public class ServicioCliente {
     public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception {
         servicioReserva.agregarReview(reservaId, comentario, valoracion);
     }
+
+    public void cancelarReserva(UUID idReserva) {
+        servicioReserva.cancelarReserva(idReserva);
+    }
 }

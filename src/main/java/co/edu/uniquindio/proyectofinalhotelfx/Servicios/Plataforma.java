@@ -250,5 +250,10 @@ public class Plataforma implements IPlataforma {
         servicioCliente.agregarReview(reservaId, comentario, valoracion);
     }
 
+    @Override
+    public void cancelarReserva(UUID idReserva) {
+        servicioCliente.cancelarReserva(idReserva);
+    }
+
 
 }

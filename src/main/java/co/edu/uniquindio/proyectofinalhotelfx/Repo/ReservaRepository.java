@@ -29,13 +29,13 @@ public class ReservaRepository {
      * @param id UUID de la reserva a buscar
      * @return La reserva encontrada o null si no existe
      */
-    public Reserva buscarPorId(UUID id) {
+    public Reserva buscarPorId(UUID id) throws Exception {
         for (Reserva r : reservas) {
             if (r.getCodigo().equals(id)) {
                 return r;
             }
         }
-        return null;
+        throw new Exception("Reserva no encontrada");
     }
 
     /**
@@ -43,7 +43,7 @@ public class ReservaRepository {
      * @param reserva Objeto Reserva a almacenar
      * @throws IllegalArgumentException Si la reserva ya existe (mismo UUID)
      */
-    public void guardar(Reserva reserva) {
+    public void guardar(Reserva reserva) throws Exception {
         if (buscarPorId(reserva.getCodigo()) != null) {
             throw new IllegalArgumentException("Ya existe una reserva con el código: " + reserva.getCodigo());
         }
