@@ -29,12 +29,13 @@
                 text="Registrarse"/>
     </HBox>
 
-    <!-- Contenedor principal -->
-    <VBox spacing="25" alignment="CENTER"
+    <!-- Contenido con pestañas -->
+    <VBox spacing="15"
           AnchorPane.topAnchor="80" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.bottomAnchor="20">
 
         <Label text="Encuentra tu alojamiento ideal"
-               style="-fx-font-size: 20px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;"/>
+               style="-fx-font-size: 20px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;"
+               alignment="CENTER"/>
 
         <!-- Barra de búsqueda -->
         <HBox spacing="12" alignment="CENTER">
@@ -57,13 +58,23 @@
                     style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 6 16;"/>
         </HBox>
 
-        <!-- Sección de alojamientos -->
-        <Label text="Alojamientos destacados"
-               style="-fx-font-size: 16px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;"/>
+        <!-- Pestañas -->
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-radius: 10;">
+            <!-- Pestaña de Alojamientos -->
+            <Tab text="Alojamientos destacados">
+                <ScrollPane fitToWidth="true"
+                            style="-fx-background-color: white; -fx-background-radius: 10;">
+                    <FlowPane fx:id="flowAlojamientos" hgap="10" vgap="10" style="-fx-padding: 15;"/>
+                </ScrollPane>
+            </Tab>
 
-        <ScrollPane fitToWidth="true"
-                    style="-fx-background-color: white; -fx-background-radius: 10;">
-            <FlowPane fx:id="flowAlojamientos" hgap="10" vgap="10" style="-fx-padding: 15;"/>
-        </ScrollPane>
+            <!-- Pestaña de Ofertas -->
+            <Tab text="Ofertas">
+                <ScrollPane fitToWidth="true"
+                            style="-fx-background-color: white; -fx-background-radius: 10;">
+                    <FlowPane fx:id="flowOfertas" hgap="10" vgap="10" style="-fx-padding: 15;"/>
+                </ScrollPane>
+            </Tab>
+        </TabPane>
     </VBox>
 </AnchorPane>
