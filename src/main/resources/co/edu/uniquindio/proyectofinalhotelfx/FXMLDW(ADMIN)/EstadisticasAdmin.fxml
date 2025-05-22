@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,7 +14,6 @@
         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ecf0f1; -fx-padding: 15;">
             <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Estadísticas" />
             <Region HBox.hgrow="ALWAYS" />
-            <ComboBox fx:id="cbPeriodo" prefWidth="200" promptText="Seleccionar período" />
         </HBox>
     </top>
    <left>
