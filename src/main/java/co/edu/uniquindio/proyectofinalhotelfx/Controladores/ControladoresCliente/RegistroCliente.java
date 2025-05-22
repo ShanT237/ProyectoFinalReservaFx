@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,59 +64,68 @@ public class RegistroCliente {
             String password = txtPassword.getText();
             String confirmarPassword = txtConfirmarPassword.getText();
 
+            // Validar campos obligatorios
+            if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty()) {
+                mostrarError("Todos los campos son obligatorios.");
+                return;
+            }
 
+            // Validar contraseñas no vacías
             if (password.isEmpty() || confirmarPassword.isEmpty()) {
                 mostrarError("La contraseña no puede estar vacía.");
                 return;
             }
 
-            ControladorPrincipal controladorPrincipal= ControladorPrincipal.getInstancia();
+            // Validar que las contraseñas coincidan
+            if (!password.equals(confirmarPassword)) {
+                mostrarError("Las contraseñas no coinciden.");
+                return;
+            }
 
+            ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
             controladorPrincipal.getPlataforma().registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
+
             mostrarMensaje("¡Registro exitoso!");
             limpiarCampos();
 
-            new Thread(() -> {
-                try {
-                    Thread.sleep(2000); // Esperar 2 segundos
-
-                    // Luego abrir la ventana en el hilo de JavaFX
-                    Platform.runLater(() -> {
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/CodigoVerificacion.fxml"));
-                            Parent root = loader.load();
-
-                            CodigoVerificacion codigoVerificacion = loader.getController();
-                            codigoVerificacion.setCorreo(correo); // Asegúrate de tener este método
-
-                            Stage stage = new Stage();
-                            File archivoImagen = new File("Img/ImagenesApp/icon.png");
-                            Image icono = new Image(archivoImagen.toURI().toString());
-                            stage.getIcons().add(icono);
-                            stage.setTitle("Verificación de Código");
-                            stage.setScene(new Scene(root));
-                            stage.setResizable(false);
-                            stage.show();
-
-                            // Cerrar la ventana actual
-                            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            mostrarError("No se pudo abrir la ventana de verificación.");
-                        }
-                    });
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            // Usar PauseTransition para esperar 2 segundos sin bloquear UI
+            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            delay.setOnFinished(e -> abrirVentanaCodigoVerificacion(event, correo));
+            delay.play();
 
         } catch (Exception e) {
             mostrarError("Error en el registro: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    // Método separado para abrir la ventana de código de verificación
+    private void abrirVentanaCodigoVerificacion(javafx.event.ActionEvent event, String correo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/CodigoVerificacion.fxml"));
+            Parent root = loader.load();
+
+            CodigoVerificacion codigoVerificacion = loader.getController();
+            codigoVerificacion.setCorreo(correo); // Método para pasar el correo
+
+            Stage stage = new Stage();
+            File archivoImagen = new File("Img/ImagenesApp/icon.png");
+            Image icono = new Image(archivoImagen.toURI().toString());
+            stage.getIcons().add(icono);
+            stage.setTitle("Verificación de Código");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+
+            // Cerrar la ventana actual
+            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarError("No se pudo abrir la ventana de verificación.");
+        }
+    }
+
 
     private void mostrarError(String mensaje) {
         lblMensajeError.setTextFill(Color.RED);

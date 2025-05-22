@@ -35,18 +35,14 @@ public class ServicioCliente {
         int codigo = generarCodigoVerificacion(correo);
         codigosVerificacion.put(correo, String.valueOf(codigo));
 
-        if (!password.equals(confirmarPassword)) {
-            throw new Exception("Las contraseñas no coinciden");
-        }
-
-        enviarCorreo(String.valueOf(correo), String.valueOf(codigo));
+        enviarCorreo(correo, String.valueOf(codigo));
         Cliente cliente = crearCliente(nombre, cedula, telefono, codigo, correo, password, confirmarPassword);
         cliente.setActivo(false);
         clienteRepository.guardar(cliente);
 
         System.out.println(codigo);
-
     }
+
 
 
     public String generarCodigoRecuperacion(String correo) throws Exception {
@@ -100,39 +96,47 @@ public class ServicioCliente {
     }
 
     public void validarDatos(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
-        if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty() || password.isEmpty() || confirmarPassword.isEmpty()) {
-            throw new Exception("Todos los campos son obligatorios");
+        StringBuilder errores = new StringBuilder();
+
+        if (nombre == null || nombre.isEmpty())
+            errores.append("El nombre es obligatorio.\n");
+        else if (!nombre.matches("[a-zA-Z\\s]+"))
+            errores.append("El nombre solo debe contener letras y espacios.\n");
+
+        if (cedula == null || cedula.isEmpty())
+            errores.append("La cédula es obligatoria.\n");
+        else {
+            if (!cedula.matches("\\d+"))
+                errores.append("La cédula debe contener solo números.\n");
+            if (cedula.length() < 8 || cedula.length() > 10)
+                errores.append("La cédula debe tener entre 8 y 10 dígitos.\n");
         }
 
-        if (!nombre.matches("[a-zA-Z\\s]+")) {
-            throw new Exception("El nombre solo debe contener letras y espacios");
-        }
+        if (telefono == null || telefono.isEmpty())
+            errores.append("El teléfono es obligatorio.\n");
+        else if (!telefono.matches("\\d{8,10}"))
+            errores.append("El número de teléfono debe tener entre 8 y 10 dígitos.\n");
 
-        if (!cedula.matches("\\d+")) {
-            throw new Exception("La cédula debe contener solo números");
-        }
+        if (correo == null || correo.isEmpty())
+            errores.append("El correo es obligatorio.\n");
+        else if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$"))
+            errores.append("El correo debe ser un correo electrónico válido.\n");
 
-        if (cedula.length() < 8 || cedula.length() > 10) {
-            throw new Exception("La cédula debe tener entre 8 y 10 dígitos");
-        }
+        if (password == null || password.isEmpty())
+            errores.append("La contraseña es obligatoria.\n");
+        else if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"))
+            errores.append("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.\n");
 
-        if (!telefono.matches("\\d{8,10}")) {
-            throw new Exception("El número de teléfono debe tener entre 8 y 10 dígitos");
-        }
+        if (confirmarPassword == null || confirmarPassword.isEmpty())
+            errores.append("Debe confirmar la contraseña.\n");
+        else if (!password.equals(confirmarPassword))
+            errores.append("Las contraseñas no coinciden.\n");
 
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new Exception("El correo debe ser un correo electrónico válido");
-        }
-
-
-        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
-            throw new Exception("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
-        }
-
-        if (!password.equals(confirmarPassword)) {
-            throw new Exception("Las contraseñas no coinciden");
+        if (errores.length() > 0) {
+            throw new Exception(errores.toString());
         }
     }
+
 
     public Cliente iniciarSesion(String correo, String password) throws Exception {
         verificarDatosSesion(correo, password);
