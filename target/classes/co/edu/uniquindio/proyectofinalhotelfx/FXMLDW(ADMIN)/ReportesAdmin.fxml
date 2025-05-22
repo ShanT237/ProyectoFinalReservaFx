@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.ReportesAdmin"
+      spacing="20" style="-fx-padding: 20;">
+
+    <Label text="Generar Reportes" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="cbTipoReporte" promptText="Tipo de Reporte" prefWidth="200"/>
+        <DatePicker fx:id="dpFechaInicio" promptText="Inicio" />
+        <DatePicker fx:id="dpFechaFin" promptText="Fin" />
+        <Button fx:id="btnGenerar" text="Generar PDF" style="-fx-background-color: #c0392b; -fx-text-fill: white;" />
+    </HBox>
+
+    <TableView fx:id="tblDatosReporte" prefHeight="400" />
+</VBox>
