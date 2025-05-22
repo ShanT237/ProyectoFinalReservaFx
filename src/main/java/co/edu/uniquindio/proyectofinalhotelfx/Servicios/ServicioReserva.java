@@ -25,6 +25,7 @@ public class ServicioReserva{
     private final ReservaRepository reservaRepository;
     private final ServicioCliente servicioCliente;
     private final ServicioAlojamiento servicioAlojamiento;
+    private final ServicioOferta servicioOferta;
 
 
     public ArrayList<Reserva> listarReservas() {
@@ -39,8 +40,8 @@ public class ServicioReserva{
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
         Factura factura = crearFactura();
+        Reserva reserva = crearReserva();
 
-        Reserva reserva = crearReserva( cliente,  alojamiento,  numeroHuespedes,  fechainicial,  fechafin,  factura,  precioFinal);
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
 
