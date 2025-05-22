@@ -150,6 +150,9 @@ public class ServicioReserva{
 
     public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
     }
+
+    public void obtenerReservasPorCliente(String idUsuario) {
+    }
 }
 
 
