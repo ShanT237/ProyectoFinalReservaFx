@@ -3,10 +3,8 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
-import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
@@ -29,48 +27,39 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
+/**
+ * Controlador para la gestión de alojamientos por parte del administrador
+ */
 public class GestionAlojamientosAdmin {
 
-    @FXML
-    private ResourceBundle resources;
+    // Componentes FXML
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private Button buttonRegistrarHab;
+    @FXML private TableColumn<Alojamiento, ImageView> colImagen;
+    @FXML private TableColumn<Alojamiento, Ciudad> colCiudad;
+    @FXML private TableColumn<Alojamiento, String> colNombre;
+    @FXML private TableColumn<Alojamiento, Double> colPrecio;
+    @FXML private TableColumn<Alojamiento, TipoAlojamiento> colTipo;
+    @FXML private TableView<Alojamiento> tblAlojamientos;
 
-    @FXML
-    private URL location;
+    // Variables de instancia
+    private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+    private final ObservableList<Alojamiento> listaAlojamientos = FXCollections.observableArrayList();
 
-
-    @FXML
-    private Button buttonRegistrarHab;
-
-
-    @FXML
-    private TableColumn<Alojamiento, ImageView> colImagen;
-
-    @FXML
-    private TableColumn<Alojamiento, Ciudad> colCiudad;
-
-    @FXML
-    private TableColumn<Alojamiento, String> colNombre;
-
-    @FXML
-    private TableColumn<Alojamiento, Double> colPrecio;
-
-    @FXML
-    private TableColumn<Alojamiento, TipoAlojamiento> colTipo;
-
-    @FXML
-    private TableView<Alojamiento> tblAlojamientos;
-
-    ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-    private ObservableList<Alojamiento> listaAlojamientos = FXCollections.observableArrayList();
-
+    /**
+     * Inicializa el controlador configurando las columnas y listeners
+     */
     @FXML
     void initialize() {
         configurarColumnas();
         actualizarTabla();
         configurarListenerSeleccion();
-
     }
+
+    /**
+     * Configura las columnas de la tabla de alojamientos
+     */
     public void configurarColumnas() {
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
         colCiudad.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCiudad()));
@@ -87,28 +76,41 @@ public class GestionAlojamientosAdmin {
         });
     }
 
+    /**
+     * Actualiza los datos mostrados en la tabla
+     */
     public void actualizarTabla() {
-        listaAlojamientos.setAll(ControladorPrincipal.getInstancia().getPlataforma().getServiciosAlojamiento().getAlojamientoRepository().obtenerTodos());
+        listaAlojamientos.setAll(controladorPrincipal.getPlataforma().getServiciosAlojamiento().getAlojamientoRepository().obtenerTodos());
         tblAlojamientos.setItems(listaAlojamientos);
         tblAlojamientos.refresh();
     }
 
+    /**
+     * Muestra la ventana para agregar un nuevo alojamiento
+     */
     @FXML
     void btnAgregar(ActionEvent event) {
         mostrarVentana(event, "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarAlojamiento.fxml", "Registrar Alojamiento");
-
     }
 
+    /**
+     * Elimina el alojamiento seleccionado
+     */
     @FXML
     void eliminarAlojamiento(ActionEvent event) {
-        String id = tblAlojamientos.getSelectionModel().getSelectedItem().getId();
-        controladorPrincipal.getPlataforma().eliminarAlojamiento(id);
-        actualizarTabla();
+        Alojamiento seleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            controladorPrincipal.getPlataforma().eliminarAlojamiento(seleccionado.getId());
+            actualizarTabla();
+        }
     }
+
+    /**
+     * Muestra la ventana para actualizar un alojamiento seleccionado
+     */
     @FXML
     void acturalizarAlojamiento(ActionEvent event) {
         Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
-
         if (alojamientoSeleccionado != null) {
             mostrarVentanaConAlojamiento(event,
                     "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/ActualizarAlojamiento.fxml",
@@ -116,124 +118,123 @@ public class GestionAlojamientosAdmin {
         }
     }
 
+    /**
+     * Muestra la ventana para registrar una habitación en un hotel seleccionado
+     */
     @FXML
+    void registrarHabitacionHotel(ActionEvent event) {
+        Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
+        if (alojamientoSeleccionado != null && alojamientoSeleccionado.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
+            mostrarVentanaConHotel(event,
+                    "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml",
+                    "Registrar Habitación Hotel", alojamientoSeleccionado);
+        }
+    }
+
+    /**
+     * Configura el listener para la selección en la tabla
+     */
+    private void configurarListenerSeleccion() {
+        tblAlojamientos.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            buttonRegistrarHab.setVisible(newSel != null && newSel.getTipoAlojamiento() == TipoAlojamiento.HOTEL);
+        });
+    }
+
+    /**
+     * Muestra una ventana modal genérica
+     */
     private void mostrarVentana(ActionEvent event, String ruta, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
-            Object controller = loader.getController();
+            configurarControlador(loader);
 
-            if (controller instanceof RegistrarAlojamientoAdmin) {
-                ((RegistrarAlojamientoAdmin) controller).setControladorAlojamientos(this);
-            }
-            if (controller instanceof ActualizarAlojamientoAdmin) {
-                ((ActualizarAlojamientoAdmin) controller).setControladorAlojamientos(this);
-            }
-
-            Stage stage = new Stage();
-            File archivoImagen = new File("Img/ImagenesApp/icon.png");
-            Image icono = new Image(archivoImagen.toURI().toString());
-            stage.setResizable(false);
-            stage.setTitle(titulo);
-
-            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.initOwner(parentStage);
-            stage.initModality(Modality.WINDOW_MODAL);
-
+            Stage stage = crearStage(event, titulo);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
             actualizarTabla();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Muestra una ventana modal para actualizar alojamiento
+     */
     private void mostrarVentanaConAlojamiento(ActionEvent event, String ruta, String titulo, Alojamiento alojamiento) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
             Object controller = loader.getController();
-
             if (controller instanceof ActualizarAlojamientoAdmin actualizarController) {
                 actualizarController.setControladorAlojamientos(this);
                 actualizarController.setAlojamiento(alojamiento);
             }
 
-            Stage stage = new Stage();
-            File archivoImagen = new File("Img/ImagenesApp/icon.png");
-            Image icono = new Image(archivoImagen.toURI().toString());
-            stage.getIcons().add(icono);
-            stage.setResizable(false);
-            stage.setTitle(titulo);
-
-            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.initOwner(parentStage);
-            stage.initModality(Modality.WINDOW_MODAL);
-
+            Stage stage = crearStage(event, titulo);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
             actualizarTabla();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Muestra una ventana modal para registrar habitación en hotel
+     */
     private void mostrarVentanaConHotel(ActionEvent event, String ruta, String titulo, Alojamiento alojamientoHotel) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
             Parent root = loader.load();
 
             Object controller = loader.getController();
-
             if (controller instanceof RegistrarHabitacionAdmin registrarController) {
                 registrarController.setAlojamiento(alojamientoHotel);
             }
 
-            Stage stage = new Stage();
-            File archivoImagen = new File("Img/ImagenesApp/icon.png");
-            Image icono = new Image(archivoImagen.toURI().toString());
-            stage.getIcons().add(icono);
-            stage.setResizable(false);
-            stage.setTitle(titulo);
-
-            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.initOwner(parentStage);
-            stage.initModality(Modality.WINDOW_MODAL);
-
+            Stage stage = crearStage(event, titulo);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            actualizarTabla(); // por si la habitación impacta la vista principal
-
+            actualizarTabla();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void configurarListenerSeleccion() {
-        tblAlojamientos.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
-            if (newSel != null && newSel.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
-                buttonRegistrarHab.setVisible(true);
-            } else {
-                buttonRegistrarHab.setVisible(false);
-            }
-        });
+    /**
+     * Configura el controlador de la ventana emergente
+     */
+    private void configurarControlador(FXMLLoader loader) {
+        Object controller = loader.getController();
+        if (controller instanceof RegistrarAlojamientoAdmin) {
+            ((RegistrarAlojamientoAdmin) controller).setControladorAlojamientos(this);
+        }
+        if (controller instanceof ActualizarAlojamientoAdmin) {
+            ((ActualizarAlojamientoAdmin) controller).setControladorAlojamientos(this);
+        }
     }
 
-    @FXML
-    void registrarHabitacionHotel(ActionEvent event) {
-        Alojamiento alojamientoSeleccionado = tblAlojamientos.getSelectionModel().getSelectedItem();
+    /**
+     * Crea y configura un Stage para ventanas emergentes
+     */
+    private Stage crearStage(ActionEvent event, String titulo) {
+        Stage stage = new Stage();
+        File archivoImagen = new File("Img/ImagenesApp/icon.png");
+        Image icono = new Image(archivoImagen.toURI().toString());
+        stage.getIcons().add(icono);
+        stage.setResizable(false);
+        stage.setTitle(titulo);
 
-        if (alojamientoSeleccionado != null && alojamientoSeleccionado.getTipoAlojamiento() == TipoAlojamiento.HOTEL) {
-            mostrarVentanaConHotel(event,
-                    "/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/RegistrarHabitacion.fxml",
-                    "Registrar Habitación Hotel", alojamientoSeleccionado);
-        }
+        Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.initOwner(parentStage);
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        return stage;
     }
 }

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm;
 
 import co.edu.uniquindio.proyectofinalhotelfx.App;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,8 @@ public class HomeAdmin {
     @FXML
     private Label lblFecha;
 
+    private SesionUsuario sesionUsuario = SesionUsuario.instancia();
+
     @FXML
     public void initialize() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -40,6 +43,7 @@ public class HomeAdmin {
     @FXML
     private void cargarEstadisticas() {
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/EstadisticasAdmin.fxml");
+        sesionUsuario.cerrarSesion();
     }
 
     @FXML
@@ -54,6 +58,7 @@ public class HomeAdmin {
     @FXML
     private void cerrarSesion() {
         irAPantallaPrincipal("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml", "BookYourStay - Inicio");
+
 
     }
 
