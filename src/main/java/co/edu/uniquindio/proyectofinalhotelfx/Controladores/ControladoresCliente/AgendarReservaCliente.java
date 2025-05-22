@@ -166,6 +166,7 @@ public class AgendarReservaCliente implements Initializable {
 
         try {
             controladorPrincipal.getPlataforma().getServicioBilleteraVirtual().descontarSaldo(usuario.getCedula(), (float) totalReserva);
+
         } catch (Exception e) {
             mostrarError("Error al descontar saldo: " + e.getMessage());
             return;

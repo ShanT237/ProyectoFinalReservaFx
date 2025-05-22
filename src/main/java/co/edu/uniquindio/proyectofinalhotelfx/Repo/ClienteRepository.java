@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.BilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
@@ -117,9 +118,26 @@ public class ClienteRepository   {
     }
 
 
+    public float consultarSaldo(String clienteId) throws Exception {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCedula().equals(clienteId)) {
+                if (cliente.getBilletera() == null) {
+                    // Inicializar la billetera con constructor adecuado
+                    cliente.setBilletera(new BilleteraVirtual(cliente.getCedula(), 0f, new ArrayList<>()));
+                    guardarDatos();
+                }
+                return cliente.getBilletera().getSaldo();
+            }
+        }
+        throw new Exception("Cliente no encontrado");
+    }
+
     public void actualizarSaldo(String clienteId, float monto) {
         for (Cliente cliente : clientes) {
             if (cliente.getCedula().equals(clienteId)) {
+                if (cliente.getBilletera() == null) {
+                    cliente.setBilletera(new BilleteraVirtual(cliente.getCedula(), 0f, new ArrayList<>()));
+                }
                 cliente.getBilletera().setSaldo(cliente.getBilletera().getSaldo() + monto);
                 guardarDatos();
                 return;
@@ -127,22 +145,17 @@ public class ClienteRepository   {
         }
     }
 
-    public float consultarSaldo(String clienteId) throws Exception {
-        for (Cliente cliente : clientes) {
-            if (cliente.getCedula().equals(clienteId)) {
-                return cliente.getBilletera().getSaldo();
-            }
-        }
-        throw new Exception("Cliente no encontrado");
-    }
-
     public void descontar(String clienteId, float monto) {
         for (Cliente cliente : clientes) {
             if (cliente.getCedula().equals(clienteId)) {
+                if (cliente.getBilletera() == null) {
+                    cliente.setBilletera(new BilleteraVirtual(cliente.getCedula(), 0f, new ArrayList<>()));
+                }
                 cliente.getBilletera().setSaldo(cliente.getBilletera().getSaldo() - monto);
                 guardarDatos();
                 return;
             }
         }
     }
+
 }
