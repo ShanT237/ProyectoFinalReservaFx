@@ -25,6 +25,7 @@
             <artifactId>batch-module</artifactId>
             <version>8.10.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

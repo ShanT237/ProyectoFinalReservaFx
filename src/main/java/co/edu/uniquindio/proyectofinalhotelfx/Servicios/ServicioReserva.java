@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.utils.GeneradorQR;
@@ -179,24 +180,87 @@ public class ServicioReserva{
         reservaRepository.actualizar(reserva);
     }
 
-    // ... resto de métodos permanecen igual ...
+    // Métodos para implementar en tu ServicioReserva
 
     public int obtenerTotalNochesReservadas(String idAlojamiento) {
-        return 0;
+        int totalNoches = 0;
+
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+            if (reserva.getAlojamiento().getId().equals(idAlojamiento) && reserva.isEstadoReserva()) {
+                // Calcular días entre fechas
+                long dias = java.time.temporal.ChronoUnit.DAYS.between(
+                        reserva.getFechaInicio().toLocalDate(),
+                        reserva.getFechaFin().toLocalDate()
+                );
+                totalNoches += (int) dias;
+            }
+        }
+
+        return totalNoches;
     }
 
     public int obtenerTotalNochesDisponibles(String idAlojamiento) {
-        return 0;
+        // Calcular desde el inicio del año hasta ahora
+        LocalDate inicioAño = LocalDate.now().withDayOfYear(1);
+        LocalDate fechaActual = LocalDate.now();
+
+        long diasEnElAño = java.time.temporal.ChronoUnit.DAYS.between(inicioAño, fechaActual);
+
+        // Asumiendo que el alojamiento está disponible todos los días del año
+        return (int) diasEnElAño;
     }
 
     public double obtenerGananciasPorAlojamiento(String idAlojamiento) {
-        return 0;
+        double totalGanancias = 0;
+
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+            if (reserva.getAlojamiento().getId().equals(idAlojamiento) && reserva.isEstadoReserva()) {
+                totalGanancias += reserva.getTotal();
+            }
+        }
+
+        return totalGanancias;
     }
 
     public int contarReservasPorAlojamiento(String id) {
-        return 0;
+        int contador = 0;
+
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+            if (reserva.getAlojamiento().getId().equals(id) && reserva.isEstadoReserva()) {
+                contador++;
+            }
+        }
+
+        return contador;
     }
 
+    public Map<String, Integer> obtenerReservasPorAlojamientoEnCiudad(Ciudad ciudad) {
+        Map<String, Integer> reservasPorAlojamiento = new HashMap<>();
+
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+            if (reserva.getAlojamiento().getCiudad() == ciudad && reserva.isEstadoReserva()) {
+                String nombreAlojamiento = reserva.getAlojamiento().getNombre();
+                reservasPorAlojamiento.put(nombreAlojamiento,
+                        reservasPorAlojamiento.getOrDefault(nombreAlojamiento, 0) + 1);
+            }
+        }
+
+        return reservasPorAlojamiento;
+    }
+
+    public Map<String, Double> obtenerGananciasPorTipoAlojamiento() {
+        Map<String, Double> gananciasPorTipo = new HashMap<>();
+
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+            if (reserva.isEstadoReserva()) {
+                String tipoAlojamiento = reserva.getAlojamiento().getTipoAlojamiento().toString();
+                gananciasPorTipo.put(tipoAlojamiento,
+                        gananciasPorTipo.getOrDefault(tipoAlojamiento, 0.0) + reserva.getTotal());
+            }
+        }
+
+        return gananciasPorTipo;
+    }
     public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
     }
 
