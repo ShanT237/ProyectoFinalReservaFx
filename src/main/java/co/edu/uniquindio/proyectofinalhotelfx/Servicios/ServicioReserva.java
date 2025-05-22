@@ -197,6 +197,10 @@ public class ServicioReserva{
 
     public void obtenerReservasPorCliente(String idUsuario) {
     }
+
+    public void eliminarResena(UUID idResena) throws Exception {
+        reservaRepository.eliminarResena(idResena);
+    }
 }
 
 

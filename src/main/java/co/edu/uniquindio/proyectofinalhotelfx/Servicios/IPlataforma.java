@@ -100,4 +100,6 @@ public interface IPlataforma {
 
     public void cancelarReserva(UUID idReserva) throws Exception;
 
+    public void eliminarResena(UUID idResena) throws Exception;
+
 }

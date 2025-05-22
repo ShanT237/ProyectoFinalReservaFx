@@ -77,7 +77,13 @@ public class ReservaRepository {
         reservas.add(reserva);
     }
 
-    public void eliminarReserva(Reserva reserva) {
-        reservas.remove(reserva);
+    public void eliminarResena(UUID id) throws Exception {
+        for (Reserva reserva : reservas) {
+            if (reserva.getReview().getCodigo().equals(id)) {
+                reserva.setReview(null);
+                return;
+            }
+        }
+        throw new Exception("Reserva no encontrada");
     }
 }

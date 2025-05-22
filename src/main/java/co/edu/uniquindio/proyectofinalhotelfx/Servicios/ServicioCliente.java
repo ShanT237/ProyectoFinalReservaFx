@@ -389,4 +389,8 @@ public class ServicioCliente {
     public void cancelarReserva(UUID idReserva) throws Exception {
         servicioReserva.cancelarReserva(idReserva);
     }
+
+    public void eliminarResena(UUID idResena) throws Exception {
+        servicioReserva.eliminarResena(idResena);
+    }
 }

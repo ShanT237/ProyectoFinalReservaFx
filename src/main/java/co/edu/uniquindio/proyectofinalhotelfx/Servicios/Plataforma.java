@@ -251,8 +251,13 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public void cancelarReserva(UUID idReserva) throws Exception {
-        servicioCliente.cancelarReserva(idReserva);
+    public void cancelarReserva(UUID idResena) throws Exception {
+        servicioCliente.cancelarReserva(idResena);
+    }
+
+    @Override
+    public void eliminarResena(UUID idResena) throws Exception {
+        servicioCliente.eliminarResena(idResena);
     }
 
 
