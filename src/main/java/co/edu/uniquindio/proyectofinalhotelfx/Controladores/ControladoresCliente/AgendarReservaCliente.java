@@ -120,7 +120,7 @@ public class AgendarReservaCliente implements Initializable {
     }
 
     @FXML
-    private void confirmarReserva(ActionEvent actionEvent) {
+    private void confirmarReserva(ActionEvent actionEvent) throws Exception {
         mostrarMensaje("");
         mostrarError("");
 
@@ -200,7 +200,7 @@ public class AgendarReservaCliente implements Initializable {
         mensajeReservaLabel.setVisible(true);
     }
 
-    private void actualizarSaldo() throws Exception {
+    private void actualizarSaldo() throws Exception{
         if (usuario != null) {
             double saldoActualizado = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             saldoLabel.setText("$" + String.format("%.2f", saldoActualizado));

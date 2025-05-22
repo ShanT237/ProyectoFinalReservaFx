@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresClient
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
-import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,8 +56,8 @@ public class MiBilleteraCliente implements Initializable {
                 return;
             }
 
-            // Corregido el nombre del método y cast a float si es necesario
-            controladorPrincipal.getPlataforma().recagarBilletera(usuario.getCedula(), (float) monto);
+            // CORRECCIÓN: nombre correcto del método
+            controladorPrincipal.getPlataforma().getServicioBilleteraVirtual().recargarBilletera(usuario.getCedula(), (float) monto);
 
             actualizarSaldo();
             mostrarMensaje("✅ Recarga exitosa de $" + String.format("%.2f", monto));
@@ -70,8 +69,6 @@ public class MiBilleteraCliente implements Initializable {
             mostrarError("⚠ " + e.getMessage());
         }
     }
-
-
 
     private void actualizarSaldo() throws Exception {
         if (usuario != null) {
@@ -102,5 +99,4 @@ public class MiBilleteraCliente implements Initializable {
             mostrarError("Error al cargar saldo: " + e.getMessage());
         }
     }
-
 }
