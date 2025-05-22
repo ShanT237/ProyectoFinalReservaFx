@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,6 +33,9 @@ public class MiBilleteraCliente implements Initializable {
     private SesionUsuario sesionUsuario = SesionUsuario.instancia();
 
     private ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
+    @Setter
+    private HomeCliente homeCliente;
 
     @FXML
     private void recargarCuenta() throws Exception {
@@ -60,6 +64,7 @@ public class MiBilleteraCliente implements Initializable {
             controladorPrincipal.getPlataforma().getServicioBilleteraVirtual().recargarBilletera(usuario.getCedula(), (float) monto);
 
             actualizarSaldo();
+            homeCliente.actualizarSaldo();
             mostrarMensaje("✅ Recarga exitosa de $" + String.format("%.2f", monto));
             txtMontoRecarga.clear();
 

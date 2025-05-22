@@ -55,9 +55,9 @@
         <Hyperlink fx:id="linkRegistro" onAction="#irARegistro" style="-fx-text-fill: #4a7c91; -fx-underline: true;" text="¿No tienes cuenta? Regístrate" />
 
         <!-- Mensaje de error -->
-        <Label fx:id="lblMensajeError" prefHeight="92.0" prefWidth="372.0" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;">
+        <Label fx:id="lblMensajeError" prefHeight="92.0" prefWidth="372.0" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" wrapText="true">
          <font>
-            <Font size="6.0" />
+            <Font size="13.0" />
          </font></Label>
     </VBox>
 </AnchorPane>

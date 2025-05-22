@@ -37,12 +37,13 @@ public class HomeCliente implements Initializable {
     }
 
     // Consulta y muestra el saldo del usuario
-    private void actualizarSaldo() throws Exception {
-        if (usuario != null && servicioBilleteraVirtual != null) {
+    protected void actualizarSaldo() throws Exception {
+
             float saldo = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
+            System.out.println("Saldo actual: " + saldo);
             if (lblSaldo != null) {
                 lblSaldo.setText("Saldo: $" + String.format("%.2f", saldo));
-            }
+
         }
     }
 
@@ -59,6 +60,7 @@ public class HomeCliente implements Initializable {
     }
 
 
+
     // Métodos conectados con botones del menú
     @FXML
     private void cargarBuscarAlojamientos() {
@@ -72,7 +74,16 @@ public class HomeCliente implements Initializable {
 
     @FXML
     private void cargarBilletera() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MiBilleteraCliente.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/MiBilleteraCliente.fxml"));
+            Parent root = loader.load();
+            actualizarSaldo();
+            contenidoDinamico.getChildren().setAll(root); // Reemplaza el contenido actual
+            MiBilleteraCliente miBilletera = loader.getController();
+            miBilletera.setHomeCliente(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -91,6 +102,11 @@ public class HomeCliente implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SesionUsuario sesionUsuario = SesionUsuario.instancia();
         this.usuario = sesionUsuario.getUsuario();
+        try {
+            actualizarSaldo();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         if (usuario != null) {
             lblNombreUsuario.setText(usuario.getCorreo());
