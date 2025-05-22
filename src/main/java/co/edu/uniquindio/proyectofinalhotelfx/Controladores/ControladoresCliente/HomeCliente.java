@@ -102,7 +102,23 @@ public class HomeCliente implements Initializable {
 
     @FXML
     private void cerrarSesion() {
+        // Limpiar usuario en sesión
+        SesionUsuario sesion = SesionUsuario.instancia();
+        sesion.cerrarSesion(); // método que debes implementar en SesionUsuario para limpiar la sesión
+
+        // Opcional: redirigir a la pantalla de login (ejemplo)
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/PantallaPrincipal.fxml"));
+            Parent root = loader.load();
+
+            // Obtener la escena actual (asumiendo que 'contenidoDinamico' está dentro de la escena)
+            contenidoDinamico.getScene().setRoot(root);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     // Inicializa usuario desde sesión
     @Override
