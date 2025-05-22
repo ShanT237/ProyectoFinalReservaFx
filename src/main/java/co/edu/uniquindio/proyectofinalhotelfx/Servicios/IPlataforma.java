@@ -98,6 +98,6 @@ public interface IPlataforma {
 
     public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception;
 
-    public void cancelarReserva(UUID idReserva);
+    public void cancelarReserva(UUID idReserva) throws Exception;
 
 }

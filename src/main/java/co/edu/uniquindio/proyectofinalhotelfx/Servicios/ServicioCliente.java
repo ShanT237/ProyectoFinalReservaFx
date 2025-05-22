@@ -386,7 +386,7 @@ public class ServicioCliente {
         servicioReserva.agregarReview(reservaId, comentario, valoracion);
     }
 
-    public void cancelarReserva(UUID idReserva) {
+    public void cancelarReserva(UUID idReserva) throws Exception {
         servicioReserva.cancelarReserva(idReserva);
     }
 }
