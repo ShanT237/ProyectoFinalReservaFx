@@ -32,27 +32,51 @@ public class ServicioReserva{
         return reservaRepository.listarReservas();
     }
 
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
+        validarDatos(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
 
-    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechainicial, LocalDateTime fechafin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
-
-        validarDatos(idCliente, idAlojamiento, fechainicial, fechafin, numeroHuespedes, total, fechaCreacion);
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
-        double descuento = aplicarDescuento();
+        // Se crea una reserva preliminar para aplicar descuentos (no se guarda todavía)
+        Reserva reservaTemp = Reserva.builder()
+                .cliente(cliente)
+                .alojamiento(alojamiento)
+                .numeroHuespedes(numeroHuespedes)
+                .fechaInicio(fechaInicial)
+                .fechaFin(fechaFinal)
+                .total(subtotal)
+                .build();
 
-        Factura factura = crearFactura();
-        Reserva reserva = crearReserva();
+        // Se aplica descuento al subtotal
+        double totalConDescuento = aplicarDescuento(subtotal, reservaTemp);
 
-        byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
+        // Se genera el código QR con un ID temporal
+        UUID idFactura = UUID.randomUUID();
+        byte[] imagenQR = GeneradorQR.generarQRComoBytes(idFactura.toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
 
+        // Se crea factura final con el QR como cadena codificada en Base64 (si quieres mostrar el código QR como texto)
+        String codigoQRBase64 = Base64.getEncoder().encodeToString(imagenQR);
+        Factura factura = crearFactura(subtotal, totalConDescuento, codigoQRBase64);
+        factura.setId(idFactura); // Asignamos el ID generado previamente
+
+        // Se crea la reserva definitiva
+        Reserva reservaFinal = crearReserva(cliente, alojamiento, numeroHuespedes, fechaInicial, fechaFinal, factura, totalConDescuento);
+        agregarReservaAlSistema(reservaFinal);
+
+        // Se notifica por correo al cliente
         Notificacion.enviarNotificacionImagen(
                 cliente.getCorreo(),
                 "Aquí tiene su factura de la reserva realizada",
-                "Reserva:\n" + reserva.toString() + "\nFactura:\n" + factura.toString(),
+                "Reserva:\n" + reservaFinal.toString() + "\nFactura:\n" + factura.toString(),
                 ds
         );
+    }
+
+
+    public void agregarReservaAlSistema(Reserva reserva) {
+        reservaRepository.guardar(reserva);
     }
 
     public void validarDatos(String idAlojamiento, String cliente, LocalDateTime fechaInicio, LocalDateTime fechaFin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
@@ -81,20 +105,30 @@ public class ServicioReserva{
     }
 
     // CREAR RESERVA SIMPLE
-    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechainicial, LocalDateTime fechafin, Factura factura, double precioFinal) throws Exception {
+    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechaInicial, LocalDateTime fechaFinal, Factura factura, double precioFinal) throws Exception {
         // Crear la reserva
         return Reserva.builder()
                 .codigo(UUID.randomUUID())
                 .cliente(cliente)
                 .alojamiento(alojamiento)
                 .numeroHuespedes(numeroHuespedes)
-                .fechaInicio(fechainicial)
-                .fechaFin(fechafin)
+                .fechaInicio(fechaInicial)
+                .fechaFin(fechaFinal)
                 .factura(factura)
                 .total(precioFinal)
                 .fechaCreacion(LocalDateTime.now())
                 .EstadoReserva(true)
                 .fechaReserva(LocalDate.now())
+                .build();
+    }
+
+    public Factura crearFactura(double subtotal, double totalConDescuento, String codigoQR) {
+        return Factura.builder()
+                .id(UUID.randomUUID())
+                .subtotal(subtotal)
+                .total(totalConDescuento)
+                .fecha(LocalDate.now())
+                .codigoQR(codigoQR)
                 .build();
     }
 
@@ -122,13 +156,19 @@ public class ServicioReserva{
         reservaRepository.actualizar(reserva);
     }
 
-    public double aplicarDescuento() {
-        for(Oferta oferta : servicioOferta.getOfertaRepository().obtenerTodos()) {
+    public double aplicarDescuento(double precioOriginal, Reserva reserva) {
+        double precioConDescuento = precioOriginal;
 
+        for (Oferta oferta : servicioOferta.getOfertaRepository().obtenerTodos()) {
+            if (oferta.estaVigente(reserva.getFechaInicio())
+                    && (oferta.isEsGlobal() || oferta.getAlojamientosAplicables().contains(reserva.getAlojamiento()))) {
+                precioConDescuento = oferta.aplicarDescuento(precioConDescuento, reserva);
+            }
         }
 
-        return
+        return precioConDescuento;
     }
+
 
 
 
