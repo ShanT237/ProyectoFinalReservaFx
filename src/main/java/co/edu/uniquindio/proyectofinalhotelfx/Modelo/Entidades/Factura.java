@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 @Getter
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 
-public class Factura {
+public class Factura implements Serializable {
     private UUID id;
     private double subtotal;
     private double total;

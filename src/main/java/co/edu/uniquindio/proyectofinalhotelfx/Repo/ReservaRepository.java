@@ -1,7 +1,11 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Repo;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
+import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +21,7 @@ public class ReservaRepository {
     private ArrayList<Reserva> reservas;
 
     public ReservaRepository() {
-        this.reservas = new ArrayList<>();
+        this.reservas = leerDatos();
     }
 
     public ArrayList<Reserva> listarReservas() {
@@ -36,6 +40,25 @@ public class ReservaRepository {
             }
         }
         throw new Exception("Reserva no encontrada");
+    }
+    private void guardarDatos() {
+        try {
+            Persistencia.serializarObjeto(Ruta.RUTA_RESERVA, reservas);
+        } catch (IOException e) {
+            System.err.println("Error guardando clientes: " + e.getMessage());
+        }
+    }
+
+    private ArrayList<Reserva> leerDatos() {
+        try {
+            Object datos = Persistencia.deserializarObjeto(Ruta.RUTA_RESERVA);
+            if (datos != null) {
+                return (ArrayList<Reserva>) datos;
+            }
+        } catch (Exception e) {
+            System.err.println("Error cargando clientes: " + e.getMessage());
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -71,6 +94,7 @@ public class ReservaRepository {
             throw new IllegalArgumentException("Ya existe una reserva con el código: " + reserva.getCodigo());
         }
         reservas.add(reserva);
+        guardarDatos();
     }
 
     /**
@@ -82,6 +106,7 @@ public class ReservaRepository {
         for (int i = 0; i < reservas.size(); i++) {
             if (reservas.get(i).getCodigo().equals(reserva.getCodigo())) {
                 reservas.set(i, reserva);
+                guardarDatos();
                 return;
             }
         }
@@ -94,10 +119,6 @@ public class ReservaRepository {
      */
     public List<Reserva> obtenerTodos() {
         return new ArrayList<>(reservas); // Devuelve una copia para evitar modificaciones externas
-    }
-
-    public void agregarReserva(Reserva reserva) {
-        reservas.add(reserva);
     }
 
     public void eliminarResena(UUID idResena) throws Exception {
@@ -113,6 +134,7 @@ public class ReservaRepository {
                 // Eliminar la reseña de la reserva
                 reserva.setReview(null);
                 actualizar(reserva);
+                guardarDatos();
                 encontrada = true;
                 break;
             }

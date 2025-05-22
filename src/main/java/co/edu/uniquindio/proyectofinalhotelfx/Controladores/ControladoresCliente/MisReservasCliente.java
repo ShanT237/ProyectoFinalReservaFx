@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import lombok.Setter;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 
 public class MisReservasCliente implements Initializable {
 
+    @Setter
+    HomeCliente homeCliente;
     @FXML private TableView<Reserva> tblReservas;
     @FXML private TableColumn<Reserva, String> colAlojamiento;
     @FXML private TableColumn<Reserva, String> colCiudad;
@@ -98,7 +101,8 @@ public class MisReservasCliente implements Initializable {
         if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             try {
                 controladorPrincipal.getPlataforma().cancelarReserva(reservaSeleccionada.getCodigo());
-                cargarReservasDelCliente(); // Recargar lista
+                cargarReservasDelCliente();// Recargar lista
+                homeCliente.actualizarSaldo();
                 mostrarAlerta("Reserva cancelada exitosamente. El dinero ha sido devuelto a su billetera.");
             } catch (Exception e) {
                 mostrarAlerta("Error al cancelar la reserva: " + e.getMessage());

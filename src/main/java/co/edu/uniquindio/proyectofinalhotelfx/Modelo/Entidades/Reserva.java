@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Builder
 
 
-public class Reserva {
+public class Reserva implements Serializable {
 
     private UUID codigo;
     private Cliente cliente;

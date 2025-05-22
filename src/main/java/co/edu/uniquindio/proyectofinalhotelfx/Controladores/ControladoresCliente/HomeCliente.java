@@ -69,7 +69,16 @@ public class HomeCliente implements Initializable {
 
     @FXML
     private void cargarMisReservas() {
-        cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MisReservasCliente.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/MisReservasCliente.fxml"));
+            Parent root = loader.load();
+            actualizarSaldo();
+            contenidoDinamico.getChildren().setAll(root); // Reemplaza el contenido actual
+            MisReservasCliente misReservasCliente = loader.getController();
+            misReservasCliente.setHomeCliente(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
