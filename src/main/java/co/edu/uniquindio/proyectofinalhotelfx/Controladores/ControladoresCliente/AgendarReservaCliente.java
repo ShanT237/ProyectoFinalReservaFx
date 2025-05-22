@@ -45,6 +45,7 @@ public class AgendarReservaCliente implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1);
         huespedesSpinner.setValueFactory(valueFactory);
 
+
         // Restringir selección de fechas pasadas en los DatePicker
         fechaInicioPicker.setDayCellFactory(picker -> new DateCell() {
             @Override
