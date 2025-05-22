@@ -39,6 +39,7 @@ public class ServicioReserva{
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
+
         Factura factura = crearFactura();
         Reserva reserva = crearReserva();
 
