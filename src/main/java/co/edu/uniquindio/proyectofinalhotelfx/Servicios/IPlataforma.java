@@ -2,6 +2,8 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
+import co.edu.uniquindio.proyectofinalhotelfx.vo.TipoAlojamientoGanancia;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +54,7 @@ public interface IPlataforma {
     void registrarReserva(String codigoReserva, LocalDateTime fechaReserva, LocalDateTime fechaInicio, LocalDateTime fechaFin,
                           String idCliente, String idAlojamiento, String idOferta, String nombreCliente,
                           String nombreAlojamiento, String nombreOferta, double precioTotal, String imagenAlojamiento) throws Exception;
-
+    public List<TipoAlojamientoGanancia> calcularPorcentajeReservasPorTipo();
     // -------------------------------
     // 🎯 Gestión de Ofertas
     // -------------------------------
@@ -104,4 +106,5 @@ public interface IPlataforma {
 
     List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception;
 
+    public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) throws Exception;
 }

@@ -152,14 +152,6 @@ public class ServicioAdm {
         return servicioReserva.obtenerGananciasPorAlojamiento(idAlojamiento);
     }
 
-    public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) {
-        List<Alojamiento> alojamientosCiudad = servicioAlojamiento.obtenerAlojamientosPorCiudad(ciudad);
-        alojamientosCiudad.sort((a1, a2) ->
-                Integer.compare(servicioReserva.contarReservasPorAlojamiento(a2.getId()),
-                        servicioReserva.contarReservasPorAlojamiento(a1.getId())));
-        return alojamientosCiudad;
-    }
-
 
 
     public List<TipoAlojamientoGanancia> obtenerTiposAlojamientoMasRentables() {
@@ -201,6 +193,14 @@ public class ServicioAdm {
 
     public void eliminarHabitacionHotel(String idHotel, int idHabitacion) throws Exception {
         servicioAlojamiento.eliminarHabitacion(idHotel, idHabitacion);
+    }
+
+    public List<TipoAlojamientoGanancia> calcularPorcentajeReservasPorTipo(){
+        return servicioReserva.calcularPorcentajeReservasPorTipo();
+
+    }
+    public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) throws Exception {
+        return servicioReserva.obtenerAlojamientosMasPopulares(ciudad);
     }
 
 }

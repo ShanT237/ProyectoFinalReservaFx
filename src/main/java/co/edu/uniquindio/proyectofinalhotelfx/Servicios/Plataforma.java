@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
+import co.edu.uniquindio.proyectofinalhotelfx.vo.TipoAlojamientoGanancia;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -202,6 +203,11 @@ public class Plataforma implements IPlataforma {
 
     }
 
+    @Override
+    public List<TipoAlojamientoGanancia> calcularPorcentajeReservasPorTipo() {
+        return servicioAdm.calcularPorcentajeReservasPorTipo();
+    }
+
     // ==============================
     // GESTIÓN DE OFERTAS
     // ==============================
@@ -276,6 +282,11 @@ public class Plataforma implements IPlataforma {
     @Override
     public List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception {
         return servicioCliente.obtenerReservasPorCliente(cedula);
+    }
+
+    @Override
+    public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) throws Exception {
+        return servicioAdm.obtenerAlojamientosMasPopulares(ciudad);
     }
 
 }

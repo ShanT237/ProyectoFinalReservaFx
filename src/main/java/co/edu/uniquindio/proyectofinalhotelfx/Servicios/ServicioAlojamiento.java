@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -108,9 +109,12 @@ public class ServicioAlojamiento {
     }
 
     public List<Alojamiento> obtenerAlojamientosPorCiudad(Ciudad ciudad) {
-        return alojamientoRepository.obtenerTodos()
-                .stream()
-                .filter(a -> a.getCiudad() == ciudad).toList();
+        return new ArrayList<>(
+                alojamientoRepository.obtenerTodos()
+                        .stream()
+                        .filter(a -> a.getCiudad() == ciudad)
+                        .toList()
+        );
     }
 
     public List<Alojamiento> obtenerAlojamientosPorTipo(TipoAlojamiento tipoAlojamiento) {

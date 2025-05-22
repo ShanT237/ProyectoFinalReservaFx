@@ -15,70 +15,77 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+
+/**
+ * Controlador para la gestión de usuarios por parte del administrador
+ */
 public class GestionUsuariosAdmin {
 
-    @FXML
-    private ResourceBundle resources;
+    // Componentes FXML
+    @FXML private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private TableColumn<Cliente, Boolean> colActivo;
+    @FXML private TableColumn<Cliente, String> colCedula;
+    @FXML private TableColumn<Cliente, String> colNombre;
+    @FXML private TableColumn<Cliente, String> colTelefono;
+    @FXML private TableColumn<Cliente, String> coldCorreo;
+    @FXML private TableView<Cliente> tblCliente;
 
-    @FXML
-    private URL location;
+    // Variables de instancia
+    private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+    private final ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();
 
-    @FXML
-    private TableColumn<Cliente, Boolean> colActivo;
-
-    @FXML
-    private TableColumn<Cliente, String> colCedula;
-
-    @FXML
-    private TableColumn<Cliente, String> colNombre;
-
-    @FXML
-    private TableColumn<Cliente, String> colTelefono;
-
-    @FXML
-    private TableColumn<Cliente, String> coldCorreo;
-
-    @FXML
-    private TableView<Cliente> tblCliente;
-
-    ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-    private ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();
-
-    @FXML
-    void eliminar(ActionEvent event) throws Exception {
-        try {
-            String id = tblCliente.getSelectionModel().getSelectedItem().getCedula();
-            controladorPrincipal.getPlataforma().bloquearCliente(id);
-            actualizarTabla();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
+    /**
+     * Inicializa el controlador configurando las columnas y cargando los datos
+     */
     @FXML
     void initialize() {
         configurarColumnas();
         actualizarTabla();
-
-
     }
 
-    public void configurarColumnas(){
+    /**
+     * Elimina/bloquea el cliente seleccionado
+     */
+    @FXML
+    void eliminar(ActionEvent event) {
+        try {
+            Cliente seleccionado = tblCliente.getSelectionModel().getSelectedItem();
+            if (seleccionado != null) {
+                controladorPrincipal.getPlataforma().bloquearCliente(seleccionado.getCedula());
+                actualizarTabla();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Configura las columnas de la tabla de clientes
+     */
+    public void configurarColumnas() {
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
         colTelefono.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTelefono()));
         colCedula.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCedula()));
         coldCorreo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCorreo()));
         colActivo.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue().isActivo()));
-
     }
 
+    /**
+     * Actualiza los datos mostrados en la tabla
+     */
     public void actualizarTabla() {
-        listaClientes.setAll(ControladorPrincipal.getInstancia().getPlataforma().getClienteRepository().obtenerTodos());
+        listaClientes.setAll(controladorPrincipal.getPlataforma().getClienteRepository().obtenerTodos());
         tblCliente.setItems(listaClientes);
         tblCliente.refresh();
     }
-
 }

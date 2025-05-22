@@ -2,9 +2,11 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.utils.GeneradorQR;
+import co.edu.uniquindio.proyectofinalhotelfx.vo.TipoAlojamientoGanancia;
 import jakarta.activation.DataSource;
 import jakarta.mail.util.ByteArrayDataSource;
 import lombok.Builder;
@@ -279,6 +281,53 @@ public class ServicioReserva{
 
     public void eliminarResena(UUID idResena) throws Exception {
         reservaRepository.eliminarResena(idResena);
+    }
+
+    public List<TipoAlojamientoGanancia> calcularPorcentajeReservasPorTipo() {
+        List<Reserva> reservas = reservaRepository.listarReservas();
+        int totalReservas = reservas.size();
+        Map<TipoAlojamiento, Integer> conteoPorTipo = new HashMap<>();
+
+        for (Reserva reserva : reservas) {
+            TipoAlojamiento tipo = reserva.getAlojamiento().getTipoAlojamiento(); // o como accedas al tipo
+            conteoPorTipo.put(tipo, conteoPorTipo.getOrDefault(tipo, 0) + 1);
+        }
+
+        List<TipoAlojamientoGanancia> resultado = new ArrayList<>();
+
+        for (Map.Entry<TipoAlojamiento, Integer> entry : conteoPorTipo.entrySet()) {
+            double porcentaje = (entry.getValue() * 100.0) / totalReservas;
+            resultado.add(
+                    TipoAlojamientoGanancia.builder()
+                            .tipo(entry.getKey())
+                            .gananciaTotal(porcentaje)
+                            .build()
+            );
+        }
+
+        return resultado;
+    }
+
+    public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) throws Exception {
+
+        List<Alojamiento> alojamientosCiudad = servicioAlojamiento.obtenerAlojamientosPorCiudad(ciudad);
+        if (alojamientosCiudad == null || alojamientosCiudad.isEmpty()) {
+            throw new Exception("No hay alojamientos en la ciudad seleccionada.");
+        }
+
+        // Ordenar alojamientos según número de reservas (descendente)
+        alojamientosCiudad.sort((a1, a2) -> {
+            try {
+                int reservasA1 = servicioReserva.contarReservasPorAlojamiento(a1.getId());
+                int reservasA2 = servicioReserva.contarReservasPorAlojamiento(a2.getId());
+                return Integer.compare(reservasA2, reservasA1); // Descendente
+            } catch (Exception e) {
+                // Manejo de error, si ocurre
+                return 0;
+            }
+        });
+
+        return alojamientosCiudad;
     }
 
 
