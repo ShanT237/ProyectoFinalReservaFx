@@ -35,8 +35,9 @@ public class MiBilleteraCliente implements Initializable {
     private ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
 
     @FXML
-    private void recargarCuenta() {
+    private void recargarCuenta() throws Exception {
         System.out.println("Usuario en recargarCuenta: " + usuario);
+
         if (usuario == null) {
             mostrarError("⚠ Error: usuario no cargado. Por favor, regrese al menú y reintente.");
             return;
@@ -56,7 +57,9 @@ public class MiBilleteraCliente implements Initializable {
                 return;
             }
 
-            controladorPrincipal.getPlataforma().recargarBilletera(usuario.getCedula(), monto);
+            // Corregido el nombre del método y cast a float si es necesario
+            controladorPrincipal.getPlataforma().recagarBilletera(usuario.getCedula(), (float) monto);
+
             actualizarSaldo();
             mostrarMensaje("✅ Recarga exitosa de $" + String.format("%.2f", monto));
             txtMontoRecarga.clear();
@@ -68,7 +71,9 @@ public class MiBilleteraCliente implements Initializable {
         }
     }
 
-    private void actualizarSaldo() {
+
+
+    private void actualizarSaldo() throws Exception {
         if (usuario != null ) {
             double saldo = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             lblSaldo.setText("$" + String.format("%.2f", saldo));

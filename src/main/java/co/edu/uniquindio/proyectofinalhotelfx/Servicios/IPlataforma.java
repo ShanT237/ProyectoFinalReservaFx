@@ -92,4 +92,5 @@ public interface IPlataforma {
     float consultarSaldo(String cedula) throws Exception;
 
     public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception;
+
 }

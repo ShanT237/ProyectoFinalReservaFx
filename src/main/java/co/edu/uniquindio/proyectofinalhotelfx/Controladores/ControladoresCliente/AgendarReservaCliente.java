@@ -107,7 +107,7 @@ public class AgendarReservaCliente implements Initializable {
     }
 
     @FXML
-    private void confirmarReserva(ActionEvent actionEvent) {
+    private void confirmarReserva(ActionEvent actionEvent) throws Exception {
         if (usuario == null || alojamiento == null) {
             mostrarError("⚠ Usuario o alojamiento no cargado correctamente.");
             return;
@@ -179,7 +179,7 @@ public class AgendarReservaCliente implements Initializable {
         mensajeReservaLabel.setVisible(true);
     }
 
-    private void actualizarSaldo() {
+    private void actualizarSaldo() throws Exception{
         if (usuario != null) {
             double saldoActualizado = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             saldoLabel.setText("$" + String.format("%.2f", saldoActualizado));

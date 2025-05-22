@@ -126,10 +126,7 @@ public class Plataforma implements IPlataforma {
         servicioCliente.actualizarContrasena(correo, nuevaContrasena, confirmarPassword, codigoIngresado);
     }
 
-    @Override
-    public void recagarBilletera(String idCliente, float monto) throws Exception {
-        servicioCliente.recargarBilletera(idCliente, monto);
-    }
+
 
     @Override
     public float consultarSaldo(String cedula) throws Exception {
@@ -236,5 +233,11 @@ public class Plataforma implements IPlataforma {
     public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
         servicioReserva.agendarAlojamiento(cliente, alojamiento);
     }
+
+    @Override
+    public void recagarBilletera(String idCliente, float monto) throws Exception {
+        servicioCliente.recargarBilletera(idCliente, monto);
+    }
+
 
 }

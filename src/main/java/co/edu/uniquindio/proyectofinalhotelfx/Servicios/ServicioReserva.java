@@ -32,19 +32,9 @@ public class ServicioReserva{
         return reservaRepository.listarReservas();
     }
 
-    public ArrayList<Reserva> listarReservas(Usuario usuario) {
-        ArrayList<Reserva> reservas = listarReservas();
-        ArrayList<Reserva> reservasUsuario = new ArrayList<>();
-        for (Reserva reserva : reservas) {
-            if (reserva.getCliente().equals(usuario)) {
-                reservasUsuario.add(reserva);
-            }
-        }
-        return reservasUsuario;
-    }
 
     public void agregarReserva(Alojamiento alojamiento, Cliente cliente, int numeroHuespedes,
-                               LocalDate fechainicial, int diasReserva, ArrayList<Oferta> ofertas) throws Exception {
+                               LocalDate fechainicial,  int diasReserva, ArrayList<Oferta> ofertas) throws Exception {
 
         StringBuilder e = new StringBuilder();
 
@@ -77,33 +67,14 @@ public class ServicioReserva{
 
         cliente.cobrarBilletera(precioFinal);
 
-        // Crear la factura
-        Factura factura = Factura.builder()
-                .fecha(LocalDate.now())
-                .subtotal(precioBase)
-                .total(precioFinal)
-                .id(UUID.randomUUID())
-                .build();
 
-        // Crear la reserva
-        Reserva reserva = Reserva.builder()
-                .codigo(UUID.randomUUID())
-                .cliente(cliente)
-                .alojamiento(alojamiento)
-                .numeroHuespedes(numeroHuespedes)
-                .fechaInicio(fechainicial.atStartOfDay())
-                .fechaFin(fechainicial.plusDays(diasReserva).atStartOfDay())
-                .factura(factura)
-                .total(precioFinal)
-                .fechaCreacion(LocalDateTime.now())
-                .EstadoReserva(true)
-                .fechaReserva(LocalDate.now())
-                .build();
 
+        Reserva reserva = crearReserva();
         // Guardar la reserva
         reservaRepository.agregarReserva(reserva);
         cliente.agregarReserva(reserva);
 
+        Factura factura = crearFactura()
         // Generar QR y enviar notificación
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
@@ -200,16 +171,33 @@ public class ServicioReserva{
     }
 
     // CREAR RESERVA SIMPLE
-    public void crearReserva(Reserva reserva) throws Exception {
-        if (reservaRepository.buscarPorId(reserva.getCodigo()) != null) {
-            throw new Exception("Ya existe una reserva con ese ID");
-        }
-        reserva.setEstadoReserva(true);
-        reserva.setFechaCreacion(LocalDateTime.now());
-        reservaRepository.guardar(reserva);
+    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechainicial, LocalDateTime fechafin, Factura factura, double precioFinal) throws Exception {
+        // Crear la reserva
+        return Reserva.builder()
+                .codigo(UUID.randomUUID())
+                .cliente(cliente)
+                .alojamiento(alojamiento)
+                .numeroHuespedes(numeroHuespedes)
+                .fechaInicio(fechainicial)
+                .fechaFin(fechafin)
+                .factura(factura)
+                .total(precioFinal)
+                .fechaCreacion(LocalDateTime.now())
+                .EstadoReserva(true)
+                .fechaReserva(LocalDate.now())
+                .build();
     }
 
-    // CANCELAR RESERVA
+    //
+    public Factura crearFactura(LocalDateTime fecha, double precioBase, double precioFinal, UUID idReserva, UUID idCliente, UUID idAlojamiento) {
+        // Crear la factura
+        return Factura.builder()
+                .fecha(LocalDate.now())
+                .subtotal(precioBase)
+                .total(precioFinal)
+                .id(UUID.randomUUID())
+                .build();
+    }
 
 
     // OBTENER RESERVAS POR CLIENTE
@@ -281,51 +269,9 @@ public class ServicioReserva{
         return cliente.getBilletera().getSaldo() >= total;
     }
 
-    // CREAR Y GUARDAR RESERVA COMPLETA
-    public Reserva crearYGuardarReserva(Cliente cliente, Alojamiento alojamiento, LocalDateTime inicio, LocalDateTime fin, int numHuespedes) throws Exception {
-        if (!alojamientoDisponible(alojamiento, inicio, fin)) {
-            throw new Exception("El alojamiento no está disponible en esas fechas");
-        }
 
-        double total = calcularTotal(alojamiento, inicio, fin);
 
-        if (!clienteTieneSaldoSuficiente(cliente, total)) {
-            throw new Exception("El cliente no tiene saldo suficiente");
-        }
 
-        Reserva reserva = new Reserva();
-        reserva.setCodigo(UUID.randomUUID());
-        reserva.setCliente(cliente);
-        reserva.setAlojamiento(alojamiento);
-        reserva.setFechaInicio(inicio);
-        reserva.setFechaFin(fin);
-        reserva.setNumeroHuespedes(numHuespedes);
-        reserva.setTotal(total);
-        reserva.setFechaCreacion(LocalDateTime.now());
-        reserva.setEstadoReserva(true);
-
-        Factura factura = generarFactura(reserva);
-        reserva.setFactura(factura);
-        reserva.setQrCode(factura.getCodigoQR());
-
-        reservaRepository.guardar(reserva);
-
-        // Registrar transacción y descontar saldo
-        cliente.getBilletera().setSaldo(cliente.getBilletera().getSaldo() - (float) total);
-
-        return reserva;
-    }
-
-    // GENERAR FACTURA
-    public Factura generarFactura(Reserva reserva) {
-        return Factura.builder()
-                .id(UUID.randomUUID())
-                .fecha(java.time.LocalDate.now())
-                .subtotal(reserva.getTotal())
-                .total(reserva.getTotal()) // Si tienes impuestos, puedes modificar esto
-                .codigoQR("QR_" + reserva.getCodigo())
-                .build();
-    }
     /*
     Implementar
      */
