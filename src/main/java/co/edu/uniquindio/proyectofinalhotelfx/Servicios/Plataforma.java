@@ -58,6 +58,8 @@ public class Plataforma implements IPlataforma {
 
         this.servicioReserva = ServicioReserva.builder()
                 .reservaRepository(reservaRepository)
+                .servicioCliente(servicioCliente)
+                .servicioAlojamiento(serviciosAlojamiento)
                 .build();
 
         this.servicioOferta = ServicioOferta.builder()

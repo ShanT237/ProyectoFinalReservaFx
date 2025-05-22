@@ -9,6 +9,7 @@ import jakarta.activation.DataSource;
 import jakarta.mail.util.ByteArrayDataSource;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,16 +17,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Setter
 @Getter
 @Builder
 public class ServicioReserva{
 
     private final ReservaRepository reservaRepository;
-
-    public ServicioReserva(ReservaRepository reservaRepository) {
-        this.reservaRepository = new ReservaRepository();
-    }
-
+    private final ServicioCliente servicioCliente;
+    private final ServicioAlojamiento servicioAlojamiento;
 
 
     public ArrayList<Reserva> listarReservas() {
@@ -33,62 +32,15 @@ public class ServicioReserva{
     }
 
 
-    public void agregarReserva(Alojamiento alojamiento, Cliente cliente, int numeroHuespedes,
-                               LocalDate fechainicial,  int diasReserva, ArrayList<Oferta> ofertas) throws Exception {
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechainicial, LocalDateTime fechafin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
 
-        StringBuilder e = new StringBuilder();
+        validarDatos(idCliente, idAlojamiento, fechainicial, fechafin, numeroHuespedes, total, fechaCreacion);
+        Cliente cliente = servicioCliente.buscarCliente(idCliente);
+        Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
-        if (alojamiento == null) e.append("Seleccione un alojamiento. ");
-        if (numeroHuespedes <= 0) e.append("Seleccione un número de huéspedes válido. ");
-        if (fechainicial == null) e.append("Seleccione una fecha inicial. ");
-        if (diasReserva <= 0) e.append("Seleccione cuántos días reservar. ");
+        Factura factura = crearFactura();
 
-        if (!e.isEmpty()) {
-            throw new Exception(e + "Verifique y rellene los campos correctamente.");
-        }
-
-        if (fechainicial.isBefore(LocalDate.now())) {
-            throw new Exception("La fecha inicial no puede ser anterior a hoy.");
-        }
-
-        // Guardar fechas de reserva
-        ArrayList<LocalDate> fechas = guardarFechasAgregadas(fechainicial, diasReserva);
-
-        // Verificar disponibilidad
-        boolean disponible = verificarDisponibilidadReservas(alojamiento, fechas);
-        if (!disponible) {
-            throw new Exception("Este alojamiento no está disponible en el rango de fechas seleccionado.");
-        }
-
-        if (numeroHuespedes > alojamiento.getCapacidadHuespedes()) {
-            throw new Exception("Este alojamiento no tiene capacidad para tantas personas.");
-        }
-
-        // Calcular precios
-        float precioBase = alojamiento.calcularPrecioTotal(diasReserva);
-        float precioFinal = verificarDescuento(alojamiento, precioBase, numeroHuespedes, diasReserva, fechas, ofertas);
-
-        // Verificar saldo y descontar
-        if (!clienteTieneSaldoSuficiente(cliente, precioFinal)) {
-            throw new Exception("Saldo insuficiente para realizar la reserva.");
-        }
-        cliente.cobrarBilletera(precioFinal);
-
-        // Crear fecha de inicio y fin en LocalDateTime
-        LocalDateTime fechaInicio = fechainicial.atStartOfDay();
-        LocalDateTime fechaFin = fechainicial.plusDays(diasReserva - 1).atTime(23, 59);
-
-        // Crear factura
-        Factura factura = crearFactura(LocalDateTime.now(), precioBase, precioFinal, UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID());
-
-        // Crear reserva
-        Reserva reserva = crearReserva(cliente, alojamiento, numeroHuespedes, fechaInicio, fechaFin, factura, precioFinal);
-
-        // Guardar reserva
-        reservaRepository.agregarReserva(reserva);
-        cliente.agregarReserva(reserva);
-
-        // Generar QR y enviar notificación
+        Reserva reserva = crearReserva( cliente,  alojamiento,  numeroHuespedes,  fechainicial,  fechafin,  factura,  precioFinal);
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
 
@@ -100,6 +52,30 @@ public class ServicioReserva{
         );
     }
 
+    public void validarDatos(String idAlojamiento, String cliente, LocalDateTime fechaInicio, LocalDateTime fechaFin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
+        if (idAlojamiento == null || idAlojamiento.isEmpty()) {
+            throw new Exception("Debe seleccionar un alojamiento.");
+        }
+        if (cliente == null || cliente.isEmpty()) {
+            throw new Exception("Debe seleccionar un cliente.");
+        }
+        if (fechaInicio == null) {
+            throw new Exception("Debe seleccionar una fecha de inicio.");
+        }
+        if (fechaFin == null) {
+            throw new Exception("Debe seleccionar una fecha de fin.");
+        }
+        if (numeroHuespedes <= 0) {
+            throw new Exception("Debe seleccionar un número de huespedes mayor a 0.");
+        }
+        if (total <= 0) {
+            throw new Exception("Debe seleccionar un total mayor a 0.");
+        }
+        if (fechaCreacion == null) {
+            throw new Exception("Debe seleccionar una fecha de creación.");
+        }
+
+    }
 
     public ArrayList<LocalDate> guardarFechasAgregadas(LocalDate fechaInicial,int dias){
         ArrayList<LocalDate> fechas = new ArrayList<>();
@@ -162,28 +138,6 @@ public class ServicioReserva{
     }
 
 
-    public Map<Ciudad, Alojamiento> alojamientosMasPopularesCiudad(){
-        ArrayList<Reserva>reservas = listarReservas();
-        Map<Alojamiento, Integer> alojamientos = new HashMap<>();
-        for (Reserva reserva : reservas) {
-            Alojamiento alojamiento = reserva.getAlojamiento();
-            alojamientos.put(alojamiento,alojamientos.getOrDefault(alojamiento,0)+1);
-        }
-        Map<Ciudad, Alojamiento> popularesPorCiudad = new HashMap<>();
-        Map<Ciudad, Integer> maxReservasPorCiudad = new HashMap<>();
-        for (Map.Entry<Alojamiento, Integer> entry : alojamientos.entrySet()) {
-            Alojamiento alojamiento = entry.getKey();
-            Ciudad ciudad = alojamiento.getCiudad();
-            int cantidad = entry.getValue();
-
-            if (!popularesPorCiudad.containsKey(ciudad)|| cantidad > maxReservasPorCiudad.get(ciudad)) {
-                popularesPorCiudad.put(ciudad,alojamiento);
-                maxReservasPorCiudad.put(ciudad,cantidad);
-            }
-        }
-        return popularesPorCiudad;
-    }
-
     // CREAR RESERVA SIMPLE
     public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechainicial, LocalDateTime fechafin, Factura factura, double precioFinal) throws Exception {
         // Crear la reserva
@@ -203,7 +157,7 @@ public class ServicioReserva{
     }
 
     //
-    public Factura crearFactura(LocalDateTime fecha, double precioBase, double precioFinal, UUID idReserva, UUID idCliente, UUID idAlojamiento) {
+    public Factura crearFactura(double precioBase, double precioFinal, UUID idReserva, UUID idCliente, UUID idAlojamiento) {
         // Crear la factura
         return Factura.builder()
                 .fecha(LocalDate.now())
@@ -262,50 +216,8 @@ public class ServicioReserva{
         reservaRepository.guardar(reserva);
     }
 
-    // VERIFICAR DISPONIBILIDAD
-    public boolean alojamientoDisponible(Alojamiento alojamiento, LocalDateTime inicio, LocalDateTime fin) {
-        return reservaRepository.obtenerTodos().stream()
-                .filter(r -> r.getAlojamiento().equals(alojamiento) && r.isEstadoReserva())
-                .noneMatch(r ->
-                        !(fin.isBefore(r.getFechaInicio()) || inicio.isAfter(r.getFechaFin()))
-                );
-    }
-
-    // CALCULAR TOTAL
-    public double calcularTotal(Alojamiento alojamiento, LocalDateTime inicio, LocalDateTime fin) {
-        long dias = ChronoUnit.DAYS.between(inicio, fin);
-        if (dias <= 0) dias = 1;
-        return dias * alojamiento.getPrecioNoche();
-    }
-
-    // VERIFICAR SALDO
-    public boolean clienteTieneSaldoSuficiente(Cliente cliente, double total) {
-        return cliente.getBilletera().getSaldo() >= total;
-    }
 
 
 
 
-    /*
-    Implementar
-     */
-    public int obtenerTotalNochesReservadas(String idAlojamiento) {
-        return 0;
-    }
-
-    public int obtenerTotalNochesDisponibles(String idAlojamiento) {
-        return 0;
-    }
-
-    public double obtenerGananciasPorAlojamiento(String idAlojamiento) {
-        return 0;
-    }
-
-    public int contarReservasPorAlojamiento(String id) {
-        return 0;
-    }
-
-    public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
-    }
-}
 

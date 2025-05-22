@@ -24,7 +24,7 @@ public class ServicioOferta {
 
     public void agregarOfertaEspecial(Ciudad ciudad, TipoAlojamiento tipoAlojamiento, String id, String nombre, String
                                               descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-                                      boolean esGlobal, OfertaTipo tipoOferta,int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
+                                      boolean esGlobal, OfertaTipo tipoOferta, int nochesMinimas, double porcentajeDescuento, String imagen) throws Exception {
         verificarDatos(id, nombre,
                 descripcion, fechaInicio, fechaFin, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
 
@@ -36,6 +36,8 @@ public class ServicioOferta {
         Oferta oferta = crearOferta(id, nombre, descripcion, fechaInicio, fechaFin, alojamientos, esGlobal, true, tipoOferta, nochesMinimas, porcentajeDescuento, imagen);
         ofertaRepository.guardar(oferta);
     }
+
+
 
     public void eliminarOfertaEspecial(String idOferta){
         ofertaRepository.eliminarOferta(idOferta);
