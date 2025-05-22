@@ -16,6 +16,10 @@ public class ReservaRepository {
     // Lista que almacena todas las reservas registradas
     private ArrayList<Reserva> reservas;
 
+    public ReservaRepository() {
+        this.reservas = new ArrayList<>();
+    }
+
     public ArrayList<Reserva> listarReservas() {
         return reservas;
     }

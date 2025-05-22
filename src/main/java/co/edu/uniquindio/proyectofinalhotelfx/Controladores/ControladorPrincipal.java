@@ -21,6 +21,7 @@ public class ControladorPrincipal {
     // NUEVO: Lista observable para reservas
     private final ObservableList<Reserva> listaReservas = FXCollections.observableArrayList();
 
+
     private ControladorPrincipal(){
         this.plataforma = new Plataforma();
     }

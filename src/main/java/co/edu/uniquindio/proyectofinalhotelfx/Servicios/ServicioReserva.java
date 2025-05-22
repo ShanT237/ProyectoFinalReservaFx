@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.utils.GeneradorQR;
 import jakarta.activation.DataSource;
@@ -21,9 +22,11 @@ import java.util.stream.Collectors;
 public class ServicioReserva{
 
     private final ReservaRepository reservaRepository;
+    private final ClienteRepository clienteRepository;
 
-    public ServicioReserva(ReservaRepository reservaRepository) {
-        this.reservaRepository = new ReservaRepository();
+    public ServicioReserva(ReservaRepository reservaRepository, ClienteRepository clienteRepository) {
+        this.reservaRepository = reservaRepository;
+        this.clienteRepository = clienteRepository;
     }
 
 
@@ -305,7 +308,16 @@ public class ServicioReserva{
         return 0;
     }
 
-    public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
+    public void reservarAlojamiento(String cedula, Alojamiento alojamiento, int numeroHuespedes,
+                                    LocalDate fechaInicial, int diasReserva, ArrayList<Oferta> ofertas) throws Exception {
+        // Obtener cliente por cédula
+        Cliente cliente = getClienteRepository().buscarPorCedula(cedula);
+        if (cliente == null) {
+            throw new Exception("Cliente no encontrado con cédula: " + cedula);
+        }
+
+        // Llamar al método que agrega la reserva
+        agregarReserva(alojamiento, cliente, numeroHuespedes, fechaInicial, diasReserva, ofertas);
     }
 }
 
