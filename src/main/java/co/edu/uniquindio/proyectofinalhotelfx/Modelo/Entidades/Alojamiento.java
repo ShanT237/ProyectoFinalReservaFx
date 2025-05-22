@@ -45,4 +45,8 @@ public abstract class Alojamiento implements Serializable {
         this.nombre = nombre;
         this.tipoAlojamiento = tipoAlojamiento;
     }
+
+    public float calcularPrecioTotal(int diasReserva) {
+    return 0;
+    }
 }

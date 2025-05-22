@@ -19,7 +19,7 @@
     </top>
 
     <center>
-        <TableView fx:id="tblUsuarios">
+        <TableView fx:id="tblCliente">
             <columns>
                 <TableColumn fx:id="colNombre" prefWidth="150" text="Nombre" />
                 <TableColumn fx:id="colCedula" prefWidth="100" text="Cedula" />

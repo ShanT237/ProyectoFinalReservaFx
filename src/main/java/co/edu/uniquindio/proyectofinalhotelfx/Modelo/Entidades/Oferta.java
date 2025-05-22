@@ -24,6 +24,13 @@ public abstract class Oferta implements Serializable {
     private OfertaTipo tipo;
     private int vecesAplicada;
     private String imagen;
+    private float valorDescuento;
+
+    private ArrayList<LocalDate> fechasdescuento;
+    private int huespedes;
+    private int diasReserva;
+    private ArrayList<Alojamiento> alojamientos;
+
 
     public Oferta(String id, String nombre, String descripcion, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Alojamiento> alojamientosAplicables, boolean esGlobal, boolean activa, OfertaTipo tipo, String imagen) {
         this.id = id;
@@ -58,5 +65,20 @@ public abstract class Oferta implements Serializable {
 
     public void setValorDescuento(float descuento) {
 
+    }
+    public float verificarDescuento(Alojamiento alojamiento,float precio, int cantidadhuespedes, int dias, ArrayList<LocalDate>fechas){
+        boolean cumple = true;
+        if (!alojamientos.contains(alojamiento)) cumple = false;
+        if (huespedes > 0 && cantidadhuespedes < huespedes) cumple = false;
+        if (diasReserva>0 && dias < diasReserva) cumple = false;
+        LocalDate inicioDescuento = fechasdescuento.getFirst();
+        LocalDate finDescuento = fechasdescuento.getLast();
+        for (LocalDate fecha : fechas) {
+            if (!fecha.isBefore(inicioDescuento) && !fecha.isAfter(finDescuento)) {
+                cumple = false;
+            }
+        }
+        if (cumple) return precio - precio*valorDescuento/100;
+        return precio;
     }
 }

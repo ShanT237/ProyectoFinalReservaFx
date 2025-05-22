@@ -96,7 +96,7 @@ public class AgendarReservaCliente implements Initializable {
             mostrarMensaje("✅ Reserva confirmada.");
             mensajeReservaLabel.setVisible(true);
         } catch (Exception e) {
-            mostrarError("❌ Error al realizar la reserva: " + e.getMessage());
+            mostrarError(" Error al realizar la reserva: " + e.getMessage());
         }
     }
 

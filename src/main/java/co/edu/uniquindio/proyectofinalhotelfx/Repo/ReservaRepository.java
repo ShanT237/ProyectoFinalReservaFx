@@ -14,9 +14,11 @@ import java.util.UUID;
 public class ReservaRepository {
 
     // Lista que almacena todas las reservas registradas
-    private final List<Reserva> reservas = new ArrayList<>();
+    private ArrayList<Reserva> reservas;
 
-
+    public ArrayList<Reserva> listarReservas() {
+        return reservas;
+    }
 
     /**
      * Busca una reserva por su identificador único (UUID).
