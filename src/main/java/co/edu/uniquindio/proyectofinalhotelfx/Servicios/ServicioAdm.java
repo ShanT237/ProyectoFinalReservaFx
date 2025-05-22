@@ -208,7 +208,6 @@ public class ServicioAdm {
             );
         }
 
-        // Ordenar de mayor a menor ganancia
         for (int i = 0; i < resultado.size() - 1; i++) {
             for (int j = i + 1; j < resultado.size(); j++) {
                 if (resultado.get(j).getGananciaTotal() > resultado.get(i).getGananciaTotal()) {
@@ -222,7 +221,73 @@ public class ServicioAdm {
         return resultado;
     }
 
+    public void actualizarContrasena(String correoUsuario, String nuevaContrasena, String confirmar, String codigoIngresado) throws Exception {
+        try {
+            // Validaciones básicas
+            if (correoUsuario == null || correoUsuario.isEmpty()) {
+                throw new Exception("El correo electrónico no puede estar vacío");
+            }
 
+            if (nuevaContrasena == null || nuevaContrasena.isEmpty()) {
+                throw new Exception("La nueva contraseña no puede estar vacía");
+            }
+
+            if (confirmar == null || confirmar.isEmpty()) {
+                throw new Exception("La confirmación de contraseña no puede estar vacía");
+            }
+
+            if (codigoIngresado == null || codigoIngresado.isEmpty()) {
+                throw new Exception("El código de verificación no puede estar vacío");
+            }
+
+            int codigo;
+            try {
+                codigo = Integer.parseInt(codigoIngresado);
+            } catch (NumberFormatException e) {
+                throw new Exception("El código de verificación debe ser un número válido de 4 dígitos");
+            }
+
+            // Validar coincidencia de contraseñas
+            if (!nuevaContrasena.equals(confirmar)) {
+                throw new Exception("Las contraseñas ingresadas no coinciden");
+            }
+
+            // Validar fortaleza de contraseña
+            if (nuevaContrasena.length() < 8) {
+                throw new Exception("La contraseña debe tener al menos 8 caracteres");
+            }
+
+            if (!nuevaContrasena.matches(".*[A-Z].*")) {
+                throw new Exception("La contraseña debe contener al menos una letra mayúscula");
+            }
+
+            if (!nuevaContrasena.matches(".*[0-9].*")) {
+                throw new Exception("La contraseña debe contener al menos un número");
+            }
+
+            // Validar código y usuario
+            if (!verificarCorreo(correoUsuario)) {
+                throw new Exception("El correo electrónico no está registrado en el sistema");
+            }
+
+            if (!verificarCodigo(codigo)) {
+                throw new Exception("Código de verificación incorrecto o expirado");
+            }
+
+            // Actualizar contraseña
+            adm.setPassword(nuevaContrasena);
+            adm.setCodigoActivacion(0);
+
+            guardarDatos(adm);
+
+        } catch (Exception e) {
+            throw new Exception("Error al actualizar la contraseña: " + e.getMessage(), e);
+        }
+    }
+
+    private boolean verificarCodigo(int codigo) {
+        return adm.getCodigoActivacion() == codigo;
+    }
 
 
     public void registrarHabitacion(String idhotel, int numero, int capacidad, double precioPorNoche, List<ServiciosIncluidos> serviciosIncluidos, TipoHabitacionHotel tipoHabitacionHotel, String imagen) throws Exception {
@@ -241,16 +306,5 @@ public class ServicioAdm {
         return servicioReserva.obtenerAlojamientosMasPopulares(ciudad);
     }
 
-    public void actualizarContrasena(String correoUsuario, String nuevaContrasena, String confirmar, String codigoIngresado) {
-        if (correoUsuario == null || correoUsuario.isEmpty()) {
-            throw new IllegalArgumentException("El correo no puede estar vacío.");
-        }
-        if (nuevaContrasena == null || nuevaContrasena.isEmpty()) {
-            throw new IllegalArgumentException("La nueva contraseña no puede estar vacía.");
-        }
-        if (confirmar == null || confirmar.isEmpty()) {
-            throw new IllegalArgumentException("La confirmación de la nueva contraseña no puede estar vacía.");
-        }
-        if
-    }
+
 }
