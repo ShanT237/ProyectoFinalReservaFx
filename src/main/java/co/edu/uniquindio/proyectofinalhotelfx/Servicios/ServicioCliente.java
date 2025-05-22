@@ -118,9 +118,10 @@ public class ServicioCliente {
             throw new Exception("El número de teléfono debe tener entre 8 y 10 dígitos");
         }
 
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            throw new Exception("El correo debe ser un correo Gmail válido");
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            throw new Exception("El correo debe ser un correo electrónico válido");
         }
+
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
             throw new Exception("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
@@ -157,9 +158,10 @@ public class ServicioCliente {
             throw new Exception("Todos los campos son obligatorios");
         }
 
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            throw new Exception("El correo debe ser un correo Gmail válido");
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            throw new Exception("El correo debe ser un correo electrónico válido");
         }
+
     }
 
     public void editarCliente(Cliente clienteActualizado) throws Exception {
