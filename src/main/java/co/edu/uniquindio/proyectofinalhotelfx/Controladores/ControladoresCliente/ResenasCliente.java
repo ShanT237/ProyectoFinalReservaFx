@@ -1,32 +1,36 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Review;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
+import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class ResenasCliente {
+public class ResenasCliente implements Initializable {
 
     @FXML private TableView<ReviewData> tblResenas;
     @FXML private TableColumn<ReviewData, String> colResena;
     @FXML private Button btnEliminarResena;
 
-    // ✅ Corrección: Obtener correctamente la instancia de Plataforma
-    private Plataforma plataforma = ControladorPrincipal.getInstancia().getPlataforma();
+    private final SesionUsuario sesionUsuario = SesionUsuario.instancia();
+    private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
     private ObservableList<ReviewData> listaResenas = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         configurarTabla();
         cargarResenas();
         configurarEventos();
@@ -49,10 +53,15 @@ public class ResenasCliente {
         try {
             listaResenas.clear();
 
-            // ✅ Corrección: Obtener cédula del cliente actual desde la sesión
-            String cedulaCliente = ControladorPrincipal.getInstancia().obtenerSesion().getCedula();
+            Cliente clienteActual = (Cliente) sesionUsuario.getUsuario();
+            if (clienteActual == null) {
+                mostrarMensaje("Error", "No se pudo obtener el cliente actual.", Alert.AlertType.ERROR);
+                return;
+            }
 
-            List<Reserva> reservasCliente = plataforma.obtenerReservasPorCliente(cedulaCliente);
+            // Obtener las reservas del cliente desde el servicio
+            List<Reserva> reservasCliente = controladorPrincipal.getPlataforma()
+                    .getServicioReserva().obtenerReservasPorCliente(clienteActual.getCedula());
 
             for (Reserva reserva : reservasCliente) {
                 Review review = reserva.getReview();
@@ -93,8 +102,8 @@ public class ResenasCliente {
 
         if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             try {
-                plataforma.eliminarResena(resenaSeleccionada.getIdReview());
-                cargarResenas();
+                controladorPrincipal.getPlataforma().eliminarResena(resenaSeleccionada.getIdReview());
+                cargarResenas(); // Refrescar la tabla
                 mostrarMensaje("Éxito", "Reseña eliminada correctamente.", Alert.AlertType.INFORMATION);
             } catch (Exception e) {
                 mostrarMensaje("Error", "Error al eliminar la reseña: " + e.getMessage(), Alert.AlertType.ERROR);
@@ -102,8 +111,10 @@ public class ResenasCliente {
         }
     }
 
+    @FXML
     public void refrescarResenas() {
         cargarResenas();
+        mostrarMensaje("Información", "Reseñas actualizadas.", Alert.AlertType.INFORMATION);
     }
 
     private void mostrarMensaje(String titulo, String mensaje, Alert.AlertType tipo) {
@@ -114,6 +125,7 @@ public class ResenasCliente {
         alert.showAndWait();
     }
 
+    // Clase interna para manejar los datos de las reseñas en la tabla
     public static class ReviewData {
         private UUID idReview;
         private String nombreAlojamiento;
@@ -135,6 +147,7 @@ public class ResenasCliente {
                     comentario + " (" + fecha + ")";
         }
 
+        // Getters
         public UUID getIdReview() { return idReview; }
         public String getNombreAlojamiento() { return nombreAlojamiento; }
         public int getValoracion() { return valoracion; }

@@ -100,13 +100,26 @@ public class ReservaRepository {
         reservas.add(reserva);
     }
 
-    public void eliminarResena(UUID id) throws Exception {
-        for (Reserva reserva : reservas) {
-            if (reserva.getReview() != null && reserva.getReview().getCodigo().equals(id)) {
+    public void eliminarResena(UUID idResena) throws Exception {
+        boolean encontrada = false;
+
+        for (Reserva reserva : listarReservas()) {
+            if (reserva.getReview() != null && reserva.getReview().getCodigo().equals(idResena)) {
+                // Eliminar la reseña del alojamiento también
+                if (reserva.getAlojamiento() != null && reserva.getAlojamiento().getReviews() != null) {
+                    reserva.getAlojamiento().getReviews().removeIf(review -> review.getCodigo().equals(idResena));
+                }
+
+                // Eliminar la reseña de la reserva
                 reserva.setReview(null);
-                return;
+                actualizar(reserva);
+                encontrada = true;
+                break;
             }
         }
-        throw new Exception("Reserva no encontrada");
+
+        if (!encontrada) {
+            throw new Exception("Reseña no encontrada");
+        }
     }
 }
