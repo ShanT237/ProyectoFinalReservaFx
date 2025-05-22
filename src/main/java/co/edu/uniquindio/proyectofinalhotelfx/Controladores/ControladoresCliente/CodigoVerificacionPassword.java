@@ -65,12 +65,11 @@ public class CodigoVerificacionPassword {
 
         try {
 
-            if(controlador.getPlataforma().getServicioAdm().verificarCorreo(correoUsuario)){
+            if (controlador.getPlataforma().getServicioAdm().verificarCorreo(correoUsuario)) {
                 controlador.getPlataforma().getServicioAdm().actualizarContrasena(correoUsuario, nuevaContrasena, confirmar, codigoIngresado);
-            }
-            System.out.println(correoUsuario);
+            } else{
             controlador.getPlataforma().actualizarContrasena(correoUsuario, nuevaContrasena, confirmar, codigoIngresado);
-
+             }
             lblMensaje.setStyle("-fx-text-fill: green;");
             lblMensaje.setText("Contraseña actualizada exitosamente.");
 

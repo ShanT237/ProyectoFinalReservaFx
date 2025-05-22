@@ -242,5 +242,15 @@ public class ServicioAdm {
     }
 
     public void actualizarContrasena(String correoUsuario, String nuevaContrasena, String confirmar, String codigoIngresado) {
+        if (correoUsuario == null || correoUsuario.isEmpty()) {
+            throw new IllegalArgumentException("El correo no puede estar vacío.");
+        }
+        if (nuevaContrasena == null || nuevaContrasena.isEmpty()) {
+            throw new IllegalArgumentException("La nueva contraseña no puede estar vacía.");
+        }
+        if (confirmar == null || confirmar.isEmpty()) {
+            throw new IllegalArgumentException("La confirmación de la nueva contraseña no puede estar vacía.");
+        }
+        if
     }
 }
