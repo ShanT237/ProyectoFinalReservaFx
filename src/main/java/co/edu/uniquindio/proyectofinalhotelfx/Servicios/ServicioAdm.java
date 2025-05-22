@@ -35,6 +35,10 @@ public class ServicioAdm {
 
     }
 
+    public boolean verificarCorreo(String correo) {
+        return adm.getCorreo().equals(correo);
+    }
+
     public void cambiarContrasena(String correo) throws Exception {
         if (correo == null || correo.isEmpty()) {
             throw new Exception("El correo no puede estar vacío");
@@ -237,4 +241,6 @@ public class ServicioAdm {
         return servicioReserva.obtenerAlojamientosMasPopulares(ciudad);
     }
 
+    public void actualizarContrasena(String correoUsuario, String nuevaContrasena, String confirmar, String codigoIngresado) {
+    }
 }

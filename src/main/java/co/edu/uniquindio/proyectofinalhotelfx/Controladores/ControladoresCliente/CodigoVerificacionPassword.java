@@ -65,7 +65,9 @@ public class CodigoVerificacionPassword {
 
         try {
 
-            // Si existe un código activo, procedemos con la actualización
+            if(controlador.getPlataforma().getServicioAdm().verificarCorreo(correoUsuario)){
+                controlador.getPlataforma().getServicioAdm().actualizarContrasena(correoUsuario, nuevaContrasena, confirmar, codigoIngresado);
+            }
             System.out.println(correoUsuario);
             controlador.getPlataforma().actualizarContrasena(correoUsuario, nuevaContrasena, confirmar, codigoIngresado);
 

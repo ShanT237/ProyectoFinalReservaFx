@@ -29,6 +29,8 @@ public class RecuperarPassword implements Initializable {
     @FXML
     private TextField txtCorreo;
 
+    ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
     @FXML
     void recuperarContrasena(ActionEvent event) {
         try {
@@ -44,8 +46,15 @@ public class RecuperarPassword implements Initializable {
                 return;
             }
 
-            ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
-            controladorPrincipal.getPlataforma().recuperarContrasena(correo);
+            //Adm
+            if(controladorPrincipal.getPlataforma().getServicioAdm().verificarCorreo(correo)) {
+                controladorPrincipal.getPlataforma().getServicioAdm().cambiarContrasena(correo);
+            } else {
+                //Cliente
+                controladorPrincipal.getPlataforma().recuperarContrasena(correo);
+            }
+
+
 
             mostrarMensaje("Se ha enviado un código de verificación a tu correo.");
             limpiarCampos();
