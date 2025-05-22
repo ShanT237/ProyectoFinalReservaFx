@@ -18,4 +18,10 @@
             <TableColumn fx:id="colFechaFin" text="Fecha Fin" prefWidth="120"/>
         </columns>
     </TableView>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancelarReserva" text="Cancelar Reserva"/>
+        <Button fx:id="btnDejarResena" text="Dejar Reseña"/>
+    </HBox>
+
 </VBox>
