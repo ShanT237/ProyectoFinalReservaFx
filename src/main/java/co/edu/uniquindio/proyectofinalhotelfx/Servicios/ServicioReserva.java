@@ -289,7 +289,7 @@ public class ServicioReserva{
         Map<TipoAlojamiento, Integer> conteoPorTipo = new HashMap<>();
 
         for (Reserva reserva : reservas) {
-            TipoAlojamiento tipo = reserva.getAlojamiento().getTipoAlojamiento(); // o como accedas al tipo
+            TipoAlojamiento tipo = reserva.getAlojamiento().getTipoAlojamiento();
             conteoPorTipo.put(tipo, conteoPorTipo.getOrDefault(tipo, 0) + 1);
         }
 
