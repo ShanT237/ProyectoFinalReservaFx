@@ -1,15 +1,11 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
-import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.CodigoVerificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
-import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
-import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,13 +44,16 @@ public class Plataforma implements IPlataforma {
                 .alojamientoRepository(alojamientoRepository)
                 .build();
 
+        this.servicioBilleteraVirtual = new ServicioBilleteraVirtual(clienteRepository);
+
         this.servicioCliente = ServicioCliente.builder()
                 .clienteRepository(clienteRepository)
                 .servicioAlojamiento(serviciosAlojamiento)
+                .servicioBilleteraVirtual(servicioBilleteraVirtual)
                 .build();
 
         ServicioBilleteraVirtual servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
-                .servicioCliente(servicioCliente)
+                .clienteRepository(clienteRepository)
                 .build();
 
         this.servicioReserva = ServicioReserva.builder()
@@ -73,7 +72,6 @@ public class Plataforma implements IPlataforma {
                 .servicioOferta(servicioOferta)
                 .build();
 
-        this.servicioBilleteraVirtual = new ServicioBilleteraVirtual(servicioCliente);
     }
 
     // ==============================
@@ -126,6 +124,16 @@ public class Plataforma implements IPlataforma {
     public void actualizarContrasena(String correo, String nuevaContrasena,
                                      String confirmarPassword, String codigoIngresado) throws Exception {
         servicioCliente.actualizarContrasena(correo, nuevaContrasena, confirmarPassword, codigoIngresado);
+    }
+
+    @Override
+    public void recagarBilletera(String idCliente, float monto) throws Exception {
+        servicioCliente.recargarBilletera(idCliente, monto);
+    }
+
+    @Override
+    public double consultarSaldo(String cedula) throws Exception {
+        return servicioCliente.consultarSaldo(cedula);
     }
 
     // ==============================
@@ -224,20 +232,9 @@ public class Plataforma implements IPlataforma {
     }
 
 
-    public void recargarBilletera(String cedula, double monto) {
-        servicioBilleteraVirtual.recargarBilletera(cedula, monto);
-    }
-
-    public double consultarSaldo(String cedula) {
-        return servicioBilleteraVirtual.consultarSaldo(cedula);
-    }
-
+    @Override
     public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
         servicioReserva.agendarAlojamiento(cliente, alojamiento);
     }
 
-    @Override
-    public void descontarSaldo(String cedula, double monto) {
-        servicioBilleteraVirtual.descontar(cedula, monto);
-    }
 }

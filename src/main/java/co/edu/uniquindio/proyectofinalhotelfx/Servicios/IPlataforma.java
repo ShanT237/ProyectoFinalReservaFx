@@ -77,6 +77,8 @@ public interface IPlataforma {
     // 🔐 Recuperación de Credenciales
     // -------------------------------
 
+
+
     boolean validarCodigoVerificacion(String correo, String codigoIngresado);
 
     void recuperarContrasena(String correo) throws Exception;
@@ -84,5 +86,10 @@ public interface IPlataforma {
     void actualizarContrasena(String correo, String nuevaContrasena,
                               String confirmarPassword, String codigoIngresado) throws Exception;
 
-    void descontarSaldo(String cedula, double totalReserva);
+
+
+    void recagarBilletera(String idCliente, float monto) throws Exception;
+    double consultarSaldo(String cedula) throws Exception;
+
+    public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception;
 }

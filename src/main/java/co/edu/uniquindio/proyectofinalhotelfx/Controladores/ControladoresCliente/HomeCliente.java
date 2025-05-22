@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HomeCliente implements Initializable, ObservadorSaldo {
+public class HomeCliente implements Initializable {
 
     private Usuario usuario;
     private ServicioBilleteraVirtual servicioBilleteraVirtual;
@@ -28,20 +28,15 @@ public class HomeCliente implements Initializable, ObservadorSaldo {
     @FXML
     private StackPane contenidoDinamico;
 
-    // Establece el servicio de billetera y registra el observador
     public void setServicioBilleteraVirtual(ServicioBilleteraVirtual servicio) {
         this.servicioBilleteraVirtual = servicio;
 
-        if (usuario != null) {
-            servicio.agregarObservador(this);  // Registro del observador
-            actualizarSaldo();                 // Mostrar saldo inicial
-        }
     }
 
     // Consulta y muestra el saldo del usuario
-    private void actualizarSaldo() {
+    private void actualizarSaldo() throws Exception {
         if (usuario != null && servicioBilleteraVirtual != null) {
-            double saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
+            float saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
             if (lblSaldo != null) {
                 lblSaldo.setText("Saldo: $" + String.format("%.2f", saldo));
             }
@@ -97,12 +92,5 @@ public class HomeCliente implements Initializable, ObservadorSaldo {
         }
     }
 
-    // Método del observer: se llama cuando el saldo cambia
-    @Override
-    public void saldoActualizado(String clienteId, double nuevoSaldo) {
-        if (usuario != null && usuario.getCedula().equals(clienteId)) {
-            lblSaldo.setText("Saldo: $" + String.format("%.2f", nuevoSaldo));
-        }
-    }
 }
 

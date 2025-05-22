@@ -16,6 +16,7 @@ public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
+    private final ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
@@ -23,9 +24,10 @@ public class ServicioCliente {
 
 
 
-    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
+    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento, ServicioBilleteraVirtual servicioBilleteraVirtual) {
         this.clienteRepository = clienteRepository;
         this.servicioAlojamiento = servicioAlojamiento;
+        this.servicioBilleteraVirtual = servicioBilleteraVirtual;
     }
 
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
@@ -373,4 +375,11 @@ public class ServicioCliente {
     }
 
 
+    public double consultarSaldo(String cedula) throws Exception {
+        return servicioBilleteraVirtual.consultarSaldo(cedula);
+    }
+
+    public void recargarBilletera(String cedula, float monto) throws Exception {
+        servicioBilleteraVirtual.recargarBilletera(cedula, monto);
+    }
 }
