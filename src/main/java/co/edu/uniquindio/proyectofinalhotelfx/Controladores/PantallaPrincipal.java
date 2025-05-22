@@ -1,3 +1,4 @@
+
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 import co.edu.uniquindio.proyectofinalhotelfx.App;
@@ -338,4 +339,6 @@ public class PantallaPrincipal {
             setHeaderText(null);
         }}.showAndWait();
     }
+
+
 }

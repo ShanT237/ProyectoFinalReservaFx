@@ -43,11 +43,23 @@ public class ServicioReserva{
     public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial,
                                LocalDateTime fechaFinal, int numeroHuespedes, double subtotal,
                                LocalDateTime fechaCreacion) throws Exception {
+
+        // Validación básica de parámetros
         validarDatos(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
 
+        // Validación general de disponibilidad (cliente y alojamiento)
+        validarDisponibilidadReserva(idAlojamiento, fechaInicial, fechaFinal);
+
+        // Obtener entidades
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
+        // Validar capacidad del alojamiento
+        if (numeroHuespedes > alojamiento.getCapacidadHuespedes()) {
+            throw new Exception("La cantidad de huéspedes excede la capacidad máxima del alojamiento.");
+        }
+
+        // Crear reserva temporal para calcular descuentos
         Reserva reservaTemp = Reserva.builder()
                 .cliente(cliente)
                 .alojamiento(alojamiento)
@@ -59,25 +71,29 @@ public class ServicioReserva{
 
         double totalConDescuento = aplicarDescuento(subtotal, reservaTemp);
 
+        // Generar factura y QR
         UUID idFactura = UUID.randomUUID();
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(idFactura.toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
-
         String codigoQRBase64 = Base64.getEncoder().encodeToString(imagenQR);
+
         Factura factura = crearFactura(subtotal, totalConDescuento, codigoQRBase64);
         factura.setId(idFactura);
 
+        // Crear reserva final y agregar al sistema
         Reserva reservaFinal = crearReserva(cliente, alojamiento, numeroHuespedes, fechaInicial, fechaFinal, factura, totalConDescuento);
         agregarReservaAlSistema(reservaFinal);
 
+        // Enviar notificación con factura
         Notificacion.enviarNotificacionImagen(
                 cliente.getCorreo(),
                 "Aquí tiene su factura de la reserva realizada",
                 "Reserva:\n" + reservaFinal.toString() + "\nFactura:\n" + factura.toString(),
                 ds
-
         );
     }
+
+
 
     // ... resto de métodos sin cambios ...
 
@@ -331,4 +347,18 @@ public class ServicioReserva{
     }
 
 
-}
+    private void validarDisponibilidadReserva(String idAlojamiento, LocalDateTime fechaInicio, LocalDateTime fechaFin) throws Exception {
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+                if (reserva.getAlojamiento().getId().equals(idAlojamiento) && reserva.isEstadoReserva()) {
+                    if (!(fechaFin.isBefore(reserva.getFechaInicio()) || fechaInicio.isAfter(reserva.getFechaFin()))) {
+                        throw new Exception("La reserva está ocupada en el intervalo seleccionado");
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
