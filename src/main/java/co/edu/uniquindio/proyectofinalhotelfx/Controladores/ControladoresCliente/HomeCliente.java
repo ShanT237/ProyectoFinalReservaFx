@@ -1,10 +1,8 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioBilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,37 +28,33 @@ public class HomeCliente implements Initializable {
     @FXML
     private StackPane contenidoDinamico;
 
-
-
-    // Establece el servicio de billetera y actualiza el saldo mostrado
     public void setServicioBilleteraVirtual(ServicioBilleteraVirtual servicio) {
         this.servicioBilleteraVirtual = servicio;
-        actualizarSaldo();
+
     }
 
-    // Consulta el saldo actual del usuario y lo muestra
-    private void actualizarSaldo() {
+    // Consulta y muestra el saldo del usuario
+    private void actualizarSaldo() throws Exception {
         if (usuario != null && servicioBilleteraVirtual != null) {
-            double saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
+            float saldo = servicioBilleteraVirtual.consultarSaldo(usuario.getCedula());
             if (lblSaldo != null) {
                 lblSaldo.setText("Saldo: $" + String.format("%.2f", saldo));
             }
         }
     }
 
+    // Carga contenido FXML dentro del StackPane dinámico
     private void cargarContenido(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
-            contenidoDinamico.getChildren().setAll(root);
             contenidoDinamico.getChildren().setAll(root); // Reemplaza el contenido actual
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    // Métodos conectados con los botones del menú lateral
+    // Métodos conectados con botones del menú
     @FXML
     private void cargarBuscarAlojamientos() {
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/BuscarAlojamientosCliente.fxml");
@@ -73,34 +67,30 @@ public class HomeCliente implements Initializable {
 
     @FXML
     private void cargarBilletera() {
-        System.out.println("Cargando billetera, usuario: " + usuario);
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/MiBilleteraCliente.fxml");
     }
 
-
     @FXML
     private void cargarResenas() {
-        System.out.println("Cargando reseñas, usuario: " + usuario);
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/ResenasCliente.fxml");
     }
 
     @FXML
     private void cerrarSesion() {
-        // Aquí deberías cargar el login o cerrar la aplicación, según tu lógica
         System.out.println("Cerrando sesión...");
+        // Lógica para cerrar sesión o volver al login
     }
 
-
+    // Inicializa usuario desde sesión
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         SesionUsuario sesionUsuario = SesionUsuario.instancia();
         this.usuario = sesionUsuario.getUsuario();
 
-        if(usuario != null) {
-            System.out.println("Usuario no es null");
+        if (usuario != null) {
             lblNombreUsuario.setText(usuario.getCorreo());
         }
-
     }
+
 }
+

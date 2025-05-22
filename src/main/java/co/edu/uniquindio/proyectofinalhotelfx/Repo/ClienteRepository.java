@@ -117,5 +117,32 @@ public class ClienteRepository   {
     }
 
 
+    public void actualizarSaldo(String clienteId, float monto) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCedula().equals(clienteId)) {
+                cliente.getBilletera().setSaldo(cliente.getBilletera().getSaldo() + monto);
+                guardarDatos();
+                return;
+            }
+        }
+    }
 
+    public float consultarSaldo(String clienteId) throws Exception {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCedula().equals(clienteId)) {
+                return cliente.getBilletera().getSaldo();
+            }
+        }
+        throw new Exception("Cliente no encontrado");
+    }
+
+    public void descontar(String clienteId, float monto) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCedula().equals(clienteId)) {
+                cliente.getBilletera().setSaldo(cliente.getBilletera().getSaldo() - monto);
+                guardarDatos();
+                return;
+            }
+        }
+    }
 }

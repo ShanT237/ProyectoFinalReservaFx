@@ -16,6 +16,7 @@ public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
+    private final ServicioBilleteraVirtual servicioBilleteraVirtual;
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
@@ -23,9 +24,10 @@ public class ServicioCliente {
 
 
 
-    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento) {
+    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento, ServicioBilleteraVirtual servicioBilleteraVirtual) {
         this.clienteRepository = clienteRepository;
         this.servicioAlojamiento = servicioAlojamiento;
+        this.servicioBilleteraVirtual = servicioBilleteraVirtual;
     }
 
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
@@ -118,9 +120,10 @@ public class ServicioCliente {
             throw new Exception("El número de teléfono debe tener entre 8 y 10 dígitos");
         }
 
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            throw new Exception("El correo debe ser un correo Gmail válido");
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            throw new Exception("El correo debe ser un correo electrónico válido");
         }
+
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
             throw new Exception("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
@@ -157,9 +160,10 @@ public class ServicioCliente {
             throw new Exception("Todos los campos son obligatorios");
         }
 
-        if (!correo.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            throw new Exception("El correo debe ser un correo Gmail válido");
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            throw new Exception("El correo debe ser un correo electrónico válido");
         }
+
     }
 
     public void editarCliente(Cliente clienteActualizado) throws Exception {
@@ -371,4 +375,11 @@ public class ServicioCliente {
     }
 
 
+    public float consultarSaldo(String cedula) throws Exception {
+        return servicioBilleteraVirtual.consultarSaldo(cedula);
+    }
+
+    public void recargarBilletera(String cedula, float monto) throws Exception {
+        servicioBilleteraVirtual.recargarBilletera(cedula, monto);
+    }
 }

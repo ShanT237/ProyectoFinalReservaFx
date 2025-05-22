@@ -1,58 +1,36 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
 @Getter
+@Setter
 @Builder
 public class ServicioBilleteraVirtual {
-    private ServicioCliente servicioCliente;
+    private ClienteRepository clienteRepository;
 
-    private final Map<String, Double> saldos = new HashMap<>();
-    private final List<ObservadorSaldo> observadores = new ArrayList<>();
 
-    public void agregarObservador(ObservadorSaldo observador) {
-        observadores.add(observador);
-    }
-
-    public void eliminarObservador(ObservadorSaldo observador) {
-        observadores.remove(observador);
-    }
-
-    private void notificarObservadores(String clienteId) {
-        double nuevoSaldo = saldos.getOrDefault(clienteId, 0.0);
-        for (ObservadorSaldo obs : observadores) {
-            obs.saldoActualizado(clienteId, nuevoSaldo);
-        }
-    }
-
-    public void recargarBilletera(String clienteId, double monto) {
+    public void recargarBilletera(String clienteId, float monto) throws Exception {
         if (monto <= 0) {
-            throw new IllegalArgumentException("El monto a recargar debe ser mayor a cero");
+            throw new Exception("El monto a recargar debe ser mayor a cero");
         }
-
-        double saldoActual = saldos.getOrDefault(clienteId, 0.0);
-        saldos.put(clienteId, saldoActual + monto);
-
-        // Notificar a los observadores
-        notificarObservadores(clienteId);
+        clienteRepository.actualizarSaldo(clienteId, monto);
     }
 
-    public double consultarSaldo(String clienteId) {
-        return saldos.getOrDefault(clienteId, 0.0);
+    public float consultarSaldo(String clienteId) throws Exception {
+        return clienteRepository.consultarSaldo(clienteId);
     }
 
-    public boolean descontar(String clienteId, double monto) {
-        double saldoActual = saldos.getOrDefault(clienteId, 0.0);
-        if (saldoActual >= monto) {
-            saldos.put(clienteId, saldoActual - monto);
-
-            // Notificar a los observadores
-            notificarObservadores(clienteId);
-            return true;
+    public void descontar(String clienteId, float monto) throws Exception {
+        if (monto <= 0) {
+            throw new Exception("El monto a descontar debe ser mayor a cero");
         }
-        return false;
+        clienteRepository.descontar(clienteId, monto);
     }
+
+
 }
