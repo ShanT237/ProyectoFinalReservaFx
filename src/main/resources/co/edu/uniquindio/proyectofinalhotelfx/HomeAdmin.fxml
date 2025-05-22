@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -9,30 +11,89 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f5f7fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresAdm.HomeAdmin">
 
     <!-- Menu lateral izquierdo -->
     <left>
-        <VBox minWidth="200" spacing="15" style="-fx-background-color: #2c3e50; -fx-padding: 20;">
+        <VBox minWidth="200" spacing="15" style="-fx-background-color: #789DBC; -fx-padding: 20;">
             <!-- Encabezado -->
-            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" text="ADMINISTRADOR" />
+            <Label style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" text="ADMINISTRADOR">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.501915693283081" />
+                  </color>
+               </DropShadow>
+            </effect></Label>
+         <Button mnemonicParsing="false" onAction="#perfilAdm" style="-fx-background-color: transparent;" text="Perfil " textFill="WHITE">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.501915693283081" />
+                  </color>
+               </DropShadow>
+            </effect>
+         </Button>
 
             <!-- Botones planos de navegación -->
-            <Button onAction="#cargarGestionAlojamientos" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Alojamientos" />
+            <Button onAction="#cargarGestionAlojamientos" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Alojamientos">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.49808427691459656" />
+                  </color>
+               </DropShadow>
+            </effect></Button>
 
-            <Button onAction="#cargarGestionOfertas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Ofertas" />
+            <Button onAction="#cargarGestionOfertas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Ofertas">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.501915693283081" />
+                  </color>
+               </DropShadow>
+            </effect></Button>
 
-            <Button onAction="#cargarEstadisticas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Estadísticas" />
+            <Button onAction="#cargarEstadisticas" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Estadísticas">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.501915693283081" />
+                  </color>
+               </DropShadow>
+            </effect></Button>
 
             <!-- Botón adicional sugerido -->
-            <Button onAction="#cargarGestionUsuarios" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Usuarios" />
+            <Button onAction="#cargarGestionUsuarios" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT;" text="Gestión Usuarios">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.49808427691459656" />
+                  </color>
+               </DropShadow>
+            </effect></Button>
 
             <!-- Espaciador -->
             <Region VBox.vgrow="ALWAYS" />
 
             <!-- Botón cerrar sesión -->
-            <Button onAction="#cerrarSesion" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Cerrar Sesión" />
+            <Button onAction="#cerrarSesion" style="-fx-background-color: #5C7285; -fx-text-fill: white;" text="Cerrar Sesión" textFill="WHITE">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.501915693283081" />
+                  </color>
+               </DropShadow>
+            </effect>
+            <font>
+               <Font name="System Bold" size="13.0" />
+            </font></Button>
         </VBox>
     </left>
 
@@ -44,15 +105,22 @@
                     <Image url="@../../../../../../../../../../../../Downloads/expediav2-703354-2927a7-654387.png" />
                 </ImageView>
                 <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Panel de Administración" />
-                <Label style="-fx-font-size: 18px;" text="Bienvenido, [Nombre Admin]" />
+                <Label style="-fx-font-size: 18px;" text="Bienvenido Santiago" />
             </VBox>
         </StackPane>
     </center>
 
     <!-- Barra superior -->
     <top>
-        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #34495e; -fx-padding: 15;">
-            <Label style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text="BOOKYOURSTAY - ADMIN" />
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #D1E9F6; -fx-padding: 15;">
+            <Label style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" text="BOOKYOURSTAY - ADMIN">
+            <effect>
+               <Glow level="0.0">
+                  <input>
+                     <DropShadow />
+                  </input>
+               </Glow>
+            </effect></Label>
             <Region HBox.hgrow="ALWAYS" />
             <Label fx:id="lblFecha" style="-fx-text-fill: white;" text="Fecha: [fecha actual]" />
         </HBox>

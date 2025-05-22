@@ -45,41 +45,43 @@ public class EstadisticasAdmin implements Initializable {
             VBox contenedor = new VBox(15);
             contenedor.setPadding(new Insets(20));
 
-            Label titulo = new Label("Porcentaje de Reservas por Tipo de Alojamiento");
+            Label titulo = new Label("Estadísticas de Alojamiento");
             titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-            List<TipoAlojamientoGanancia> porcentajes = plataforma.calcularPorcentajeReservasPorTipo();
+            ComboBox<String> selectorTipoEstadistica = new ComboBox<>();
+            selectorTipoEstadistica.getItems().addAll(
+                    "Porcentaje de Reservas por Tipo",
+                    "Ocupación Porcentual por Alojamiento"
+            );
+            selectorTipoEstadistica.setValue("Porcentaje de Reservas por Tipo");
 
-            if (porcentajes.isEmpty()) {
-                Label mensaje = new Label("No hay datos para mostrar.");
-                mensaje.setStyle("-fx-font-size: 14px; -fx-text-fill: #666;");
-                contenedor.getChildren().add(mensaje);
-            } else {
-                PieChart pieChart = new PieChart();
-                pieChart.setTitle("Distribución de Reservas");
+            VBox graficoContainer = new VBox(20);
 
-                ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
+            selectorTipoEstadistica.setOnAction(e -> {
+                graficoContainer.getChildren().clear();
+                String seleccion = selectorTipoEstadistica.getValue();
 
-                for (TipoAlojamientoGanancia tipo : porcentajes) {
-                    pieData.add(new PieChart.Data(
-                            tipo.getTipo().toString() + " (" + String.format("%.1f", tipo.getGananciaTotal()) + "%)",
-                            tipo.getGananciaTotal()
-                    ));
+                if (seleccion.equals("Porcentaje de Reservas por Tipo")) {
+                    mostrarGraficoPorcentajeReservas(graficoContainer);
+                } else {
+                    try {
+                        mostrarOcupacionPorcentualPorAlojamiento(graficoContainer);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
+            });
 
-                pieChart.setData(pieData);
-                pieChart.setPrefHeight(400);
+            // Mostrar gráfico inicial
+            mostrarGraficoPorcentajeReservas(graficoContainer);
 
-                contenedor.getChildren().addAll(titulo, pieChart);
-                contenidoDinamico.getChildren().clear();
-                contenidoDinamico.getChildren().add(contenedor);
-            }
+            contenedor.getChildren().addAll(titulo, selectorTipoEstadistica, graficoContainer);
 
             contenidoDinamico.getChildren().clear();
             contenidoDinamico.getChildren().add(contenedor);
 
         } catch (Exception e) {
-            mostrarError("Error al cargar porcentaje de reservas por tipo: " + e.getMessage());
+            mostrarError("Error al cargar estadísticas de alojamiento: " + e.getMessage());
         }
     }
 
@@ -255,6 +257,79 @@ public class EstadisticasAdmin implements Initializable {
 
         container.getChildren().add(barChart);
     }
+
+    private void mostrarGraficoPorcentajeReservas(VBox container) {
+        List<TipoAlojamientoGanancia> porcentajes = plataforma.calcularPorcentajeReservasPorTipo();
+
+        if (porcentajes.isEmpty()) {
+            Label mensaje = new Label("No hay datos para mostrar.");
+            mensaje.setStyle("-fx-font-size: 14px; -fx-text-fill: #666;");
+            container.getChildren().add(mensaje);
+            return;
+        }
+
+        PieChart pieChart = new PieChart();
+        pieChart.setTitle("Distribución de Reservas por Tipo");
+        pieChart.setPrefHeight(400);
+
+        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
+
+        for (TipoAlojamientoGanancia tipo : porcentajes) {
+            pieData.add(new PieChart.Data(
+                    tipo.getTipo().toString() + " (" + String.format("%.1f", tipo.getGananciaTotal()) + "%)",
+                    tipo.getGananciaTotal()
+            ));
+        }
+
+        pieChart.setData(pieData);
+        container.getChildren().add(pieChart);
+    }
+
+    /**
+     * Muestra un gráfico con la ocupación porcentual por alojamiento
+     * @param container Contenedor donde se añadirá el gráfico
+     */
+    private void mostrarOcupacionPorcentualPorAlojamiento(VBox container) throws Exception {
+        List<Alojamiento> alojamientos = plataforma.getAlojamientoRepository().obtenerTodos();
+
+        if (alojamientos == null || alojamientos.isEmpty()) {
+            Label mensaje = new Label("No hay datos de alojamientos disponibles.");
+            mensaje.setStyle("-fx-font-size: 14px; -fx-text-fill: #666;");
+            container.getChildren().add(mensaje);
+            return;
+        }
+
+        CategoryAxis ejeX = new CategoryAxis();
+        ejeX.setLabel("Alojamiento");
+
+        NumberAxis ejeY = new NumberAxis();
+        ejeY.setLabel("Porcentaje de Ocupación");
+
+        BarChart<String, Number> barChart = new BarChart<>(ejeX, ejeY);
+        barChart.setTitle("Ocupación Porcentual por Alojamiento");
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Ocupación (%)");
+
+        for (Alojamiento a : alojamientos) {
+            int totalReservas = plataforma.getServicioReserva().contarReservasPorAlojamiento(a.getId());
+            int capacidadTotal = plataforma.getAlojamientoRepository().obtenerCapacidadReservablePorAlojamiento(a.getId());
+
+            double porcentaje = (capacidadTotal == 0) ? 0 : ((double) totalReservas / capacidadTotal) * 100;
+
+            series.getData().add(new XYChart.Data<>(
+                    a.getNombre(),
+                    porcentaje
+            ));
+        }
+
+        barChart.getData().add(series);
+        barChart.setPrefHeight(400);
+
+        container.getChildren().add(barChart);
+    }
+
+
 
     /**
      * Muestra un mensaje de error en el panel de contenido

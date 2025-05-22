@@ -25,7 +25,6 @@ public class ServicioAdm {
     private String codigoRecuperacion = null;
 
     public Administrador loginAdm(String correo, String password){
-        System.out.println(leerDatos());
         Administrador adm = leerDatos();
         if (adm != null && adm.getCorreo().equals(correo) && adm.getPassword().equals(password)){
             return adm;

@@ -47,6 +47,11 @@ public class HomeAdmin {
     }
 
     @FXML
+    void perfilAdm() {
+
+    }
+
+    @FXML
     public void cargarGestionUsuarios() {
         cargarContenido("/co/edu/uniquindio/proyectofinalhotelfx/FXMLDW(ADMIN)/GestionUsuariosAdmin.fxml");
 
