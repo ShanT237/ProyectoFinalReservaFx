@@ -69,12 +69,12 @@ public class ServicioReserva{
 
 
 
-        Reserva reserva = crearReserva();
+        Reserva reserva = crearReserva( cliente,  alojamiento,  numeroHuespedes,  fechainicial,  fechafin,  factura,  precioFinal);
         // Guardar la reserva
         reservaRepository.agregarReserva(reserva);
         cliente.agregarReserva(reserva);
 
-        Factura factura = crearFactura()
+        Factura factura = crearFactura( fecha,  precioBase,  precioFinal, UUID , UUID , UUID );
         // Generar QR y enviar notificación
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
