@@ -278,5 +278,4 @@ public class Plataforma implements IPlataforma {
         return servicioCliente.obtenerReservasPorCliente(cedula);
     }
 
-
 }

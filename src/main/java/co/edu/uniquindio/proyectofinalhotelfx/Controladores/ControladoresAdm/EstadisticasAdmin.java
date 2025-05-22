@@ -56,7 +56,8 @@ public class EstadisticasAdmin implements Initializable {
             comboAlojamientos.setPromptText("Seleccione un alojamiento");
             comboAlojamientos.setPrefWidth(300);
 
-
+            // no sé q haver con esto List<Alojamiento> alojamientos = plataforma.getServicioAlojamiento().obtenerTodosAlojamientos();
+            // idk comboAlojamientos.getItems().addAll(alojamientos);
 
             // Configurar el display del ComboBox
             comboAlojamientos.setCellFactory(param -> new ListCell<Alojamiento>() {
