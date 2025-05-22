@@ -38,7 +38,6 @@ public class ServicioReserva{
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
-        // Se crea una reserva preliminar para aplicar descuentos (no se guarda todavía)
         Reserva reservaTemp = Reserva.builder()
                 .cliente(cliente)
                 .alojamiento(alojamiento)
@@ -48,24 +47,21 @@ public class ServicioReserva{
                 .total(subtotal)
                 .build();
 
-        // Se aplica descuento al subtotal
         double totalConDescuento = aplicarDescuento(subtotal, reservaTemp);
 
-        // Se genera el código QR con un ID temporal
+
         UUID idFactura = UUID.randomUUID();
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(idFactura.toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
 
-        // Se crea factura final con el QR como cadena codificada en Base64 (si quieres mostrar el código QR como texto)
         String codigoQRBase64 = Base64.getEncoder().encodeToString(imagenQR);
         Factura factura = crearFactura(subtotal, totalConDescuento, codigoQRBase64);
-        factura.setId(idFactura); // Asignamos el ID generado previamente
+        factura.setId(idFactura);
 
-        // Se crea la reserva definitiva
+
         Reserva reservaFinal = crearReserva(cliente, alojamiento, numeroHuespedes, fechaInicial, fechaFinal, factura, totalConDescuento);
         agregarReservaAlSistema(reservaFinal);
 
-        // Se notifica por correo al cliente
         Notificacion.enviarNotificacionImagen(
                 cliente.getCorreo(),
                 "Aquí tiene su factura de la reserva realizada",

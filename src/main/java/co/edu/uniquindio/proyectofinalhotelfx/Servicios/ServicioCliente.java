@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Builder
@@ -17,18 +18,12 @@ public class ServicioCliente {
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioBilleteraVirtual servicioBilleteraVirtual;
+    private final ServicioReserva servicioReserva;
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
     private static final long CODIGO_EXPIRACION = 600000; // 10 minutos
 
-
-
-    public ServicioCliente(ClienteRepository clienteRepository, ServicioAlojamiento servicioAlojamiento, ServicioBilleteraVirtual servicioBilleteraVirtual) {
-        this.clienteRepository = clienteRepository;
-        this.servicioAlojamiento = servicioAlojamiento;
-        this.servicioBilleteraVirtual = servicioBilleteraVirtual;
-    }
 
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
         validarDatos(nombre, cedula, telefono, correo, password, confirmarPassword);
@@ -381,5 +376,9 @@ public class ServicioCliente {
 
     public void recargarBilletera(String cedula, float monto) throws Exception {
         servicioBilleteraVirtual.recargarBilletera(cedula, monto);
+    }
+
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
+        servicioReserva.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
     }
 }

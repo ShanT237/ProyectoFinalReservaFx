@@ -93,4 +93,6 @@ public interface IPlataforma {
 
     public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception;
 
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception;
+
 }

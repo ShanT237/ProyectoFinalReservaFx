@@ -46,13 +46,6 @@ public class Plataforma implements IPlataforma {
 
         this.servicioBilleteraVirtual = new ServicioBilleteraVirtual(clienteRepository);
 
-        this.servicioCliente = ServicioCliente.builder()
-                .clienteRepository(clienteRepository)
-                .servicioAlojamiento(serviciosAlojamiento)
-                .servicioBilleteraVirtual(servicioBilleteraVirtual)
-                .build();
-
-
         this.servicioOferta = ServicioOferta.builder()
                 .ofertaRepository(ofertaRepository)
                 .servicioAlojamiento(serviciosAlojamiento)
@@ -65,7 +58,12 @@ public class Plataforma implements IPlataforma {
                 .servicioOferta(servicioOferta)
                 .build();
 
-
+        this.servicioCliente = ServicioCliente.builder()
+                .clienteRepository(clienteRepository)
+                .servicioAlojamiento(serviciosAlojamiento)
+                .servicioBilleteraVirtual(servicioBilleteraVirtual)
+                .servicioReserva(servicioReserva)
+                .build();
         this.servicioAdm = ServicioAdm.builder()
                 .servicioAlojamiento(serviciosAlojamiento)
                 .servicioReserva(servicioReserva)
@@ -241,6 +239,10 @@ public class Plataforma implements IPlataforma {
 
     }
 
+    @Override
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
+        servicioCliente.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
+    }
 
 
 }
