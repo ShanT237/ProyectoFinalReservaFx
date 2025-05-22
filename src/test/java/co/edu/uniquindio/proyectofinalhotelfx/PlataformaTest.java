@@ -1,11 +1,15 @@
 package co.edu.uniquindio.proyectofinalhotelfx;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.OfertaTipo;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.ServiciosIncluidos;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -109,28 +113,95 @@ public class PlataformaTest {
 
 
     @Test
-    public void registrarReservaTest(){}
+    public void consultarSaldoTest() {
+        String cedulaValida = "87654321";
+        String cedulaInvalida = "";
 
+        // 1. Cédula vacía
+        assertThrows(Exception.class, () -> plataforma.consultarSaldo(cedulaInvalida));
 
+        // 2. Cliente no existe
+        assertThrows(Exception.class, () -> plataforma.consultarSaldo("99999999"));
+
+        // 3. Caso exitoso (primero registrar cliente)
+        assertDoesNotThrow(() -> plataforma.registrarCliente("Maria Lopez", cedulaValida, "987654321", "maria@gmail.com", "Password1", "Password1"));
+        assertDoesNotThrow(() -> plataforma.validarCodigoVerificacion("maria@gmail.com", "1234"));
+        assertDoesNotThrow(() -> plataforma.consultarSaldo(cedulaValida));
+    }
+
+    @Test
+    public void recuperarContrasenaTest() {
+        String correoValido = "test@gmail.com";
+        String correoVacio = "";
+        String correoInexistente = "noexiste@gmail.com";
+
+        // 1. Correo vacío
+        assertThrows(Exception.class, () -> plataforma.recuperarContrasena(correoVacio));
+
+        // 2. Correo que no existe
+        assertThrows(Exception.class, () -> plataforma.recuperarContrasena(correoInexistente));
+
+        // 3. Caso exitoso (primero registrar cliente)
+        assertDoesNotThrow(() -> plataforma.registrarCliente("Test User", "11111111", "111111111", correoValido, "Password1", "Password1"));
+        assertDoesNotThrow(() -> plataforma.validarCodigoVerificacion(correoValido, "1234"));
+        assertDoesNotThrow(() -> plataforma.recuperarContrasena(correoValido));
+    }
 
 
     @Test
-    public void registrarPagoTest(){}
+    public void agregarReservaTest() {
+        String idCliente = "12345678";
+        String idAlojamiento = "ALJ001";
+        LocalDateTime fechaInicial = LocalDateTime.now().plusDays(1);
+        LocalDateTime fechaFinal = LocalDateTime.now().plusDays(5);
+        LocalDateTime fechaCreacion = LocalDateTime.now();
 
+        // 1. ID Cliente vacío
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva("", idAlojamiento, fechaInicial, fechaFinal, 2, 200000.0, fechaCreacion));
 
+        // 2. ID Cliente nulo
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(null, idAlojamiento, fechaInicial, fechaFinal, 2, 200000.0, fechaCreacion));
 
-    @Test
-    public void registrarOfertaTest(){}
+        // 3. ID Alojamiento vacío
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, "", fechaInicial, fechaFinal, 2, 200000.0, fechaCreacion));
 
+        // 4. ID Alojamiento nulo
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, null, fechaInicial, fechaFinal, 2, 200000.0, fechaCreacion));
 
-    @Test
-    public void registrarEstadiaTest(){}
+        // 5. Fecha inicial nula
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, null, fechaFinal, 2, 200000.0, fechaCreacion));
 
-    @Test
-    public void actualizarContrasenaTest(){}
+        // 6. Fecha final nula
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, fechaInicial, null, 2, 200000.0, fechaCreacion));
 
+        // 7. Número de huéspedes cero
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, 0, 200000.0, fechaCreacion));
 
+        // 8. Número de huéspedes negativo
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, -1, 200000.0, fechaCreacion));
 
+        // 9. Total cero
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, 2, 0.0, fechaCreacion));
+
+        // 10. Total negativo
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, 2, -100000.0, fechaCreacion));
+
+        // 11. Fecha creación nula
+        assertThrows(Exception.class, () ->
+                plataforma.agregarReserva(idCliente, idAlojamiento, fechaInicial, fechaFinal, 2, 200000.0, null));
+    }
 
 
 }
+
+
