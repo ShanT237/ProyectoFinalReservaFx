@@ -20,29 +20,33 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @Builder
-public class ServicioReserva{
+public class ServicioReserva {
 
     private final ReservaRepository reservaRepository;
     private final ServicioCliente servicioCliente;
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioOferta servicioOferta;
 
-
     public ArrayList<Reserva> listarReservas() {
         return reservaRepository.listarReservas();
     }
 
-
-    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechainicial, LocalDateTime fechafin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechainicial, LocalDateTime fechafin,
+                               int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
 
         validarDatos(idCliente, idAlojamiento, fechainicial, fechafin, numeroHuespedes, total, fechaCreacion);
+
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
         Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
 
         double descuento = aplicarDescuento();
 
-        Factura factura = crearFactura();
-        Reserva reserva = crearReserva();
+        double precioConDescuento = total - (total * descuento / 100);
+
+        Factura factura = crearFactura(precioConDescuento, cliente, fechaCreacion);
+        Reserva reserva = crearReserva(cliente, alojamiento, numeroHuespedes, fechainicial, fechafin, factura, precioConDescuento);
+
+        reservaRepository.guardar(reserva);
 
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(factura.getId().toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
@@ -55,7 +59,8 @@ public class ServicioReserva{
         );
     }
 
-    public void validarDatos(String idAlojamiento, String cliente, LocalDateTime fechaInicio, LocalDateTime fechaFin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
+    public void validarDatos(String idAlojamiento, String cliente, LocalDateTime fechaInicio, LocalDateTime fechaFin,
+                             int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
         if (idAlojamiento == null || idAlojamiento.isEmpty()) {
             throw new Exception("Debe seleccionar un alojamiento.");
         }
@@ -77,12 +82,11 @@ public class ServicioReserva{
         if (fechaCreacion == null) {
             throw new Exception("Debe seleccionar una fecha de creación.");
         }
-
     }
 
-    // CREAR RESERVA SIMPLE
-    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechainicial, LocalDateTime fechafin, Factura factura, double precioFinal) throws Exception {
-        // Crear la reserva
+    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes,
+                                LocalDateTime fechainicial, LocalDateTime fechafin,
+                                Factura factura, double precioFinal) throws Exception {
         return Reserva.builder()
                 .codigo(UUID.randomUUID())
                 .cliente(cliente)
@@ -97,7 +101,6 @@ public class ServicioReserva{
                 .fechaReserva(LocalDate.now())
                 .build();
     }
-
 
     public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception {
         Reserva reserva = reservaRepository.buscarPorId(reservaId);
@@ -123,32 +126,73 @@ public class ServicioReserva{
     }
 
     public double aplicarDescuento() {
-        for(Oferta oferta : servicioOferta.getOfertaRepository().obtenerTodos()) {
+        double descuentoTotal = 0;
 
+        List<Oferta> ofertasActivas = servicioOferta.listarOfertasActivas();
+
+        for (Oferta oferta : ofertasActivas) {
+            if (oferta.getDescuento() > descuentoTotal) {
+                descuentoTotal = oferta.getDescuento();
+            }
         }
-
-        return
+        return descuentoTotal;
     }
 
-
+    private Factura crearFactura(double total, Cliente cliente, LocalDateTime fechaCreacion) {
+        return Factura.builder()
+                .id(UUID.randomUUID())
+                .cliente(cliente)
+                .total(total)
+                .fechaCreacion(fechaCreacion)
+                .build();
+    }
 
     public int obtenerTotalNochesReservadas(String idAlojamiento) {
-        return 0;
+        List<Reserva> reservas = reservaRepository.listarReservas().stream()
+                .filter(r -> r.getAlojamiento().getId().equals(idAlojamiento))
+                .collect(Collectors.toList());
+
+        int totalNoches = 0;
+        for (Reserva reserva : reservas) {
+            long noches = ChronoUnit.DAYS.between(reserva.getFechaInicio().toLocalDate(), reserva.getFechaFin().toLocalDate());
+            totalNoches += noches;
+        }
+        return totalNoches;
     }
 
     public int obtenerTotalNochesDisponibles(String idAlojamiento) {
-        return 0;
+        // Si tienes un método para obtener total de noches disponibles por alojamiento, impleméntalo aquí.
+        // Ejemplo simple, debe ser modificado según reglas de negocio.
+        Alojamiento alojamiento = servicioAlojamiento.getAlojamientoRepository().buscarPorId(idAlojamiento);
+        if (alojamiento == null) return 0;
+
+        // Supongamos que el alojamiento tiene un atributo "capacidadDiasDisponibles"
+        return alojamiento.getCapacidadDiasDisponibles();
     }
 
     public double obtenerGananciasPorAlojamiento(String idAlojamiento) {
-        return 0;
+        List<Reserva> reservas = reservaRepository.listarReservas().stream()
+                .filter(r -> r.getAlojamiento().getId().equals(idAlojamiento))
+                .collect(Collectors.toList());
+
+        return reservas.stream()
+                .mapToDouble(Reserva::getTotal)
+                .sum();
     }
 
     public int contarReservasPorAlojamiento(String id) {
-        return 0;
+        return (int) reservaRepository.listarReservas().stream()
+                .filter(r -> r.getAlojamiento().getId().equals(id))
+                .count();
     }
 
-    public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
+    public void reservarAlojamiento(String cedula, Alojamiento alojamiento) throws Exception {
+        Cliente cliente = servicioCliente.buscarCliente(cedula);
+
+        LocalDateTime ahora = LocalDateTime.now();
+
+        Reserva reserva = crearReserva(cliente, alojamiento, 1, ahora, ahora.plusDays(1), null, alojamiento.getPrecioNoche());
+        reservaRepository.guardar(reserva);
     }
 
 }
