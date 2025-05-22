@@ -230,15 +230,17 @@ public class Plataforma implements IPlataforma {
     }
 
 
-    @Override
-    public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
-        servicioReserva.agendarAlojamiento(cliente, alojamiento);
-    }
 
     @Override
     public void recagarBilletera(String idCliente, float monto) throws Exception {
         servicioCliente.recargarBilletera(idCliente, monto);
     }
+
+    @Override
+    public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
+
+    }
+
 
 
 }

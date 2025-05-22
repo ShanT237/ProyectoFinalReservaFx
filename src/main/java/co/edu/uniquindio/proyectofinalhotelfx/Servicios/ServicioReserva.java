@@ -123,7 +123,7 @@ public class ServicioReserva{
     }
 
     public double aplicarDescuento() {
-        for(Oferta oferta : servicioOferta) {}
+        for(Oferta oferta : servicioOferta.obtenerTodasOfertas()) {}
 
         return
     }
@@ -148,7 +148,8 @@ public class ServicioReserva{
 
     public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
     }
-    }
+
+}
 
 
 
