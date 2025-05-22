@@ -39,12 +39,35 @@ public class ReservaRepository {
     }
 
     /**
+     * Busca una reserva por su identificador único (UUID) sin lanzar excepción.
+     * @param id UUID de la reserva a buscar
+     * @return La reserva encontrada o null si no existe
+     */
+    private Reserva buscarPorIdSinExcepcion(UUID id) {
+        for (Reserva r : reservas) {
+            if (r.getCodigo().equals(id)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Verifica si existe una reserva con el ID dado.
+     * @param id UUID de la reserva a verificar
+     * @return true si existe, false si no existe
+     */
+    public boolean existePorId(UUID id) {
+        return buscarPorIdSinExcepcion(id) != null;
+    }
+
+    /**
      * Registra una nueva reserva en el repositorio.
      * @param reserva Objeto Reserva a almacenar
      * @throws IllegalArgumentException Si la reserva ya existe (mismo UUID)
      */
     public void guardar(Reserva reserva) throws Exception {
-        if (buscarPorId(reserva.getCodigo()) != null) {
+        if (existePorId(reserva.getCodigo())) {
             throw new IllegalArgumentException("Ya existe una reserva con el código: " + reserva.getCodigo());
         }
         reservas.add(reserva);
@@ -79,7 +102,7 @@ public class ReservaRepository {
 
     public void eliminarResena(UUID id) throws Exception {
         for (Reserva reserva : reservas) {
-            if (reserva.getReview().getCodigo().equals(id)) {
+            if (reserva.getReview() != null && reserva.getReview().getCodigo().equals(id)) {
                 reserva.setReview(null);
                 return;
             }

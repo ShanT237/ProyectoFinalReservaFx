@@ -11,6 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class ControladorPrincipal {
 
@@ -23,7 +25,12 @@ public class ControladorPrincipal {
 
 
     private ControladorPrincipal(){
-        this.plataforma = new Plataforma();
+        this.plataforma = new Plataforma() {
+            @Override
+            public List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception {
+                return List.of();
+            }
+        };
     }
 
     public static ControladorPrincipal getInstancia(){
@@ -52,5 +59,16 @@ public class ControladorPrincipal {
 
     public Usuario obtenerSesion(){
         return SesionUsuario.instancia().getUsuario();
+    }
+    public void cargarReservas() {
+        try {
+            List<Reserva> reservas = plataforma.getServicioReserva().listarReservas();
+            // Si tienes una lista observable global, actualizarla aquí
+            if (listaReservas != null) {
+                listaReservas.setAll(reservas);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar reservas: " + e.getMessage());
+        }
     }
 }

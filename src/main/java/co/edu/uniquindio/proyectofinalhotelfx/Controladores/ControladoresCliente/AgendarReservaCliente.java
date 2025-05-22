@@ -8,11 +8,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
@@ -28,7 +28,6 @@ public class AgendarReservaCliente implements Initializable {
     @FXML private Spinner<Integer> huespedesSpinner;
     @FXML private Label totalLabel;
     @FXML private Label saldoLabel;
-    @FXML private ImageView qrImageView;
     @FXML private Label mensajeReservaLabel;
 
     private Cliente usuario;
@@ -45,8 +44,7 @@ public class AgendarReservaCliente implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, 1);
         huespedesSpinner.setValueFactory(valueFactory);
 
-
-        // Restringir selección de fechas pasadas en los DatePicker
+        // Restringir selección de fechas pasadas
         fechaInicioPicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
@@ -74,7 +72,6 @@ public class AgendarReservaCliente implements Initializable {
         }
     }
 
-
     public void setDatos(Alojamiento alojamiento) {
         this.alojamiento = alojamiento;
 
@@ -95,7 +92,6 @@ public class AgendarReservaCliente implements Initializable {
 
         calcularYMostrarTotal();
     }
-
 
     private void calcularYMostrarTotal() {
         if (fechaInicioPicker.getValue() != null && fechaFinPicker.getValue() != null && alojamiento != null) {
@@ -141,21 +137,20 @@ public class AgendarReservaCliente implements Initializable {
             return;
         }
 
-        LocalDate hoy = LocalDate.now();
         LocalDate inicio = fechaInicioPicker.getValue();
         LocalDate fin = fechaFinPicker.getValue();
 
-        if (inicio.isBefore(hoy) || fin.isBefore(hoy)) {
+        if (inicio.isBefore(LocalDate.now()) || fin.isBefore(LocalDate.now())) {
             mostrarError("⚠ Las fechas no pueden estar en el pasado.");
             return;
         }
 
-        long dias = ChronoUnit.DAYS.between(inicio, fin) + 1; // +1 si quieres incluir el día fin
-        if (dias <= 0) {
-            mostrarError("⚠ La fecha fin debe ser posterior o igual a la fecha inicio.");
+        if (fin.isBefore(inicio) || fin.isEqual(inicio)) {
+            mostrarError("⚠ La fecha fin debe ser posterior a la fecha inicio.");
             return;
         }
 
+        long dias = ChronoUnit.DAYS.between(inicio, fin);
         double totalReserva = dias * alojamiento.getPrecioNoche();
 
         double saldoActual = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
@@ -166,23 +161,32 @@ public class AgendarReservaCliente implements Initializable {
         }
 
         try {
-            controladorPrincipal.getPlataforma().getServicioBilleteraVirtual().descontarSaldo(usuario.getCedula(), (float) totalReserva);
+            //posible error (para acordarmw)
+            // Usar el método agregarReserva que integra todo el proceso
+            LocalDateTime fechaInicioDateTime = inicio.atStartOfDay();
+            LocalDateTime fechaFinDateTime = fin.atStartOfDay();
 
-        } catch (Exception e) {
-            mostrarError("Error al descontar saldo: " + e.getMessage());
-            return;
-        }
+            controladorPrincipal.getPlataforma().agregarReserva(
+                    usuario.getCedula(),
+                    alojamiento.getId(),
+                    fechaInicioDateTime,
+                    fechaFinDateTime,
+                    huespedesSeleccionados,
+                    totalReserva,
+                    LocalDateTime.now()
+            );
 
-        try {
-            controladorPrincipal.getPlataforma().reservarAlojamiento(usuario, alojamiento);
-            mostrarMensaje("✅ Reserva confirmada. Se descontó $" + String.format("%.2f", totalReserva));
+            mostrarMensaje("✅ Reserva confirmada exitosamente. Se descontó $" + String.format("%.2f", totalReserva));
             actualizarSaldo();
+
+            // Actualizar la lista observable en el controlador principal
+            controladorPrincipal.cargarReservas();
+
         } catch (Exception e) {
-            // Aquí podrías intentar devolver el saldo descontado si tienes la lógica para eso
-            mostrarError("Error al registrar la reserva: " + e.getMessage());
+            mostrarError("❌ Error al procesar la reserva: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 
     @FXML
     private void cancelarReserva(ActionEvent actionEvent) {
@@ -201,7 +205,7 @@ public class AgendarReservaCliente implements Initializable {
         mensajeReservaLabel.setVisible(true);
     }
 
-    private void actualizarSaldo() throws Exception{
+    private void actualizarSaldo() throws Exception {
         if (usuario != null) {
             double saldoActualizado = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             saldoLabel.setText("$" + String.format("%.2f", saldoActualizado));
@@ -210,4 +214,3 @@ public class AgendarReservaCliente implements Initializable {
         }
     }
 }
-

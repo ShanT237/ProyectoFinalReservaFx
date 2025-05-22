@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladorPrincipal;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ClienteRepository;
@@ -13,18 +14,21 @@ import java.util.*;
 
 @Builder
 @Getter
+
 public class ServicioCliente {
 
     private final ClienteRepository clienteRepository;
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioBilleteraVirtual servicioBilleteraVirtual;
-    private final ServicioReserva servicioReserva;
+    private ServicioReserva servicioReserva;
 
     private final Map<String, String> codigosRecuperacion = new HashMap<>();
     private final Map<String, String> codigosVerificacion = new HashMap<>();
     private static final long CODIGO_EXPIRACION = 600000; // 10 minutos
 
-
+    public void setServicioReserva(ServicioReserva servicioReserva) {
+        this.servicioReserva = servicioReserva;
+    }
     public void registrarCliente(String nombre, String cedula, String telefono, String correo, String password, String confirmarPassword) throws Exception {
         validarDatos(nombre, cedula, telefono, correo, password, confirmarPassword);
 
@@ -43,6 +47,7 @@ public class ServicioCliente {
         System.out.println(codigo);
 
     }
+
 
     public String generarCodigoRecuperacion(String correo) throws Exception {
         if (correo == null || correo.isEmpty()) {
@@ -393,4 +398,9 @@ public class ServicioCliente {
     public void eliminarResena(UUID idResena) throws Exception {
         servicioReserva.eliminarResena(idResena);
     }
+
+    public List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception {
+        return servicioReserva.obtenerReservasPorCliente(cedula);
+    }
+
 }

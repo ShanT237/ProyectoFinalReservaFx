@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Notificacion.Notificacion;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.ReservaRepository;
 import co.edu.uniquindio.proyectofinalhotelfx.utils.GeneradorQR;
@@ -13,9 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -23,16 +20,26 @@ import java.util.stream.Collectors;
 public class ServicioReserva{
 
     private final ReservaRepository reservaRepository;
-    private final ServicioCliente servicioCliente;
+    private ServicioCliente servicioCliente; // QUITAR FINAL para permitir setter
     private final ServicioAlojamiento servicioAlojamiento;
     private final ServicioOferta servicioOferta;
 
+    // Agregar este método en la clase ServicioCliente
+    @Setter
+    private ServicioReserva servicioReserva;
+
+    // O si prefieres un método específico:
+    public void setServicioReserva(ServicioReserva servicioReserva) {
+        this.servicioReserva = servicioReserva;
+    }
 
     public ArrayList<Reserva> listarReservas() {
         return reservaRepository.listarReservas();
     }
 
-    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
+    public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial,
+                               LocalDateTime fechaFinal, int numeroHuespedes, double subtotal,
+                               LocalDateTime fechaCreacion) throws Exception {
         validarDatos(idCliente, idAlojamiento, fechaInicial, fechaFinal, numeroHuespedes, subtotal, fechaCreacion);
 
         Cliente cliente = servicioCliente.buscarCliente(idCliente);
@@ -49,7 +56,6 @@ public class ServicioReserva{
 
         double totalConDescuento = aplicarDescuento(subtotal, reservaTemp);
 
-
         UUID idFactura = UUID.randomUUID();
         byte[] imagenQR = GeneradorQR.generarQRComoBytes(idFactura.toString(), 300, 300);
         DataSource ds = new ByteArrayDataSource(imagenQR, "image/png");
@@ -57,7 +63,6 @@ public class ServicioReserva{
         String codigoQRBase64 = Base64.getEncoder().encodeToString(imagenQR);
         Factura factura = crearFactura(subtotal, totalConDescuento, codigoQRBase64);
         factura.setId(idFactura);
-
 
         Reserva reservaFinal = crearReserva(cliente, alojamiento, numeroHuespedes, fechaInicial, fechaFinal, factura, totalConDescuento);
         agregarReservaAlSistema(reservaFinal);
@@ -70,16 +75,19 @@ public class ServicioReserva{
         );
     }
 
+    // ... resto de métodos sin cambios ...
 
     public void agregarReservaAlSistema(Reserva reserva) throws Exception {
         reservaRepository.guardar(reserva);
     }
 
-    public void validarDatos(String idAlojamiento, String cliente, LocalDateTime fechaInicio, LocalDateTime fechaFin, int numeroHuespedes, double total, LocalDateTime fechaCreacion) throws Exception {
+    public void validarDatos(String idCliente, String idAlojamiento, LocalDateTime fechaInicio,
+                             LocalDateTime fechaFin, int numeroHuespedes, double total,
+                             LocalDateTime fechaCreacion) throws Exception {
         if (idAlojamiento == null || idAlojamiento.isEmpty()) {
             throw new Exception("Debe seleccionar un alojamiento.");
         }
-        if (cliente == null || cliente.isEmpty()) {
+        if (idCliente == null || idCliente.isEmpty()) {
             throw new Exception("Debe seleccionar un cliente.");
         }
         if (fechaInicio == null) {
@@ -97,12 +105,11 @@ public class ServicioReserva{
         if (fechaCreacion == null) {
             throw new Exception("Debe seleccionar una fecha de creación.");
         }
-
     }
 
-    // CREAR RESERVA SIMPLE
-    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechaInicial, LocalDateTime fechaFinal, Factura factura, double precioFinal) throws Exception {
-        // Crear la reserva
+    public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes,
+                                LocalDateTime fechaInicial, LocalDateTime fechaFinal, Factura factura,
+                                double precioFinal) throws Exception {
         return Reserva.builder()
                 .codigo(UUID.randomUUID())
                 .cliente(cliente)
@@ -127,7 +134,6 @@ public class ServicioReserva{
                 .codigoQR(codigoQR)
                 .build();
     }
-
 
     public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception {
         Reserva reserva = reservaRepository.buscarPorId(reservaId);
@@ -173,8 +179,7 @@ public class ServicioReserva{
         reservaRepository.actualizar(reserva);
     }
 
-
-
+    // ... resto de métodos permanecen igual ...
 
     public int obtenerTotalNochesReservadas(String idAlojamiento) {
         return 0;
@@ -195,16 +200,21 @@ public class ServicioReserva{
     public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
     }
 
-    public void obtenerReservasPorCliente(String idUsuario) {
+    public List<Reserva> obtenerReservasPorCliente(String cedulaCliente) {
+        List<Reserva> reservasDelCliente = new ArrayList<>();
+
+        for (Reserva reserva : reservaRepository.listarReservas()) {
+            if (reserva.getCliente().getCedula().equals(cedulaCliente)) {
+                reservasDelCliente.add(reserva);
+            }
+        }
+
+        return reservasDelCliente;
     }
 
     public void eliminarResena(UUID idResena) throws Exception {
         reservaRepository.eliminarResena(idResena);
     }
+
+
 }
-
-
-
-
-
-

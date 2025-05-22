@@ -102,4 +102,6 @@ public interface IPlataforma {
 
     public void eliminarResena(UUID idResena) throws Exception;
 
+    List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception;
+
 }

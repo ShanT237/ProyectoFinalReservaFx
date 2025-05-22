@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
@@ -10,7 +11,11 @@
 
     <Label text="MIS RESERVAS" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-    <TableView fx:id="tblReservas" style="-fx-background-color: white;">
+    <!-- Área de mensajes -->
+    <Label fx:id="mensajeLabel" text="" visible="false"
+           style="-fx-font-size: 14px;" />
+
+    <TableView fx:id="tblReservas" style="-fx-background-color: white;" prefHeight="400">
         <columns>
             <TableColumn fx:id="colAlojamiento" text="Alojamiento" prefWidth="200"/>
             <TableColumn fx:id="colCiudad" text="Ciudad" prefWidth="150"/>
@@ -20,8 +25,9 @@
     </TableView>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button fx:id="btnCancelarReserva" text="Cancelar Reserva"/>
-        <Button fx:id="btnDejarResena" text="Dejar Reseña"/>
+        <Button fx:id="btnCancelarReserva" text="Cancelar Reserva"
+                style="-fx-background-color: #dc3545; -fx-text-fill: white;"/>
+        <Button fx:id="btnDejarResena" text="Dejar Reseña"
+                style="-fx-background-color: #28a745; -fx-text-fill: white;"/>
     </HBox>
-
 </VBox>

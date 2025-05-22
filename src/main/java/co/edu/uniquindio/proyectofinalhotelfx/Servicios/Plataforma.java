@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Repo.*;
 import lombok.Getter;
@@ -29,6 +26,7 @@ public class Plataforma implements IPlataforma {
     private ReservaRepository reservaRepository;
     private OfertaRepository ofertaRepository;
 
+
     public Plataforma() {
         // ==============================
         // INSTANCIAS DE REPOSITORIOS
@@ -38,20 +36,28 @@ public class Plataforma implements IPlataforma {
         this.reservaRepository = new ReservaRepository();
         this.ofertaRepository = new OfertaRepository();
 
-        // ==============================
-        // INSTANCIAS DE SERVICIOS
-        // ==============================
+        // Servicios sin dependencias circulares
         this.serviciosAlojamiento = ServicioAlojamiento.builder()
                 .alojamientoRepository(alojamientoRepository)
                 .build();
 
-        this.servicioBilleteraVirtual = new ServicioBilleteraVirtual(clienteRepository);
+        this.servicioBilleteraVirtual = ServicioBilleteraVirtual.builder()
+                .clienteRepository(clienteRepository)
+                .build();
 
         this.servicioOferta = ServicioOferta.builder()
                 .ofertaRepository(ofertaRepository)
                 .servicioAlojamiento(serviciosAlojamiento)
                 .build();
 
+        // Crear ServicioCliente SIN ServicioReserva
+        this.servicioCliente = ServicioCliente.builder()
+                .clienteRepository(clienteRepository)
+                .servicioAlojamiento(serviciosAlojamiento)
+                .servicioBilleteraVirtual(servicioBilleteraVirtual)
+                .build();
+
+        // Crear ServicioReserva CON ServicioCliente ya inicializado
         this.servicioReserva = ServicioReserva.builder()
                 .reservaRepository(reservaRepository)
                 .servicioCliente(servicioCliente)
@@ -59,21 +65,17 @@ public class Plataforma implements IPlataforma {
                 .servicioOferta(servicioOferta)
                 .build();
 
-        this.servicioCliente = ServicioCliente.builder()
-                .clienteRepository(clienteRepository)
-                .servicioAlojamiento(serviciosAlojamiento)
-                .servicioBilleteraVirtual(servicioBilleteraVirtual)
-                .servicioReserva(servicioReserva)
-                .build();
+        // *** SOLUCIÓN: Asignar el servicioReserva al servicioCliente ***
+        servicioCliente.setServicioReserva(servicioReserva);
+
+        // Crear ServicioAdm
         this.servicioAdm = ServicioAdm.builder()
                 .servicioAlojamiento(serviciosAlojamiento)
                 .servicioReserva(servicioReserva)
                 .servicioCliente(servicioCliente)
                 .servicioOferta(servicioOferta)
                 .build();
-
     }
-
     // ==============================
     // MÉTODOS DEL ADMINISTRADOR
     // ==============================
@@ -237,8 +239,20 @@ public class Plataforma implements IPlataforma {
 
     @Override
     public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
+        // Validaciones básicas
+        if (cliente == null) {
+            throw new Exception("Cliente no puede ser nulo");
+        }
+        if (alojamiento == null) {
+            throw new Exception("Alojamiento no puede ser nulo");
+        }
 
+        // Este método puede ser usado para reservas simples,
+        // pero para el flujo completo se debe usar agregarReserva()
+        System.out.println("Reserva básica registrada para cliente: " + cliente.getNombre() +
+                " en alojamiento: " + alojamiento.getNombre());
     }
+
 
     @Override
     public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception {
@@ -258,6 +272,11 @@ public class Plataforma implements IPlataforma {
     @Override
     public void eliminarResena(UUID idResena) throws Exception {
         servicioCliente.eliminarResena(idResena);
+    }
+
+    @Override
+    public List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception {
+        return servicioCliente.obtenerReservasPorCliente(cedula);
     }
 
 

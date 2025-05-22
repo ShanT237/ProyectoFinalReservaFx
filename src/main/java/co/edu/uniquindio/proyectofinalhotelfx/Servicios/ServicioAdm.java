@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Servicios;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Administrador;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
@@ -41,8 +42,18 @@ public class ServicioAdm {
         servicioCliente.bloquearUsuario(idUsuario);
     }
     public void verActividadesDeCliente(String idUsuario){
-        servicioReserva.obtenerReservasPorCliente(idUsuario);
+        try {
+            // Opción 1: Solo mostrar en consola (como parece ser la intención actual)
+            servicioReserva.obtenerReservasPorCliente(idUsuario);
 
+
+        } catch (Exception e) {
+            System.err.println("Error al ver actividades del cliente " + idUsuario + ": " + e.getMessage());
+        }
+    }
+    // O si prefieres que retorne la lista de reservas:
+    public List<Reserva> verActividadesDeClienteConRetorno(String idUsuario) throws Exception {
+        return servicioReserva.obtenerReservasPorCliente(idUsuario);
     }
 
     /*
@@ -148,6 +159,7 @@ public class ServicioAdm {
                         servicioReserva.contarReservasPorAlojamiento(a1.getId())));
         return alojamientosCiudad;
     }
+
 
 
     public List<TipoAlojamientoGanancia> obtenerTiposAlojamientoMasRentables() {
