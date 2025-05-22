@@ -78,67 +78,6 @@ public class ServicioReserva{
 
     }
 
-    public ArrayList<LocalDate> guardarFechasAgregadas(LocalDate fechaInicial,int dias){
-        ArrayList<LocalDate> fechas = new ArrayList<>();
-        for (int i = 0; i < dias; i++) {
-            fechas.add(fechaInicial);
-            fechaInicial = fechaInicial.plusDays(1);
-        }
-        return fechas;
-    }
-
-    public boolean verificarDisponibilidadReservas(Alojamiento alojamiento, ArrayList<LocalDate> fechas) {
-        ArrayList<Reserva> reservas = listarReservas();
-
-        for (Reserva reserva : reservas) {
-            if (reserva.getAlojamiento().equals(alojamiento)) {
-
-                LocalDate inicioReserva = reserva.getFechaInicio().toLocalDate();
-                LocalDate finReserva = reserva.getFechaFin().toLocalDate();
-
-                for (LocalDate fecha : fechas) {
-                    // Si la fecha nueva está dentro del rango de la reserva existente
-                    if (!fecha.isBefore(inicioReserva) && !fecha.isAfter(finReserva)) {
-                        return false; // Hay conflicto de fechas
-                    }
-                }
-            }
-        }
-
-        return true; // No hay conflictos
-    }
-
-    public float verificarDescuento(Alojamiento alojamiento,float precio, int cantidadhuespedes, int dias, ArrayList<LocalDate>fechas, ArrayList<Oferta> ofertas) {
-        float preciofinal = 0;
-        for (Oferta oferta : ofertas) {
-            float flag = oferta.verificarDescuento(alojamiento,precio,cantidadhuespedes,dias,fechas);
-            if(flag < precio && flag> preciofinal)preciofinal = flag;
-        }
-        return preciofinal == 0? precio : preciofinal;
-    }
-
-    public void cancelarReserva(Reserva reserva) throws Exception {
-        if (reserva == null) {
-            throw new Exception("Seleccione una reserva para cancelarla.");
-        }
-
-        // Compara solo fechas, sin hora
-        LocalDate hoy = LocalDate.now();
-        LocalDate fechaInicio = reserva.getFechaInicio().toLocalDate();
-
-        // Por ejemplo, impedir cancelación si la reserva empieza hoy o ya pasó
-        if (!fechaInicio.isAfter(hoy)) {
-            throw new Exception("No puede cancelar una reserva que ya ha iniciado o está en curso.");
-        }
-
-        // Cancelar y hacer el reembolso
-        reservaRepository.eliminarReserva(reserva);
-        reserva.getCliente().eliminarReserva(reserva);
-        reserva.getCliente().recargarBilletera(String.valueOf(reserva.getFactura().getTotal()));
-
-    }
-
-
     // CREAR RESERVA SIMPLE
     public Reserva crearReserva(Cliente cliente, Alojamiento alojamiento, int numeroHuespedes, LocalDateTime fechainicial, LocalDateTime fechafin, Factura factura, double precioFinal) throws Exception {
         // Crear la reserva
@@ -157,25 +96,6 @@ public class ServicioReserva{
                 .build();
     }
 
-    //
-    public Factura crearFactura(double precioBase, double precioFinal, UUID idReserva, UUID idCliente, UUID idAlojamiento) {
-        // Crear la factura
-        return Factura.builder()
-                .fecha(LocalDate.now())
-                .subtotal(precioBase)
-                .total(precioFinal)
-                .id(UUID.randomUUID())
-                .build();
-    }
-
-
-    // OBTENER RESERVAS POR CLIENTE
-    public List<Reserva> obtenerReservasPorCliente(String clienteId) {
-        return reservaRepository.obtenerTodos()
-                .stream()
-                .filter(reserva -> reserva.getCliente().getCedula().equals(clienteId))
-                .collect(Collectors.toList());
-    }
 
     public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception {
         Reserva reserva = reservaRepository.buscarPorId(reservaId);
@@ -201,20 +121,25 @@ public class ServicioReserva{
     }
 
 
-    // AGENDAR ALOJAMIENTO BÁSICO (Sin fechas)
-    public void agendarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception {
-        if (cliente == null || alojamiento == null) {
-            throw new Exception("Cliente o alojamiento no válido");
-        }
 
-        Reserva reserva = new Reserva();
-        reserva.setCodigo(UUID.randomUUID());
-        reserva.setCliente(cliente);
-        reserva.setAlojamiento(alojamiento);
-        reserva.setEstadoReserva(true);
-        reserva.setFechaReserva(java.time.LocalDate.now());
+    public int obtenerTotalNochesReservadas(String idAlojamiento) {
+        return 0;
+    }
 
-        reservaRepository.guardar(reserva);
+    public int obtenerTotalNochesDisponibles(String idAlojamiento) {
+        return 0;
+    }
+
+    public double obtenerGananciasPorAlojamiento(String idAlojamiento) {
+        return 0;
+    }
+
+    public int contarReservasPorAlojamiento(String id) {
+        return 0;
+    }
+
+    public void reservarAlojamiento(String cedula, Alojamiento alojamiento) {
+    }
     }
 
 
