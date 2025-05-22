@@ -375,7 +375,7 @@ public class ServicioCliente {
     }
 
 
-    public double consultarSaldo(String cedula) throws Exception {
+    public float consultarSaldo(String cedula) throws Exception {
         return servicioBilleteraVirtual.consultarSaldo(cedula);
     }
 

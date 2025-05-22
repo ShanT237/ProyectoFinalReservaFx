@@ -21,7 +21,7 @@ public class ServicioBilleteraVirtual {
         clienteRepository.actualizarSaldo(clienteId, monto);
     }
 
-    public double consultarSaldo(String clienteId) throws Exception {
+    public float consultarSaldo(String clienteId) throws Exception {
         return clienteRepository.consultarSaldo(clienteId);
     }
 

@@ -127,7 +127,7 @@ public class ClienteRepository   {
         }
     }
 
-    public double consultarSaldo(String clienteId) throws Exception {
+    public float consultarSaldo(String clienteId) throws Exception {
         for (Cliente cliente : clientes) {
             if (cliente.getCedula().equals(clienteId)) {
                 return cliente.getBilletera().getSaldo();

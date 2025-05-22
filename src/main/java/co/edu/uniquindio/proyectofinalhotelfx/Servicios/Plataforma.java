@@ -132,7 +132,7 @@ public class Plataforma implements IPlataforma {
     }
 
     @Override
-    public double consultarSaldo(String cedula) throws Exception {
+    public float consultarSaldo(String cedula) throws Exception {
         return servicioCliente.consultarSaldo(cedula);
     }
 
