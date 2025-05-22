@@ -65,8 +65,14 @@ public class AgendarReservaCliente implements Initializable {
         fechaInicioPicker.valueProperty().addListener((obs, oldVal, newVal) -> calcularYMostrarTotal());
         fechaFinPicker.valueProperty().addListener((obs, oldVal, newVal) -> calcularYMostrarTotal());
 
-        actualizarSaldo();
+        try {
+            actualizarSaldo();
+        } catch (Exception e) {
+            saldoLabel.setText("Error al cargar saldo");
+            System.err.println("Error al actualizar saldo: " + e.getMessage());
+        }
     }
+
 
     public void setDatos(Alojamiento alojamiento) {
         this.alojamiento = alojamiento;
@@ -79,9 +85,16 @@ public class AgendarReservaCliente implements Initializable {
             descripcionArea.setText(alojamiento.getDescripcion());
         }
 
-        actualizarSaldo();
+        try {
+            actualizarSaldo();
+        } catch (Exception e) {
+            saldoLabel.setText("Error al cargar saldo");
+            System.err.println("Error al actualizar el saldo: " + e.getMessage());
+        }
+
         calcularYMostrarTotal();
     }
+
 
     private void calcularYMostrarTotal() {
         if (fechaInicioPicker.getValue() != null && fechaFinPicker.getValue() != null && alojamiento != null) {

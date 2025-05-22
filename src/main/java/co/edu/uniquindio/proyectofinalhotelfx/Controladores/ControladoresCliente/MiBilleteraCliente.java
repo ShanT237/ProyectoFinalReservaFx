@@ -74,9 +74,11 @@ public class MiBilleteraCliente implements Initializable {
 
 
     private void actualizarSaldo() throws Exception {
-        if (usuario != null ) {
+        if (usuario != null) {
             double saldo = controladorPrincipal.getPlataforma().consultarSaldo(usuario.getCedula());
             lblSaldo.setText("$" + String.format("%.2f", saldo));
+        } else {
+            lblSaldo.setText("No disponible");
         }
     }
 
@@ -94,6 +96,11 @@ public class MiBilleteraCliente implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.usuario = sesionUsuario.getUsuario();
         System.out.println("setServicioBilletera llamado con usuario: " + usuario);
-        actualizarSaldo();
+        try {
+            actualizarSaldo();
+        } catch (Exception e) {
+            mostrarError("Error al cargar saldo: " + e.getMessage());
+        }
     }
+
 }

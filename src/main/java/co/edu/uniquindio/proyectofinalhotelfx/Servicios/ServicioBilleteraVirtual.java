@@ -25,10 +25,16 @@ public class ServicioBilleteraVirtual {
         return clienteRepository.consultarSaldo(clienteId);
     }
 
-    public void descontar(String clienteId, float monto) throws Exception {
+    public void descontarSaldo(String clienteId, float monto) throws Exception {
         if (monto <= 0) {
             throw new Exception("El monto a descontar debe ser mayor a cero");
         }
+
+        float saldoActual = clienteRepository.consultarSaldo(clienteId);
+        if (monto > saldoActual) {
+            throw new Exception("Saldo insuficiente");
+        }
+
         clienteRepository.descontar(clienteId, monto);
     }
 
