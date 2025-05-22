@@ -71,7 +71,7 @@ public class ServicioReserva{
     }
 
 
-    public void agregarReservaAlSistema(Reserva reserva) {
+    public void agregarReservaAlSistema(Reserva reserva) throws Exception {
         reservaRepository.guardar(reserva);
     }
 
@@ -165,6 +165,14 @@ public class ServicioReserva{
         return precioConDescuento;
     }
 
+    public void cancelarReserva(UUID idReserva) throws Exception {
+        Reserva reserva = reservaRepository.buscarPorId(idReserva);
+        Cliente cliente = reserva.getCliente();
+        cliente.getBilletera().setSaldo((float) (cliente.getBilletera().getSaldo() + reserva.getTotal()));
+        reserva.setEstadoReserva(false);
+        reservaRepository.actualizar(reserva);
+    }
+
 
 
 
@@ -188,6 +196,10 @@ public class ServicioReserva{
     }
 
     public void obtenerReservasPorCliente(String idUsuario) {
+    }
+
+    public void eliminarResena(UUID idResena) throws Exception {
+        reservaRepository.eliminarResena(idResena);
     }
 }
 

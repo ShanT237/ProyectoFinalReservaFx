@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public interface IPlataforma {
 
@@ -94,5 +95,11 @@ public interface IPlataforma {
     public void reservarAlojamiento(Cliente cliente, Alojamiento alojamiento) throws Exception;
 
     public void agregarReserva(String idCliente, String idAlojamiento, LocalDateTime fechaInicial, LocalDateTime fechaFinal, int numeroHuespedes, double subtotal, LocalDateTime fechaCreacion) throws Exception;
+
+    public void agregarReview(UUID reservaId, String comentario, int valoracion) throws Exception;
+
+    public void cancelarReserva(UUID idReserva) throws Exception;
+
+    public void eliminarResena(UUID idResena) throws Exception;
 
 }
