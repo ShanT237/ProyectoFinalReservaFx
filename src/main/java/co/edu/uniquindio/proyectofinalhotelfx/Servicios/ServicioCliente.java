@@ -201,7 +201,7 @@ public class ServicioCliente {
         return clienteRepository.obtenerTodos();
     }
 
-    public void bloquearUsuario(String id) {
+    public void bloquearUsuario(String id) throws Exception {
         Cliente cliente = clienteRepository.buscarPorCedula(id);
         clienteRepository.agregarUsuarioBloqueado(cliente);
         clienteRepository.eliminar(id);
