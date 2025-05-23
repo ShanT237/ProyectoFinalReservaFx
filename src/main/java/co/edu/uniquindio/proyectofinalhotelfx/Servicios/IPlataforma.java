@@ -51,9 +51,7 @@ public interface IPlataforma {
     // 📆 Gestión de Reservas
     // -------------------------------
 
-    void registrarReserva(String codigoReserva, LocalDateTime fechaReserva, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-                          String idCliente, String idAlojamiento, String idOferta, String nombreCliente,
-                          String nombreAlojamiento, String nombreOferta, double precioTotal, String imagenAlojamiento) throws Exception;
+
     public List<TipoAlojamientoGanancia> calcularPorcentajeReservasPorTipo();
     // -------------------------------
     // 🎯 Gestión de Ofertas
