@@ -64,19 +64,17 @@ public class RegistroCliente {
             String password = txtPassword.getText();
             String confirmarPassword = txtConfirmarPassword.getText();
 
-            // Validar campos obligatorios
             if (nombre.isEmpty() || correo.isEmpty() || telefono.isEmpty() || cedula.isEmpty()) {
                 mostrarError("Todos los campos son obligatorios.");
                 return;
             }
 
-            // Validar contraseñas no vacías
+
             if (password.isEmpty() || confirmarPassword.isEmpty()) {
                 mostrarError("La contraseña no puede estar vacía.");
                 return;
             }
 
-            // Validar que las contraseñas coincidan
             if (!password.equals(confirmarPassword)) {
                 mostrarError("Las contraseñas no coinciden.");
                 return;
