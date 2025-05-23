@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.ListarOfertas"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #fffaf0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.ListarOfertas">
 
+    <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
+
+        <Label style="-fx-font-size: 24px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Ofertas disponibles" />
+
+        <TableView fx:id="tablaOfertas" prefHeight="600" prefWidth="920">
+            <columns>
+                <TableColumn fx:id="colNombreAlojamiento" prefWidth="180" text="Alojamiento" />
+                <TableColumn fx:id="colTipoDescuento" prefWidth="140" text="Tipo" />
+                <TableColumn fx:id="colPrecioOriginal" prefWidth="120" text="Precio Original" />
+                <TableColumn fx:id="colPrecioOferta" prefWidth="120" text="Precio Oferta" />
+                <TableColumn fx:id="colDescuento" prefWidth="100" text="Descuento (%)" />
+                <TableColumn fx:id="colFechaInicio" prefWidth="120" text="Desde" />
+                <TableColumn fx:id="colFechaFin" prefWidth="120" text="Hasta" />
+            </columns>
+        </TableView>
+
+    </VBox>
 </AnchorPane>
