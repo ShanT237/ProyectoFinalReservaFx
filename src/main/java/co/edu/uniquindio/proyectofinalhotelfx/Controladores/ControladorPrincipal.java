@@ -1,16 +1,25 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Usuario;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Reserva;
 import co.edu.uniquindio.proyectofinalhotelfx.Servicios.Plataforma;
+import co.edu.uniquindio.proyectofinalhotelfx.Servicios.ServicioOferta;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
 
+import javax.swing.text.html.ImageView;
+import java.awt.*;
+import java.io.File;
 import java.util.List;
 
 @Getter
@@ -71,4 +80,6 @@ public class ControladorPrincipal {
             System.err.println("Error al cargar reservas: " + e.getMessage());
         }
     }
+
+
 }

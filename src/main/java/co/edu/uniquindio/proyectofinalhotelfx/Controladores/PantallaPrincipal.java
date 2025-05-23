@@ -1,7 +1,5 @@
-
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
-import co.edu.uniquindio.proyectofinalhotelfx.App;
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
@@ -23,30 +21,16 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
-/**
- * Controlador FXML para la pantalla principal de la aplicación.
- * Maneja la búsqueda y visualización de alojamientos, así como la navegación
- * a otras pantallas del sistema.
- */
 public class PantallaPrincipal {
 
-    // ---------------------------
-    // Componentes de la interfaz
-    // ---------------------------
-
-    @FXML private ComboBox<Ciudad> cbCiudad; // Selector de ciudades
-    @FXML private ComboBox<TipoAlojamiento> cbTipoAlojamiento; // Selector de tipos de alojamiento
-    @FXML private TextField txtPrecioMax; // Campo para precio máximo
-    @FXML private Button btnBuscar; // Botón de búsqueda
-    @FXML private FlowPane flowAlojamientos; // Contenedor de resultados
-    @FXML private Button btnLogin; // Botón para ir a login
-    @FXML private Button btnRegistro; // Botón para ir a registro
-
-    // ---------------------------
-    // Atributos del controlador
-    // ---------------------------
+    @FXML private ComboBox<Ciudad> cbCiudad;
+    @FXML private ComboBox<TipoAlojamiento> cbTipoAlojamiento;
+    @FXML private TextField txtPrecioMax;
+    @FXML private Button btnBuscar;
+    @FXML private FlowPane flowAlojamientos;
+    @FXML private Button btnLogin;
+    @FXML private Button btnRegistro;
 
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
     private final List<Alojamiento> alojamientosList = controladorPrincipal.getPlataforma()
@@ -55,23 +39,13 @@ public class PantallaPrincipal {
             .obtenerTodos();
     private final ObservableList<Alojamiento> alojamientos = FXCollections.observableArrayList(alojamientosList);
 
-    // ---------------------------
-    // Métodos de inicialización
-    // ---------------------------
-
-    /**
-     * Método de inicialización del controlador.
-     * Configura los datos iniciales y los manejadores de eventos.
-     */
     @FXML
     void initialize() {
         datosInicio();
         configurarEventos();
+        mostrarAlojamientos(null, null, Double.MAX_VALUE); // Mostrar todos al inicio
     }
 
-    /**
-     * Carga los datos iniciales para los componentes de la interfaz.
-     */
     public void datosInicio() {
         cargarCiudades();
         cargarTiposAlojamiento();
@@ -88,24 +62,13 @@ public class PantallaPrincipal {
         cbTipoAlojamiento.setItems(tipos);
     }
 
-    /**
-     * Configura los manejadores de eventos para los botones.
-     */
     private void configurarEventos() {
-        btnBuscar.setOnAction(this::onBuscarClick);
         btnLogin.setOnAction(this::irLogin);
         btnRegistro.setOnAction(this::irRegistroCliente);
     }
 
-    // ---------------------------
-    // Lógica de búsqueda
-    // ---------------------------
-
-    /**
-     * Maneja el evento de clic en el botón de búsqueda.
-     * @param event Evento de acción
-     */
-    private void onBuscarClick(ActionEvent event) {
+    @FXML
+    private void buscarAlojamientos(ActionEvent event) {
         Ciudad ciudadSeleccionada = cbCiudad.getValue();
         TipoAlojamiento tipoSeleccionado = cbTipoAlojamiento.getValue();
         String precioMaxText = txtPrecioMax.getText();
@@ -121,13 +84,9 @@ public class PantallaPrincipal {
         }
     }
 
-    /**
-     * Muestra los alojamientos que coinciden con los criterios de búsqueda.
-     * @param ciudadSeleccionada Ciudad seleccionada para filtrar
-     * @param tipoSeleccionado Tipo de alojamiento seleccionado
-     * @param precioMax Precio máximo para filtrar
-     */
     public void mostrarAlojamientos(Ciudad ciudadSeleccionada, TipoAlojamiento tipoSeleccionado, double precioMax) {
+        flowAlojamientos.getChildren().clear();
+
         for (Alojamiento alojamiento : alojamientos) {
             if (cumpleCriterios(alojamiento, ciudadSeleccionada, tipoSeleccionado, precioMax)) {
                 flowAlojamientos.getChildren().add(crearTarjetaAlojamiento(alojamiento));
@@ -135,39 +94,12 @@ public class PantallaPrincipal {
         }
     }
 
-    /**
-     * Verifica si un alojamiento cumple con los criterios de búsqueda especificados.
-     * @param alojamiento Alojamiento a evaluar
-     * @param ciudad Ciudad solicitada (puede ser null para no filtrar por ciudad)
-     * @param tipo Tipo de alojamiento solicitado (puede ser null para no filtrar por tipo)
-     * @param precioMax Precio máximo permitido
-     * @return true si el alojamiento cumple con todos los criterios no nulos, false de lo contrario
-     */
-    private boolean cumpleCriterios(Alojamiento alojamiento, Ciudad ciudad,
-                                    TipoAlojamiento tipo, double precioMax) {
-        // Filtro por ciudad
-        if (ciudad != null && !alojamiento.getCiudad().equals(ciudad)) {
-            return false;
-        }
-
-        // Filtro por tipo de alojamiento
-        if (tipo != null && !alojamiento.getTipoAlojamiento().equals(tipo)) {
-            return false;
-        }
-
-        // Filtro por precio
-        if (alojamiento.getPrecioNoche() > precioMax) {
-            return false;
-        }
-
-        return true;
+    private boolean cumpleCriterios(Alojamiento alojamiento, Ciudad ciudad, TipoAlojamiento tipo, double precioMax) {
+        if (ciudad != null && !alojamiento.getCiudad().equals(ciudad)) return false;
+        if (tipo != null && !alojamiento.getTipoAlojamiento().equals(tipo)) return false;
+        return alojamiento.getPrecioNoche() <= precioMax;
     }
 
-    /**
-     * Crea una tarjeta visual para un alojamiento.
-     * @param alojamiento Alojamiento a mostrar
-     * @return VBox con la representación visual del alojamiento
-     */
     private VBox crearTarjetaAlojamiento(Alojamiento alojamiento) {
         VBox tarjeta = new VBox(10);
         tarjeta.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: #f9f9f9;");
@@ -176,42 +108,29 @@ public class PantallaPrincipal {
         HBox contenido = new HBox(10);
         contenido.setStyle("-fx-alignment: center-left;");
 
-        // Inicializar el ImageView
         ImageView imagenView = new ImageView();
-
-        String rutaImagen = alojamiento.getImagen(); // Ruta de la imagen como String
-        File archivoImagen = new File(rutaImagen);
+        File archivoImagen = new File(alojamiento.getImagen());
 
         if (archivoImagen.exists()) {
-            Image imagen = new Image(archivoImagen.toURI().toString());
-            imagenView.setImage(imagen);
-        } else {
-            // Maneja el error de que la imagen no se encuentra
-            System.out.println("Imagen no encontrada en: " + rutaImagen);
+            imagenView.setImage(new Image(archivoImagen.toURI().toString()));
         }
 
         imagenView.setFitWidth(150);
         imagenView.setFitHeight(100);
         imagenView.setPreserveRatio(true);
 
-        // Agregar el evento de clic a la imagen
         imagenView.setOnMouseClicked(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/InformacionImagenCliente.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Controladores/ControladoresCliente/InformacionImagenCliente.fxml"));
                 Parent root = loader.load();
-
-                // Obtener el controlador y pasar los datos del alojamiento
                 InformacionImagenCliente controller = loader.getController();
                 controller.setAlojamiento(alojamiento);
 
                 Stage stage = new Stage();
-                File archivoImage = new File("Img/ImagenesApp/icon.png");
-                Image icono = new Image(archivoImage.toURI().toString());
-                stage.getIcons().add(icono);
+                stage.getIcons().add(new Image(new File("Img/ImagenesApp/icon.png").toURI().toString()));
                 stage.setScene(new Scene(root));
                 stage.setTitle("Detalles del alojamiento");
                 stage.show();
-
             } catch (Exception e) {
                 e.printStackTrace();
                 mostrarError("No se pudo cargar la ventana de detalles");
@@ -220,9 +139,7 @@ public class PantallaPrincipal {
 
         VBox detalles = new VBox(5);
         detalles.getChildren().addAll(
-                new Label(alojamiento.getNombre()) {{
-                    setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-                }},
+                new Label(alojamiento.getNombre()) {{ setStyle("-fx-font-size: 14px; -fx-font-weight: bold;"); }},
                 new Label(alojamiento.getCiudad().name()),
                 new Label(String.format("%.2f COP por noche", alojamiento.getPrecioNoche()))
         );
@@ -232,43 +149,25 @@ public class PantallaPrincipal {
 
         return tarjeta;
     }
-    // ---------------------------
-    // Métodos de navegación
-    // ---------------------------
 
-    /**
-     * Navega a la pantalla de inicio de sesión.
-     */
     public void irLogin(ActionEvent actionEvent) {
         navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/Login.fxml", "BookYourStay - Iniciar Sesión");
     }
 
-    /**
-     * Navega a la pantalla de registro de cliente.
-     */
     public void irRegistroCliente(ActionEvent actionEvent) {
         navegarVentana("/co/edu/uniquindio/proyectofinalhotelfx/RegistroCliente.fxml", "BookYourStay - Registro");
     }
 
-    /**
-     * Método genérico para navegar a otras ventanas.
-     * @param nombreArchivoFxml Ruta del archivo FXML
-     * @param tituloVentana Título de la ventana
-     */
     private void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(nombreArchivoFxml));
             Parent root = loader.load();
             Stage stage = new Stage();
-            File archivoImagen = new File("Img/ImagenesApp/icon.png");
-            Image icono = new Image(archivoImagen.toURI().toString());
-            stage.getIcons().add(icono);
+            stage.getIcons().add(new Image(new File("Img/ImagenesApp/icon.png").toURI().toString()));
             stage.setScene(new Scene(root));
-
-            stage.setResizable(false);
             stage.setTitle(tituloVentana);
+            stage.setResizable(false);
             stage.show();
-
             cerrarVentanaActual();
         } catch (Exception e) {
             mostrarError("No se pudo cargar la ventana: " + e.getMessage());
@@ -276,69 +175,33 @@ public class PantallaPrincipal {
         }
     }
 
-    // ---------------------------
-    // Métodos de utilidad
-    // ---------------------------
+    private void cerrarVentanaActual() {
+        Stage stage = (Stage) btnBuscar.getScene().getWindow();
+        stage.close();
+    }
 
-    /**
-     * Verifica que los datos de búsqueda sean válidos.
-     * @return true si los datos son válidos, false en caso contrario
-     */
-    public boolean verificarDatos(String precioTexto) {
-        if (!precioTexto.isEmpty()) {
+    private boolean verificarDatos(String precioMax) {
+        if (!precioMax.isEmpty()) {
             try {
-                Double.parseDouble(precioTexto);
+                Double.parseDouble(precioMax);
+                return true;
             } catch (NumberFormatException e) {
-                mostrarAdvertencia("Precio máximo debe ser numérico");
+                mostrarError("El precio máximo debe ser un número válido.");
                 return false;
             }
         }
-
-        if (cbCiudad.getValue() == null && cbTipoAlojamiento.getValue() == null && precioTexto.isEmpty()) {
-            mostrarAdvertencia("Debe seleccionar al menos un criterio de búsqueda.");
-            return false;
-        }
-
         return true;
     }
 
-    /**
-     * Limpia los resultados de búsqueda anteriores.
-     */
-    public void limpiarResultados() {
+    private void limpiarResultados() {
         flowAlojamientos.getChildren().clear();
     }
 
-    /**
-     * Cierra la ventana actual.
-     */
-    private void cerrarVentanaActual() {
-        ((Stage) btnRegistro.getScene().getWindow()).close();
-    }
-
-    /**
-     * Muestra una alerta de error.
-     */
     private void mostrarError(String mensaje) {
-        crearAlerta(mensaje, Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Error");
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
-
-    /**
-     * Muestra una alerta de advertencia.
-     */
-    private void mostrarAdvertencia(String mensaje) {
-        crearAlerta(mensaje, Alert.AlertType.WARNING);
-    }
-
-    /**
-     * Crea y muestra una alerta.
-     */
-    private void crearAlerta(String mensaje, Alert.AlertType tipo) {
-        new Alert(tipo, mensaje) {{
-            setTitle("Alerta");
-            setHeaderText(null);
-        }}.showAndWait();
-    }
-
-
 }

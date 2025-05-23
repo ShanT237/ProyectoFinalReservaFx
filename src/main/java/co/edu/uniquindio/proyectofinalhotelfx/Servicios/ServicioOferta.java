@@ -107,4 +107,8 @@ public class ServicioOferta {
         }
 
     }
+
+    public List<Oferta> obtenerOfertas() {
+        return  ofertaRepository.obtenerTodos();
+    }
 }
