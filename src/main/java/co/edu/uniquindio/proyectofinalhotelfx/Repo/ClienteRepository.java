@@ -4,11 +4,13 @@ import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.BilleteraVirtual;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Ruta;
 import co.edu.uniquindio.proyectofinalhotelfx.Persistencia.Persistencia;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class ClienteRepository   {
 
     // Lista principal de clientes registrados
@@ -22,13 +24,13 @@ public class ClienteRepository   {
         usuariosBloqueados = new ArrayList<>();
     }
 
-    public Cliente buscarPorCedula(String cedula) {
+    public Cliente buscarPorCedula(String cedula) throws Exception {
         for (Cliente c : clientes) {
             if (c.getCedula().equals(cedula)) {
                 return c;
             }
         }
-        return null;
+        throw new Exception("Cliente no encontrado");
     }
 
     public Cliente buscarPorCorreo(String correo) {
