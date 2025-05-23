@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
@@ -16,55 +20,68 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #fffaf0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.PantallaPrincipal">
-
-    <!-- Barra superior -->
-    <HBox alignment="CENTER_RIGHT" spacing="20" style="-fx-padding: 15; -fx-background-color: #dbe9f4;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-        <ImageView fitHeight="50" fitWidth="57.0">
-            <image>
-                <Image url="@Img/ImagenesApp/cama.png" />
-            </image>
-        </ImageView>
-        <Button fx:id="btnLogin" style="-fx-background-color: transparent; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Iniciar Sesión" />
-        <Button fx:id="btnRegistro" style="-fx-background-color: transparent; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Registrarse" />
-    </HBox>
-
-    <!-- Contenido principal con pestañas -->
-    <VBox spacing="15" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.topAnchor="80">
-
-        <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Encuentra tu alojamiento ideal" />
-
-        <!-- Barra de búsqueda -->
-        <HBox alignment="CENTER" spacing="12">
-            <ComboBox fx:id="cbCiudad" prefWidth="180" promptText="Ciudad" style="-fx-background-radius: 10;" />
-            <ComboBox fx:id="cbTipoAlojamiento" prefWidth="160" promptText="Tipo" style="-fx-background-radius: 10;">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Casa" />
-                        <String fx:value="Apartamento" />
-                        <String fx:value="Hotel" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <TextField fx:id="txtPrecioMax" prefWidth="160" promptText="Precio máximo" style="-fx-background-radius: 10;" />
-            <Button fx:id="btnBuscar" onAction="#buscarAlojamientos" style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 6 16;" text="Buscar" />
-        </HBox>
-
-        <!-- Pestañas de contenido -->
-        <TabPane fx:id="tabPanePrincipal" style="-fx-background-radius: 10;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-            <!-- Pestaña de Alojamientos -->
-            <Tab text="Alojamientos destacados">
-                <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: white; -fx-background-radius: 10;">
-                    <FlowPane fx:id="flowAlojamientos" hgap="20" style="-fx-padding: 20;" vgap="20" />
-                </ScrollPane>
-            </Tab>
-
-            <!-- Pestaña de Ofertas -->
-            <Tab text="Ofertas">
-                <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: white; -fx-background-radius: 10;">
-                    <FlowPane fx:id="flowOfertas" hgap="20" style="-fx-padding: 20;" vgap="20" />
-                </ScrollPane>
-            </Tab>
-        </TabPane>
-    </VBox>
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #fffaf0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.proyectofinalhotelfx.Controladores.PantallaPrincipal">
+   <children>
+   
+       <!-- Barra superior -->
+       <HBox alignment="CENTER_RIGHT" spacing="20" style="-fx-padding: 15; -fx-background-color: #dbe9f4;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+      <children>
+              <Button fx:id="btnLogin" style="-fx-background-color: transparent; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Iniciar Sesión" />
+              <Button fx:id="btnRegistro" style="-fx-background-color: transparent; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Registrarse" />
+      </children>
+       </HBox>
+   
+       <!-- Contenido principal con pestañas -->
+       <VBox spacing="15" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.topAnchor="80">
+      <children>
+      
+              <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Encuentra tu alojamiento ideal" />
+      
+              <!-- Barra de búsqueda -->
+              <HBox alignment="CENTER" spacing="12">
+         <children>
+                     <ComboBox fx:id="cbCiudad" prefWidth="180" promptText="Ciudad" style="-fx-background-radius: 10;" />
+                     <ComboBox fx:id="cbTipoAlojamiento" prefWidth="160" promptText="Tipo" style="-fx-background-radius: 10;">
+                         <items>
+                             <FXCollections fx:factory="observableArrayList">
+                                 <String fx:value="Casa" />
+                                 <String fx:value="Apartamento" />
+                                 <String fx:value="Hotel" />
+                             </FXCollections>
+                         </items>
+                     </ComboBox>
+                     <TextField fx:id="txtPrecioMax" prefWidth="160" promptText="Precio máximo" style="-fx-background-radius: 10;" />
+                     <Button fx:id="btnBuscar" onAction="#buscarAlojamientos" style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 6 16;" text="Buscar" />
+         </children>
+              </HBox>
+      
+              <!-- Pestañas de contenido -->
+              <TabPane fx:id="tabPanePrincipal" style="-fx-background-radius: 10;" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+         <tabs>
+                     <!-- Pestaña de Alojamientos -->
+                     <Tab text="Alojamientos destacados">
+                        <content>
+                            <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: white; -fx-background-radius: 10;">
+                               <content>
+                                   <FlowPane fx:id="flowAlojamientos" hgap="20" style="-fx-padding: 20;" vgap="20" />
+                               </content>
+                            </ScrollPane>
+                        </content>
+                     </Tab>
+         
+                     <!-- Pestaña de Ofertas -->
+                     <Tab text="Ofertas">
+            <content>
+                            <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: white; -fx-background-radius: 10;">
+                               <content>
+                                   <FlowPane fx:id="flowOfertas" hgap="20" style="-fx-padding: 20;" vgap="20" />
+                               </content>
+                            </ScrollPane>
+            </content>
+                     </Tab>
+         </tabs>
+              </TabPane>
+      </children>
+       </VBox>
+   </children>
 </AnchorPane>

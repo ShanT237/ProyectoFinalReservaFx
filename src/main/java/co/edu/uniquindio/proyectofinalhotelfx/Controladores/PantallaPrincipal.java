@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyectofinalhotelfx.Controladores;
 
 import co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente.InformacionImagenCliente;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Oferta;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.Ciudad;
 import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Enums.TipoAlojamiento;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class PantallaPrincipal {
@@ -31,6 +33,8 @@ public class PantallaPrincipal {
     @FXML private FlowPane flowAlojamientos;
     @FXML private Button btnLogin;
     @FXML private Button btnRegistro;
+    @FXML private FlowPane flowOfertas;
+    private String idOferta;
 
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
     private final List<Alojamiento> alojamientosList = controladorPrincipal.getPlataforma()
@@ -42,6 +46,7 @@ public class PantallaPrincipal {
     @FXML
     void initialize() {
         datosInicio();
+        cargarOfertas();
         configurarEventos();
         mostrarAlojamientos(null, null, Double.MAX_VALUE); // Mostrar todos al inicio
     }
@@ -94,6 +99,75 @@ public class PantallaPrincipal {
         }
     }
 
+    /**
+     * Carga las ofertas en el FlowPane
+     */
+    public void cargarOfertas() {
+        flowOfertas.getChildren().clear();
+        List<Oferta> ofertas = controladorPrincipal.getPlataforma().getOfertaRepository().obtenerTodos();
+
+        for (Oferta oferta : ofertas) {
+            flowOfertas.getChildren().add(crearTarjetaOferta(oferta));
+        }
+    }
+
+    /**
+     * Crea una tarjeta visual para una oferta
+     */
+    private VBox crearTarjetaOferta(Oferta oferta) {
+        VBox tarjeta = new VBox(10);
+        tarjeta.setStyle("-fx-padding: 10; -fx-border-color: #2a2a2a; -fx-border-radius: 10; -fx-background-color: #f4f4f4;");
+        tarjeta.setPrefWidth(300);
+
+        ImageView imagenView = crearImageView(oferta.getImagen());
+        VBox detalles = crearDetallesOferta(oferta);
+
+        tarjeta.getChildren().addAll(imagenView, detalles);
+        tarjeta.setOnMouseClicked(e -> llenarCamposDesdeOferta(oferta));
+
+        return tarjeta;
+    }
+
+    /**
+     * Crea un ImageView para la imagen de la oferta
+     */
+    private ImageView crearImageView(String rutaImagen) {
+        ImageView imagenView = new ImageView();
+        File archivoImagen = new File(rutaImagen);
+
+        if (archivoImagen.exists()) {
+            imagenView.setImage(new Image(archivoImagen.toURI().toString()));
+        }
+
+        imagenView.setFitWidth(200);
+        imagenView.setFitHeight(120);
+        imagenView.setPreserveRatio(true);
+
+        return imagenView;
+    }
+
+    /**
+     * Crea los detalles de la oferta para mostrar en la tarjeta
+     */
+    private VBox crearDetallesOferta(Oferta oferta) {
+        VBox detalles = new VBox(5);
+        detalles.getChildren().addAll(
+                new Label(oferta.getNombre()) {{
+                    setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+                }},
+                new Label("Tipo: " + oferta.getTipo().name())
+        );
+        return detalles;
+    }
+
+    /**
+     * Almacena el ID de la oferta seleccionada
+     */
+    public void llenarCamposDesdeOferta(Oferta oferta) {
+        idOferta = oferta.getId();
+    }
+
+
     private boolean cumpleCriterios(Alojamiento alojamiento, Ciudad ciudad, TipoAlojamiento tipo, double precioMax) {
         if (ciudad != null && !alojamiento.getCiudad().equals(ciudad)) return false;
         if (tipo != null && !alojamiento.getTipoAlojamiento().equals(tipo)) return false;
@@ -121,7 +195,7 @@ public class PantallaPrincipal {
 
         imagenView.setOnMouseClicked(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/Controladores/ControladoresCliente/InformacionImagenCliente.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/edu/uniquindio/proyectofinalhotelfx/InformacionImagenCliente.fxml"));
                 Parent root = loader.load();
                 InformacionImagenCliente controller = loader.getController();
                 controller.setAlojamiento(alojamiento);
