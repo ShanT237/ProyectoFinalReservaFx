@@ -107,4 +107,6 @@ public interface IPlataforma {
     List<Reserva> obtenerReservasPorCliente(String cedula) throws Exception;
 
     public List<Alojamiento> obtenerAlojamientosMasPopulares(Ciudad ciudad) throws Exception;
+
+    List<Oferta> obtenerOfertas();
 }

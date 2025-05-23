@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyectofinalhotelfx.Controladores.ControladoresCliente;
 
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Alojamiento;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Cliente;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Habitacion;
-import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.Hotel;
+import co.edu.uniquindio.proyectofinalhotelfx.Modelo.Entidades.*;
 import co.edu.uniquindio.proyectofinalhotelfx.Singleton.SesionUsuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +31,7 @@ public class InformacionImagenCliente {
     @FXML private VBox contenedorPrincipal;
 
     private Alojamiento alojamiento;
+    private Oferta oferta;
     private SesionUsuario sesionUsuario = SesionUsuario.instancia();
 
 
@@ -51,10 +49,46 @@ public class InformacionImagenCliente {
         btnAgendar.setOnAction(event -> agendarAlojamiento());
     }
 
-    public void setAlojamiento(Alojamiento alojamiento) {
+    public void
+
+    setAlojamiento(Alojamiento alojamiento) {
         this.alojamiento = alojamiento;
         cargarDatosAlojamiento();
     }
+    public void setOferta(Oferta oferta) {
+        this.oferta = oferta;
+        cargarDatosOferta();
+    }
+
+    private void cargarDatosOferta() {
+        if (oferta != null) {
+            // Cargar imagen solo si ruta no es nula ni vacía y archivo existe
+            String rutaImagen = oferta.getImagen();
+            if (rutaImagen != null && !rutaImagen.isEmpty()) {
+                File file = new File(rutaImagen);
+                if (file.exists()) {
+                    Image imagen = new Image(file.toURI().toString());
+                    imagenAlojamiento.setImage(imagen);
+                } else {
+                    imagenAlojamiento.setImage(null); // o una imagen por defecto
+                }
+            } else {
+                imagenAlojamiento.setImage(null);
+            }
+
+            lblNombre.setText(oferta.getNombre());
+            lblDescripcion.setText("Descripción: " + oferta.getDescripcion());
+
+            // Limpiar antes de agregar datos al FlowPane
+            habitacionesFlowPane.getChildren().clear();
+
+
+                }
+            }
+
+
+
+
 
     private void cargarDatosAlojamiento() {
         if (alojamiento != null) {

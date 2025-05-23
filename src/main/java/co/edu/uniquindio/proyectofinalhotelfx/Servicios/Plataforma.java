@@ -296,4 +296,8 @@ public class Plataforma implements IPlataforma {
         return servicioAdm.obtenerAlojamientosMasPopulares(ciudad);
     }
 
+    public List<Oferta> obtenerOfertas() {
+        return servicioOferta.obtenerOfertas();
+    }
+
 }

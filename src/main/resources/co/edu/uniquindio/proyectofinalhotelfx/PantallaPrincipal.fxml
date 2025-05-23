@@ -22,7 +22,7 @@
     <HBox alignment="CENTER_RIGHT" spacing="20" style="-fx-padding: 15; -fx-background-color: #dbe9f4;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
         <ImageView fitHeight="50" fitWidth="57.0">
             <image>
-                <Image url="@../../../../../../../Img/ImagenesApp/cama.png" />
+                <Image url="@Img/ImagenesApp/cama.png" />
             </image>
         </ImageView>
         <Button fx:id="btnLogin" style="-fx-background-color: transparent; -fx-text-fill: #4a7c91; -fx-font-weight: bold;" text="Iniciar Sesión" />
@@ -47,7 +47,7 @@
                 </items>
             </ComboBox>
             <TextField fx:id="txtPrecioMax" prefWidth="160" promptText="Precio máximo" style="-fx-background-radius: 10;" />
-            <Button fx:id="btnBuscar" style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 6 16;" text="Buscar" />
+            <Button fx:id="btnBuscar" onAction="#buscarAlojamientos" style="-fx-background-color: #4a7c91; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 6 16;" text="Buscar" />
         </HBox>
 
         <!-- Pestañas de contenido -->
