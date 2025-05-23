@@ -48,21 +48,9 @@ public class ClienteRepository   {
             throw new Exception("La contraseña no puede estar vacía.");
         }
 
-        // Validación para evitar correos y cédulas duplicados
-        Cliente clienteExistentePorCorreo = buscarPorCorreo(cliente.getCorreo());
-        if (clienteExistentePorCorreo != null) {
-            throw new Exception("Ya existe un cliente con ese correo.");
-        }
 
-        Cliente clienteExistentePorCedula = buscarPorCedula(cliente.getCedula());
-        if (clienteExistentePorCedula != null) {
-            throw new Exception("Ya existe un cliente con esa cédula.");
-        }
-
-        // Si no hay errores, agregar el cliente a la lista
         clientes.add(cliente);
 
-        // Guardar los datos si el cliente fue agregado correctamente
         guardarDatos();
     }
 
@@ -97,7 +85,6 @@ public class ClienteRepository   {
 
     public void agregarUsuarioBloqueado(Cliente clienteBloqueado) {
         usuariosBloqueados.add(clienteBloqueado);
-        // podrías guardar aparte si manejas archivo de bloqueados
     }
 
     private void guardarDatos() {
