@@ -132,7 +132,7 @@ public class ServicioCliente {
         if (password == null || password.isEmpty())
             errores.append("La contraseña es obligatoria.\n");
         else if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"))
-            errores.append("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.\n");
+            errores.append("La contraseña debe tener al menos 8 caracteres");
 
         if (confirmarPassword == null || confirmarPassword.isEmpty())
             errores.append("Debe confirmar la contraseña.\n");
