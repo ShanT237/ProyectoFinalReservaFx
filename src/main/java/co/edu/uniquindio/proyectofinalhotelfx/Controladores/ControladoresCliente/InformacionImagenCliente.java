@@ -49,7 +49,9 @@ public class InformacionImagenCliente {
         btnAgendar.setOnAction(event -> agendarAlojamiento());
     }
 
-    public void setAlojamiento(Alojamiento alojamiento) {
+    public void
+
+    setAlojamiento(Alojamiento alojamiento) {
         this.alojamiento = alojamiento;
         cargarDatosAlojamiento();
     }
