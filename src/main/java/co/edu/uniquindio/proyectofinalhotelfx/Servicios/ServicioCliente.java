@@ -36,12 +36,19 @@ public class ServicioCliente {
         codigosVerificacion.put(correo, String.valueOf(codigo));
 
         enviarCorreo(correo, String.valueOf(codigo));
+
         Cliente cliente = crearCliente(nombre, cedula, telefono, codigo, correo, password, confirmarPassword);
+
+        if (cliente == null) {
+            throw new Exception("Error: el método crearCliente retornó null.");
+        }
+
         cliente.setActivo(false);
         clienteRepository.guardar(cliente);
 
-        System.out.println(codigo);
+        System.out.println("Código de verificación generado: " + codigo);
     }
+
 
 
 
@@ -278,14 +285,23 @@ public class ServicioCliente {
 
         if (codigoCorrecto != null && codigoCorrecto.equals(codigoIngresado)) {
             try {
+                System.out.println("Buscando cliente con correo: " + correo);
                 Cliente cliente = clienteRepository.buscarPorCorreo(correo);
-                cliente.setActivo(true);
-                clienteRepository.actualizar(cliente);
+                System.out.println("Cliente encontrado: " + cliente);
 
-                // Eliminar el código ya usado
-                codigosVerificacion.remove(correo);
+                if (cliente != null) {
+                    cliente.setActivo(true);
+                    clienteRepository.actualizar(cliente);
 
-                return true;
+                    // Eliminar el código ya usado
+                    codigosVerificacion.remove(correo);
+
+                    return true;
+                } else {
+                    System.out.println("No se encontró cliente con correo: " + correo);
+                    // Aquí podrías decidir si lanzar una excepción o retornar false
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -293,6 +309,7 @@ public class ServicioCliente {
 
         return false;
     }
+
 
 
     public boolean validarEstadoCuenta(String correo, boolean estado) {

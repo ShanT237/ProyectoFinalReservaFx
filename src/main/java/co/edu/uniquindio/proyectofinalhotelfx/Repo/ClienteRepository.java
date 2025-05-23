@@ -66,6 +66,7 @@ public class ClienteRepository   {
         guardarDatos();
     }
 
+
     public boolean actualizar(Cliente clienteActualizado) {
         System.out.println("actualizar");
         for (int i = 0; i < clientes.size(); i++) {
