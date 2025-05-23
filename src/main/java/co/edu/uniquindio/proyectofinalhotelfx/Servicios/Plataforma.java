@@ -111,10 +111,7 @@ public class Plataforma implements IPlataforma {
     @Override
     public void registrarCliente(String nombre, String cedula, String telefono, String correo,
                                  String password, String confirmarPassword) throws Exception {
-        try {
             servicioCliente.registrarCliente(nombre, cedula, telefono, correo, password, confirmarPassword);
-        } catch (Exception e) {
-        }
     }
 
 
@@ -203,10 +200,6 @@ public class Plataforma implements IPlataforma {
     // GESTIÓN DE RESERVAS
     // ==============================
 
-    @Override
-    public void registrarReserva(String codigoReserva, LocalDateTime fechaReserva, LocalDateTime fechaInicio, LocalDateTime fechaFin, String idCliente, String idAlojamiento, String idOferta, String nombreCliente, String nombreAlojamiento, String nombreOferta, double precioTotal, String imagenAlojamiento) throws Exception {
-
-    }
 
     @Override
     public List<TipoAlojamientoGanancia> calcularPorcentajeReservasPorTipo() {
